@@ -1,0 +1,7 @@
+name: SecVerseDupeUtils
+version: '1.2'
+main: org.secverse.SecVerseDupeUtils.FDupe
+api-version: '1.21'
+load: STARTUP
+authors: [ Mia_conmeow ]
+description: A custom SecVerse Dupe

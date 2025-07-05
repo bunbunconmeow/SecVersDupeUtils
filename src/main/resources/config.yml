@@ -1,0 +1,20 @@
+FrameDupe:
+  Enabled: true
+  Probability-percentage: 100
+  Multiplier: 1
+
+GLOW_FrameDupe:
+  Enabled: true
+  Probability-percentage: 100
+  Multiplier: 1
+
+
+EntetyDupe:
+  Enabled: false
+
+
+ItemBlacklist:
+  Name: [
+    "",
+    ""
+  ]

@@ -18,7 +18,7 @@ Configuration
 -------------
 
 Default config:
-
+```yml
 FrameDupe:
   Enabled: true
   Probability-percentage: 100
@@ -45,7 +45,7 @@ ItemBlacklist:
     Names:
       - "test_item"
       - "extra_item"
-
+```
 Config Explanation:
 
 FrameDupe.Enabled – Enable normal item frame dupe (default: true)

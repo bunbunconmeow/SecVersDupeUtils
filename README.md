@@ -49,14 +49,23 @@ ItemBlacklist:
 Config Explanation:
 
 FrameDupe.Enabled – Enable normal item frame dupe (default: true)
+
 FrameDupe.Probability-percentage – Chance (%) of dupe per break (default: 100)
+
 FrameDupe.Multiplier – Number of duplicated items dropped (default: 1)
+
 GLOW_FrameDupe.Enabled – Enable glow item frame dupe (default: true)
+
 Settings.EnableItemCheck – Enable blocked item check system (default: true)
+
 OtherDupes.GrindStone – Enable Grindstone dupe (default: false)
+
 OtherDupes.DonkeyDupe.Enabled – Enable Donkey dupe (default: false)
+
 OtherDupes.DonkeyDupe.MinTiming – Minimum timing window in ms (default: 100)
+
 OtherDupes.DonkeyDupe.MaxTiming – Maximum timing window in ms (default: 800)
+
 ItemBlacklist – List of blocked items by NamespacedKey & Names
 
 Commands
@@ -73,7 +82,7 @@ Maven Integration
 -----------------
 
 Add SecVersDupeUtils as a dependency:
-
+```xml
 <repositories>
     <repository>
         <id>your-repo</id>
@@ -89,6 +98,7 @@ Add SecVersDupeUtils as a dependency:
         <scope>provided</scope>
     </dependency>
 </dependencies>
+```
 
 Replace the repository with your actual Maven repository if published privately.
 
@@ -108,4 +118,4 @@ This plugin is designed for educational and exploit testing purposes. Duplicatio
 License
 -------
 
-MIT License © SecVerse Development
+BSD-3 License © SecVerse Development

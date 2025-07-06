@@ -8,13 +8,20 @@ GLOW_FrameDupe:
   Probability-percentage: 100
   Multiplier: 1
 
+Settings:
+  EnableItemCheck: true
 
-EntetyDupe:
-  Enabled: false
+OtherDupes:
+  - GrindStone: false
+  - DonkeyDupe:
+    Enabled: false
+    MinTiming: 100   # Minimum in ms
+    MaxTiming: 800   # Maximum in ms
 
 
 ItemBlacklist:
-  Name: [
-    "",
-    ""
-  ]
+  - Namespace: "exampleplugin"
+    Key: "specialtype"
+    Names:
+      - "test_item"
+      - "extra_item"

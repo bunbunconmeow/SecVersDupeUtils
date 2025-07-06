@@ -1,7 +1,14 @@
 name: SecVerseDupeUtils
 version: '1.2'
-main: org.secverse.SecVerseDupeUtils.FDupe
+main: org.secverse.SecVerseDupeUtils.SecVersDupe
 api-version: '1.21'
 load: STARTUP
 authors: [ Mia_conmeow ]
 description: A custom SecVerse Dupe
+
+commands:
+  reload:
+    description: Reloads SecVersDupeUtils config
+    usage: /dupeutls <command>
+    permission: dupeutils.reload
+    permission-message: You do not have permission to use this command.

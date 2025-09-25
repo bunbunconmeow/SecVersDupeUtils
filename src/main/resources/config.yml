@@ -1,3 +1,12 @@
+# Telemetry
+# We will collect only the current Version, OS, Server Name.
+telemetry:
+  enabled: true                 # set to false to opt-out
+  send_interval_seconds: 3600   # optional for repeated sends
+
+# Check for Update
+checkUpdate: true
+
 FrameDupe:
   Enabled: true
   Probability-percentage: 100

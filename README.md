@@ -92,7 +92,8 @@ ItemBlacklist – List of blocked items by NamespacedKey & Names
 Commands
 --------
 
-/reload – Reloads the plugin config (Permission: dupeutils.reload)
+/reload – Reloads the plugin config if config.yml was changed manually.(Permission: dupeutils.reload)
+/configdupes - Opens a GUI where you can configure the plugin.
 
 Permissions
 -----------
@@ -128,8 +129,8 @@ Setup
 
 1. Place the SecVersDupeUtils.jar in your /plugins folder
 2. Start or reload your server
-3. Configure config.yml as needed
-4. Use /reload to apply config changes live
+3. Configure with /configdupes as needed
+
 
 Disclaimer
 ----------

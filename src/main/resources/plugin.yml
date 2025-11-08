@@ -12,3 +12,8 @@ commands:
     usage: /dupeutls <command>
     permission: dupeutils.reload
     permission-message: You do not have permission to use this command.
+  configdupes:
+    description: Opens GUI to configure dupes allowed
+    usage: /configdupes
+    permission: dupeutils.configdupes
+    permission-message: You do not have permission to use this command.

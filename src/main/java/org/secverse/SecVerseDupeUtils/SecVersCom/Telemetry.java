@@ -31,7 +31,6 @@ public class Telemetry {
     private final Plugin plugin;
     private final File dataFolder;
     private final UUID hwid;
-    private final String endpoint;
     private final boolean enabled;
     private static final String ENDPOINT_URL = "https://api.secvers.org/v1/telemetry/SecVersDupeUtils";
     /**
@@ -52,7 +51,6 @@ public class Telemetry {
 
         // load config values (fall back to safe defaults)
         this.enabled = plugin.getConfig().getBoolean("telemetry.enabled", true);
-        this.endpoint = plugin.getConfig().getString("telemetry.endpoint", "").trim();
 
         // load or generate HWID
         this.hwid = loadOrCreateHwid();
@@ -114,11 +112,6 @@ public class Telemetry {
             plugin.getLogger().info("Telemetry disabled in config; skipping send.");
             return;
         }
-        if (endpoint == null || endpoint.isEmpty()) {
-            plugin.getLogger().warning("Telemetry endpoint not configured; skipping send.");
-            return;
-        }
-
         final String payload = buildPayload(additional);
 
 

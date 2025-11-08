@@ -1,5 +1,5 @@
 name: SecVerseDupeUtils
-version: '1.3'
+version: '2.0'
 main: org.secverse.SecVerseDupeUtils.SecVersDupe
 api-version: '1.21'
 load: STARTUP

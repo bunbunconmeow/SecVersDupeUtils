@@ -21,11 +21,22 @@ Settings:
   EnableItemCheck: true
 
 OtherDupes:
-  - GrindStone: false
-  - DonkeyDupe:
+  GrindStone:
+    Enabled: false
+    MinTiming: 1200   # Minimum in ms
+    MaxTiming: 2200   # Maximum in ms
+    dropNaturally: true
+    addToInventory: false
+  DonkeyDupe:
     Enabled: false
     MinTiming: 100   # Minimum in ms
-    MaxTiming: 800   # Maximum in ms
+    MaxTiming: 5000   # Maximum in ms
+  CrafterDupe:
+    Enabled: false
+    MinTiming: 100     # Minimum in ms
+    MaxTiming: 1000    # Maximum in ms
+    destroyCrafter: true    # Destroys the Crafter after Dupe
+    dropOriginals: false     # Golden Apple, Netherite Block, Torches drop
 
 
 ItemBlacklist:

@@ -19,6 +19,15 @@ Configuration
 
 Default config:
 ```yml
+# Telemetry
+# We will collect only the current Version, OS, Server Name.
+telemetry:
+  enabled: true                 # set to false to opt-out
+  send_interval_seconds: 3600   # optional for repeated sends
+
+# Check for Update
+checkUpdate: true
+
 FrameDupe:
   Enabled: true
   Probability-percentage: 100
@@ -33,11 +42,23 @@ Settings:
   EnableItemCheck: true
 
 OtherDupes:
-  - GrindStone: false
-  - DonkeyDupe:
-      Enabled: false
-      MinTiming: 100   # Minimum in ms
-      MaxTiming: 800   # Maximum in ms
+  GrindStone:
+    Enabled: false
+    MinTiming: 1200   # Minimum in ms
+    MaxTiming: 2200   # Maximum in ms
+    dropNaturally: true
+    addToInventory: false
+  DonkeyDupe:
+    Enabled: false
+    MinTiming: 100   # Minimum in ms
+    MaxTiming: 5000   # Maximum in ms
+  CrafterDupe:
+    Enabled: false
+    MinTiming: 100     # Minimum in ms
+    MaxTiming: 1000    # Maximum in ms
+    destroyCrafter: true    # Destroys the Crafter after Dupe
+    dropOriginals: false     # Golden Apple, Netherite Block, Torches drop
+
 
 ItemBlacklist:
   - Namespace: "exampleplugin"

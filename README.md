@@ -92,7 +92,7 @@ ItemBlacklist – List of blocked items by NamespacedKey & Names
 Commands
 --------
 
-/reload – Reloads the plugin config if config.yml was changed manually.(Permission: dupeutils.reload)
+/duperealod – Reloads the plugin config if config.yml was changed manually.(Permission: dupeutils.reload)
 /configdupes - Opens a GUI where you can configure the plugin.
 
 Permissions

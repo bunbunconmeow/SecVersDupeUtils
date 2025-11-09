@@ -38,7 +38,7 @@ OtherDupes:
     destroyCrafter: true    # Destroys the Crafter after Dupe
     dropOriginals: false     # Golden Apple, Netherite Block, Torches drop
   DeathDupe:
-    Enabled: true
+    Enabled: false
 
 ItemBlacklist:
   - Namespace: "exampleplugin"

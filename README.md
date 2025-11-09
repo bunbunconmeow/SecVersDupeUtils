@@ -60,7 +60,8 @@ OtherDupes:
     MaxTiming: 1000    # Maximum in ms
     destroyCrafter: true    # Destroys the Crafter after Dupe
     dropOriginals: false     # Golden Apple, Netherite Block, Torches drop
-
+  DeathDupe:
+    Enabled: false
 
 ItemBlacklist:
   - Namespace: "exampleplugin"

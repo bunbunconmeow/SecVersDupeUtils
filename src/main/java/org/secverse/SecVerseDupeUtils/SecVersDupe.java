@@ -18,6 +18,7 @@ import org.secverse.SecVerseDupeUtils.Donkey.DonkeyShulkerDupe;
 import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
 import org.secverse.SecVerseDupeUtils.SecVersCom.Telemetry;
 import org.secverse.SecVerseDupeUtils.SecVersCom.UpdateChecker;
+import org.secverse.SecVerseDupeUtils.Death.DeathDupe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
     private ItemFrameDupe frameDupe;
     private DonkeyShulkerDupe donkeyDupe;
     private GrindStoneDupe grindstoneDupe;
+    private DeathDupe deathDupe;
     private UpdateChecker updateChecker;
     private Telemetry telemetry;
 
@@ -36,10 +38,12 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         frameDupe = new ItemFrameDupe(this);
         donkeyDupe = new DonkeyShulkerDupe(this);
         grindstoneDupe = new GrindStoneDupe(this);
+        deathDupe = new DeathDupe(this);
         getServer().getPluginManager().registerEvents(frameDupe.new FrameAll(), this);
         getServer().getPluginManager().registerEvents(frameDupe.new FrameSpecific(), this);
         getServer().getPluginManager().registerEvents(donkeyDupe, this);
         getServer().getPluginManager().registerEvents(grindstoneDupe, this);
+        getServer().getPluginManager().registerEvents(deathDupe, this);
         getServer().getPluginManager().registerEvents(this, this);
 
         UpdateChecker checker = new UpdateChecker(this);
@@ -79,6 +83,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
             frameDupe.reload();
             donkeyDupe.reload();
             grindstoneDupe.reload();
+            deathDupe.reload();
 
             sender.sendMessage("§SecVers Dupe Utils config reloaded.");
             return true;
@@ -88,7 +93,6 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                 return true;
             }
 
-           
             openConfigDupesGUI((Player) sender);
             return true;
         }
@@ -111,7 +115,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
             switch (clickedItem.getType()) {
                 case ITEM_FRAME:
                     if (isLeftClick) {
-                        
+
                         boolean frameEnabled = !getConfig().getBoolean("FrameDupe.Enabled");
                         getConfig().set("FrameDupe.Enabled", frameEnabled);
                         saveConfig();
@@ -119,9 +123,9 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                         this.reloadConfig();
                         frameDupe.reload();
                     } else if (isRightClick) {
-                        
+
                         int currentProb = getConfig().getInt("FrameDupe.Probability-percentage", 100);
-                        int newProb = (currentProb + 10) % 110; 
+                        int newProb = (currentProb + 10) % 110;
                         getConfig().set("FrameDupe.Probability-percentage", newProb);
                         saveConfig();
                         player.sendMessage("§aItem Frame Dupe probability set to " + newProb + "%");
@@ -131,7 +135,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                     break;
                 case GLOW_ITEM_FRAME:
                     if (isLeftClick) {
-                        
+
                         boolean glowFrameEnabled = !getConfig().getBoolean("GLOW_FrameDupe.Enabled");
                         getConfig().set("GLOW_FrameDupe.Enabled", glowFrameEnabled);
                         saveConfig();
@@ -139,9 +143,9 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                         this.reloadConfig();
                         frameDupe.reload();
                     } else if (isRightClick) {
-                        
+
                         int currentProb = getConfig().getInt("GLOW_FrameDupe.Probability-percentage", 100);
-                        int newProb = (currentProb + 10) % 110; 
+                        int newProb = (currentProb + 10) % 110;
                         getConfig().set("GLOW_FrameDupe.Probability-percentage", newProb);
                         saveConfig();
                         player.sendMessage("§aGlowing Item Frame Dupe probability set to " + newProb + "%");
@@ -151,7 +155,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                     break;
                 case DONKEY_SPAWN_EGG:
                     if (isLeftClick) {
-                        
+
                         boolean donkeyEnabled = !getConfig().getBoolean("OtherDupes.DonkeyDupe.Enabled");
                         getConfig().set("OtherDupes.DonkeyDupe.Enabled", donkeyEnabled);
                         saveConfig();
@@ -159,9 +163,9 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                         this.reloadConfig();
                         donkeyDupe.reload();
                     } else if (isRightClick) {
-                        
+
                         int currentProb = getConfig().getInt("OtherDupes.DonkeyDupe.Probability-percentage", 100);
-                        int newProb = (currentProb + 10) % 110; 
+                        int newProb = (currentProb + 10) % 110;
                         getConfig().set("OtherDupes.DonkeyDupe.Probability-percentage", newProb);
                         saveConfig();
                         player.sendMessage("§aDonkey Dupe probability set to " + newProb + "%");
@@ -171,7 +175,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                     break;
                 case GRINDSTONE:
                     if (isLeftClick) {
-                       
+
                         boolean grindstoneEnabled = !getConfig().getBoolean("OtherDupes.GrindStone");
                         getConfig().set("OtherDupes.GrindStone", grindstoneEnabled);
                         saveConfig();
@@ -182,9 +186,9 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                         this.reloadConfig();
                         grindstoneDupe.reload();
                     } else if (isRightClick) {
-       
+
                         int currentProb = getConfig().getInt("OtherDupes.GrindStone.Probability-percentage", 100);
-                        int newProb = (currentProb + 10) % 110; 
+                        int newProb = (currentProb + 10) % 110;
                         getConfig().set("OtherDupes.GrindStone.Probability-percentage", newProb);
                         saveConfig();
                         player.sendMessage("§aGrindstone Dupe probability set to " + newProb + "%");
@@ -192,8 +196,17 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                         grindstoneDupe.reload();
                     }
                     break;
+                case BONE:
+                    if (isLeftClick) {
+                        boolean deathEnabled = !getConfig().getBoolean("OtherDupes.DeathDupe.Enabled");
+                        getConfig().set("OtherDupes.DeathDupe.Enabled", deathEnabled);
+                        saveConfig();
+                        player.sendMessage((deathEnabled ? "§a" : "§c") + "Death Dupe " + (deathEnabled ? "enabled" : "disabled"));
+                        this.reloadConfig();
+                        deathDupe.reload();
+                    }
+                    break;
             }
-
 
             openConfigDupesGUI(player);
         }
@@ -208,14 +221,12 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         glassMeta.setDisplayName(" ");
         glassPane.setItemMeta(glassMeta);
 
- 
         for (int i = 0; i < 27; i++) {
-            if (i != 10 && i != 12 && i != 14 && i != 16) {
+            if (i != 10 && i != 12 && i != 14 && i != 16 && i != 18) {
                 gui.setItem(i, glassPane);
             }
         }
 
- 
         ItemStack frameDupeItem = new ItemStack(Material.ITEM_FRAME);
         ItemMeta frameMeta = frameDupeItem.getItemMeta();
         boolean frameEnabled = getConfig().getBoolean("FrameDupe.Enabled");
@@ -260,12 +271,21 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         ));
         grindstoneDupeItem.setItemMeta(grindstoneMeta);
 
+        ItemStack deathDupeItem = new ItemStack(Material.BONE);
+        ItemMeta deathMeta = deathDupeItem.getItemMeta();
+        boolean deathEnabled = getConfig().getBoolean("OtherDupes.DeathDupe.Enabled");
+        deathMeta.setDisplayName((deathEnabled ? "§a" : "§c") + "Death Dupe: " + (deathEnabled ? "Enabled" : "Disabled"));
+        deathMeta.setLore(java.util.Arrays.asList(
+            "Left-click to toggle"
+        ));
+        deathDupeItem.setItemMeta(deathMeta);
+
         gui.setItem(10, frameDupeItem);
         gui.setItem(12, glowFrameDupeItem);
         gui.setItem(14, donkeyDupeItem);
         gui.setItem(16, grindstoneDupeItem);
+        gui.setItem(18, deathDupeItem);
 
-   
         player.openInventory(gui);
     }
 

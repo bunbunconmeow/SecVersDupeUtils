@@ -10,6 +10,8 @@ Features
 - Glow Item Frame Dupe – duplicate items from glow frames
 - Donkey Shulker Dupe – dupe shulker contents based on timing kill exploit
 - Grindstone Dupe – experimental dupe exploit
+- Crafter Dupe - Duplicate shulkers using crafters.
+- Death Dupe - Duplicate inventories when a user dies and disconnects on the death screen.
 - Blacklist System – prevents duplication of specific custom items
 - Timing-based dupes for realistic exploit-like behavior
 - Reload Command to apply config changes live

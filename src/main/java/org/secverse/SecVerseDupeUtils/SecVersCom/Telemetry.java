@@ -114,17 +114,18 @@ public class Telemetry {
         }
         final String payload = buildPayload(additional);
 
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    sendPost(payload);
-                } catch (Exception e) {
-                    plugin.getLogger().warning("Failed to send telemetry: " + e.getMessage());
+        if (plugin.isEnabled()) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        sendPost(payload);
+                    } catch (Exception e) {
+                        plugin.getLogger().warning("Failed to send telemetry: " + e.getMessage());
+                    }
                 }
-            }
-        }.runTaskAsynchronously(plugin);
+            }.runTaskAsynchronously(plugin);
+        }
     }
 
     /**

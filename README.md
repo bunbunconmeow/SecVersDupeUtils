@@ -19,6 +19,15 @@ Configuration
 
 Default config:
 ```yml
+# Telemetry
+# We will collect only the current Version, OS, Server Name.
+telemetry:
+  enabled: true                 # set to false to opt-out
+  send_interval_seconds: 3600   # optional for repeated sends
+
+# Check for Update
+checkUpdate: true
+
 FrameDupe:
   Enabled: true
   Probability-percentage: 100
@@ -33,11 +42,23 @@ Settings:
   EnableItemCheck: true
 
 OtherDupes:
-  - GrindStone: false
-  - DonkeyDupe:
-      Enabled: false
-      MinTiming: 100   # Minimum in ms
-      MaxTiming: 800   # Maximum in ms
+  GrindStone:
+    Enabled: false
+    MinTiming: 1200   # Minimum in ms
+    MaxTiming: 2200   # Maximum in ms
+    dropNaturally: true
+    addToInventory: false
+  DonkeyDupe:
+    Enabled: false
+    MinTiming: 100   # Minimum in ms
+    MaxTiming: 5000   # Maximum in ms
+  CrafterDupe:
+    Enabled: false
+    MinTiming: 100     # Minimum in ms
+    MaxTiming: 1000    # Maximum in ms
+    destroyCrafter: true    # Destroys the Crafter after Dupe
+    dropOriginals: false     # Golden Apple, Netherite Block, Torches drop
+
 
 ItemBlacklist:
   - Namespace: "exampleplugin"
@@ -71,7 +92,8 @@ ItemBlacklist – List of blocked items by NamespacedKey & Names
 Commands
 --------
 
-/reload – Reloads the plugin config (Permission: dupeutils.reload)
+/duperealod – Reloads the plugin config if config.yml was changed manually.(Permission: dupeutils.reload)
+/configdupes - Opens a GUI where you can configure the plugin.
 
 Permissions
 -----------
@@ -107,8 +129,8 @@ Setup
 
 1. Place the SecVersDupeUtils.jar in your /plugins folder
 2. Start or reload your server
-3. Configure config.yml as needed
-4. Use /reload to apply config changes live
+3. Configure with /configdupes as needed
+
 
 Disclaimer
 ----------

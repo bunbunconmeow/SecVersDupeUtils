@@ -1,18 +1,13 @@
 package org.secverse.SecVerseDupeUtils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.secverse.SecVerseDupeUtils.Crafter.CrafterDupe;
+import org.secverse.SecVerseDupeUtils.Interface.Interface;
 import org.secverse.SecVerseDupeUtils.ItemFrame.ItemFrameDupe;
 import org.secverse.SecVerseDupeUtils.Donkey.DonkeyShulkerDupe;
 import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
@@ -35,6 +30,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
     public void onEnable() {
         saveDefaultConfig();
 
+        // Initialisiere Dupe-Module
         frameDupe = new ItemFrameDupe(this);
         donkeyDupe = new DonkeyShulkerDupe(this);
         grindstoneDupe = new GrindStoneDupe(this);
@@ -46,10 +42,11 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(deathDupe, this);
         getServer().getPluginManager().registerEvents(this, this);
 
-        UpdateChecker checker = new UpdateChecker(this);
+        // Update Checker
+        updateChecker = new UpdateChecker(this);
         boolean checkUpdate = getConfig().getBoolean("checkUpdate", true);
         if(checkUpdate) {
-            checker.checkNowAsync();
+            updateChecker.checkNowAsync();
         }
 
         // Telemetry
@@ -67,13 +64,13 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                     periodic.put("event", "periodic_ping");
                     telemetry.sendTelemetryAsync(periodic);
                 }
-            }.runTaskTimerAsynchronously(this, interval * 20L, interval * 20L); // seconds -> ticks
+            }.runTaskTimerAsynchronously(this, interval * 20L, interval * 20L);
         }
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("dupeutls reload")) {
+        if (command.getName().equalsIgnoreCase("duperealod")) {
             if (!sender.hasPermission("dupeutils.reload")) {
                 sender.sendMessage("§cYou do not have permission to use this command.");
                 return true;
@@ -85,9 +82,14 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
             grindstoneDupe.reload();
             deathDupe.reload();
 
-            sender.sendMessage("§SecVers Dupe Utils config reloaded.");
+            sender.sendMessage("§aSecVers Dupe Utils config reloaded.");
             return true;
         } else if (command.getName().equalsIgnoreCase("configdupes")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("§cThis command can only be used by players.");
+                return true;
+            }
+
             if (!sender.hasPermission("dupeutils.configdupes")) {
                 sender.sendMessage("§cYou do not have permission to use this command.");
                 return true;

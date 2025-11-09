@@ -7,9 +7,9 @@ authors: [ Mia_conmeow ]
 description: A custom SecVerse Dupe
 
 commands:
-  reload:
+  duperealod:
     description: Reloads SecVersDupeUtils config
-    usage: /dupeutls <command>
+    usage: /duperealod
     permission: dupeutils.reload
     permission-message: You do not have permission to use this command.
   configdupes:

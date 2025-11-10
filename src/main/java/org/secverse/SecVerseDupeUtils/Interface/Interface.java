@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.secverse.SecVerseDupeUtils.Crafter.CrafterDupe;
+import org.secverse.SecVerseDupeUtils.Death.DeathDupe;
 import org.secverse.SecVerseDupeUtils.Donkey.DonkeyShulkerDupe;
 import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
 import org.secverse.SecVerseDupeUtils.ItemFrame.ItemFrameDupe;
@@ -25,6 +26,7 @@ public class Interface implements Listener {
     private final DonkeyShulkerDupe donkeyDupe;
     private final GrindStoneDupe grindstoneDupe;
     private final CrafterDupe crafterDupe;
+    private final DeathDupe deathDupe;
 
     // Language strings - will be moved to language file later
     private final Map<String, String> lang = new HashMap<>();
@@ -36,16 +38,18 @@ public class Interface implements Listener {
         GLOWFRAME_SETTINGS,
         DONKEY_SETTINGS,
         GRINDSTONE_SETTINGS,
-        CRAFTER_SETTINGS
+        CRAFTER_SETTINGS,
+        DEATH_SETTINGS
     }
 
     public Interface(Plugin plugin, ItemFrameDupe frameDupe, DonkeyShulkerDupe donkeyDupe,
-                     GrindStoneDupe grindstoneDupe, CrafterDupe crafterDupe) {
+                     GrindStoneDupe grindstoneDupe, CrafterDupe crafterDupe, DeathDupe deathDupe) {
         this.plugin = plugin;
         this.frameDupe = frameDupe;
         this.donkeyDupe = donkeyDupe;
         this.grindstoneDupe = grindstoneDupe;
         this.crafterDupe = crafterDupe;
+        this.deathDupe = deathDupe;
 
         initializeLanguage();
     }
@@ -93,6 +97,7 @@ public class Interface implements Listener {
         lang.put("dupe.donkey.name", "Donkey Dupe");
         lang.put("dupe.grindstone.name", "Grindstone Dupe");
         lang.put("dupe.crafter.name", "Crafter Dupe");
+        lang.put("dupe.death.name", "Death Dupe");
 
         // Messages
         lang.put("msg.enabled", "enabled");
@@ -156,6 +161,9 @@ public class Interface implements Listener {
             case CRAFTER_SETTINGS:
                 openCrafterSettings(player);
                 break;
+            case DEATH_SETTINGS:
+                openDeathSettings(player);
+                break;
         }
     }
 
@@ -198,6 +206,13 @@ public class Interface implements Listener {
                 Material.CRAFTER,
                 "OtherDupes.CrafterDupe.Enabled",
                 "dupe.crafter.name"
+        ));
+
+        // Death Dupe (Slot 33)
+        gui.setItem(33, createMainMenuItem(
+                Material.SKELETON_SKULL,
+                "OtherDupes.DeathDupe.Enabled",
+                "dupe.death.name"
         ));
 
         // Reload Button (Slot 44 - bottom right)
@@ -537,7 +552,8 @@ public class Interface implements Listener {
                 !title.contains(getLang("dupe.glowframe.name")) &&
                 !title.contains(getLang("dupe.donkey.name")) &&
                 !title.contains(getLang("dupe.grindstone.name")) &&
-                !title.contains(getLang("dupe.crafter.name"))) {
+                !title.contains(getLang("dupe.crafter.name")) &&
+                !title.contains(getLang("dupe.death.name"))) {
             return;
         }
 
@@ -615,8 +631,44 @@ public class Interface implements Listener {
                 reloadAllConfigs(player);
                 openMainGUI(player);
                 break;
+            case SKELETON_SKULL:
+                if (isLeftClick) {
+                    toggleEnabled(player, "OtherDupes.DeathDupe", "dupe.death.name");
+                    deathDupe.reload();
+                    openMainGUI(player);
+                } else {
+                    openGUI(player, GUIType.DEATH_SETTINGS);
+                }
+                break;
         }
     }
+
+// ==================== DEATH SETTINGS ====================
+private void openDeathSettings(Player player) {
+    String basePath = "OtherDupes.DeathDupe";
+    Inventory gui = Bukkit.createInventory(null, 45,
+            getLang("gui.title.settings", getLang("dupe.death.name")));
+
+    fillWithGlass(gui);
+
+    // Enable/Disable Toggle (Slot 4)
+    gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.death.name"));
+
+    // Back Button (Slot 40)
+    gui.setItem(40, createBackButton());
+
+    player.openInventory(gui);
+}
+
+private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
+    String basePath = "OtherDupes.DeathDupe";
+
+    if (slot == 4 && (item.getType() == Material.LIME_DYE || item.getType() == Material.GRAY_DYE)) {
+        toggleEnabled(player, basePath, "dupe.death.name");
+        deathDupe.reload();
+        openDeathSettings(player);
+    }
+}
 
     private void handleSettingsGUIClick(Player player, ItemStack clickedItem, String title, int slot) {
         // Back button
@@ -636,6 +688,8 @@ public class Interface implements Listener {
             handleGrindstoneSettingsClick(player, slot, clickedItem);
         } else if (title.contains(getLang("dupe.crafter.name"))) {
             handleCrafterSettingsClick(player, slot, clickedItem);
+        } else if (title.contains(getLang("dupe.death.name"))) {
+            handleDeathSettingsClick(player, slot, clickedItem);
         }
     }
 
@@ -880,6 +934,7 @@ public class Interface implements Listener {
         donkeyDupe.reload();
         grindstoneDupe.reload();
         crafterDupe.reload();
+        deathDupe.reload();
 
         player.sendMessage(getLang("color.success") + getLang("msg.config_reloaded"));
     }

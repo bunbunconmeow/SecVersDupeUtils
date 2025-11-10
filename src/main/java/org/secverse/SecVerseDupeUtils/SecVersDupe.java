@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.secverse.SecVerseDupeUtils.Crafter.CrafterDupe;
+import org.secverse.SecVerseDupeUtils.Death.DeathDupe;
 import org.secverse.SecVerseDupeUtils.Interface.Interface;
 import org.secverse.SecVerseDupeUtils.ItemFrame.ItemFrameDupe;
 import org.secverse.SecVerseDupeUtils.Donkey.DonkeyShulkerDupe;
@@ -22,6 +23,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
     private DonkeyShulkerDupe donkeyDupe;
     private GrindStoneDupe grindstoneDupe;
     private CrafterDupe crafterDupe;
+    private DeathDupe deathDupe;
     private Interface dupeInterface;
     private UpdateChecker updateChecker;
     private Telemetry telemetry;
@@ -35,10 +37,11 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         donkeyDupe = new DonkeyShulkerDupe(this);
         grindstoneDupe = new GrindStoneDupe(this);
         crafterDupe = new CrafterDupe(this);
+        deathDupe = new DeathDupe(this);
 
         // Initialisiere Interface
         // Initialisiere Interface
-        dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe, crafterDupe);
+        dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe, crafterDupe, deathDupe);
 
         // Registriere Events
         getServer().getPluginManager().registerEvents(frameDupe.new FrameAll(), this);
@@ -46,6 +49,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(donkeyDupe, this);
         getServer().getPluginManager().registerEvents(grindstoneDupe, this);
         getServer().getPluginManager().registerEvents(crafterDupe, this);
+        getServer().getPluginManager().registerEvents(deathDupe, this);
         getServer().getPluginManager().registerEvents(dupeInterface, this);
 
         // Update Checker
@@ -87,6 +91,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
             donkeyDupe.reload();
             grindstoneDupe.reload();
             crafterDupe.reload();
+            deathDupe.reload();
 
             sender.sendMessage("§aSecVers Dupe Utils config reloaded.");
             return true;

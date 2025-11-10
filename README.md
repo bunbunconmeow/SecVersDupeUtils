@@ -3,6 +3,8 @@ SecVersDupeUtils
 
 SecVersDupeUtils is a powerful Paper plugin that enables advanced duplication mechanics for Item Frames, Glow Item Frames, Donkeys, and Grindstones, including configurable timing-based dupes and blocked item handling.
 
+Big thanks to [HackThePyramids](https://github.com/HackThePyramids)
+
 Features
 --------
 

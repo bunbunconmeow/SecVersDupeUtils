@@ -108,7 +108,6 @@ public final class UpdateChecker {
         Server server = Bukkit.getServer();
         String legacy = "§c§l[SecVers] New Update available: " + remoteVersion
                 + " (current " + localVersion + "). Download: " + DOWNLOAD_URL;
-        Bukkit.broadcastMessage(legacy);
         server.getConsoleSender().sendMessage(legacy);
     }
 }

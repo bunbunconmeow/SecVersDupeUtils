@@ -63,8 +63,9 @@ OtherDupes:
     dropOriginals: false     # Golden Apple, Netherite Block, Torches drop
   DropperDupe:
     Enabled: false
-    MinTiming: 100     # Minimum in ms
-    MaxTiming: 1000    # Maximum in ms
+    Multiplier: 2
+  DeathDupe:
+    Enabled: false
 
 
 ItemBlacklist:

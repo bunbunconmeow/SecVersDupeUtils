@@ -11,12 +11,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.event.Listener;
-import org.secverse.SecVerseDupeUtils.helper.EventsKeys;
+import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-import static org.secverse.SecVerseDupeUtils.helper.CleanShulker.cleanShulker;
+import static org.secverse.SecVerseDupeUtils.Helper.CleanShulker.cleanShulker;
 
 public class DonkeyShulkerDupe implements Listener {
     private final Plugin plugin;

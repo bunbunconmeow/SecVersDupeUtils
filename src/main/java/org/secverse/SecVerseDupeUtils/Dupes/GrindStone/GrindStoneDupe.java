@@ -9,13 +9,13 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.secverse.SecVerseDupeUtils.helper.EventsKeys;
+import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
 import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-import static org.secverse.SecVerseDupeUtils.helper.CleanShulker.cleanShulker;
+import static org.secverse.SecVerseDupeUtils.Helper.CleanShulker.cleanShulker;
 
 public class GrindStoneDupe implements Listener {
     private final HashMap<UUID, Long> insertTimes = new HashMap<>();

@@ -1,26 +1,77 @@
-SecVersDupeUtils
-================
+📦 SecVers Dupe Utils
 
-SecVersDupeUtils is a powerful Paper plugin that enables advanced duplication mechanics for Item Frames, Glow Item Frames, Donkeys, and Grindstones, including configurable timing-based dupes and blocked item handling.
+A comprehensive and configurable dupe management plugin for Minecraft servers
 
-Big thanks to [HackThePyramids](https://github.com/HackThePyramids)
+Paper 1.21+ | [BSG-3 License](https://secvers.org/info/license) | Version 2.1
 
-Features
---------
+================================================================================
 
-- Item Frame Dupe – duplicate items from normal frames
-- Glow Item Frame Dupe – duplicate items from glow frames
-- Donkey Shulker Dupe – dupe shulker contents based on timing kill exploit
-- Grindstone Dupe – experimental dupe exploit
-- Blacklist System – prevents duplication of specific custom items
-- Timing-based dupes for realistic exploit-like behavior
-- Reload Command to apply config changes live
+🌟 FEATURES
 
-Configuration
--------------
+6+ Dupe Methods Available:
+- Item Frame Dupe - Duplicate items using item frames
+- Glow Item Frame Dupe - Enhanced duplication with glow frames
+- Donkey Dupe - Kill the Donkey in the given time Frame to dupe the items
+- Grindstone Dupe - Grindstone-based item duplication
+- Crafter Dupe - Crafter block duplication
+- Death Dupe - Duplicate items on death
+- ...and more coming soon!
 
-Default config:
-```yml
+
+Advanced Configuration System:
+- 🎲 Probability System - Set success rates for each dupe method
+- ⏱️ Timing Controls - Adjust delay windows for dupes
+- 🔧 Per-Dupe Settings - Independent configuration for each method
+- 📊 Real-time Adjustments - Changes apply without server restart
+
+Professional Features:
+✅ Permission-Based UI Access - Fine-grained control over who can use what
+
+🔄 Live Reload - Update configs without restarting
+
+📝 Telemetry System - Optional usage statistics
+
+🔔 Update Checker - Stay informed about new versions
+
+================================================================================
+
+📥 DOWNLOAD & SUPPORT
+
+Official Download:
+https://secvers.org/plugins/dupe-utility
+
+Support Development:
+https://secvers.org/info/donate
+
+================================================================================
+
+🎮 COMMANDS
+
+/dupe\
+Description: Show help menu\
+Permission: dupeutils.command
+
+/dupe reload\
+Description: Reload configuration\
+Permission: dupeutils.reload
+
+/dupe config\
+Description: Open configuration GUI\
+Permission: dupeutils.configdupes
+
+================================================================================
+
+🔐 PERMISSIONS
+
+- dupeutils.command       - Base permission to use /dupe
+- dupeutils.reload        - Permission to reload configs
+- dupeutils.configdupes   - Permission to open config GUI
+
+================================================================================
+
+⚙️ CONFIGURATION EXAMPLE
+
+```yaml
 # Telemetry
 # We will collect only the current Version, OS, Server Name.
 telemetry:
@@ -60,6 +111,8 @@ OtherDupes:
     MaxTiming: 1000    # Maximum in ms
     destroyCrafter: true    # Destroys the Crafter after Dupe
     dropOriginals: false     # Golden Apple, Netherite Block, Torches drop
+  DeathDupe:
+    Enabled: false
 
 
 ItemBlacklist:
@@ -68,78 +121,117 @@ ItemBlacklist:
     Names:
       - "test_item"
       - "extra_item"
-```
-Config Explanation:
 
-FrameDupe.Enabled – Enable normal item frame dupe (default: true)
-
-FrameDupe.Probability-percentage – Chance (%) of dupe per break (default: 100)
-
-FrameDupe.Multiplier – Number of duplicated items dropped (default: 1)
-
-GLOW_FrameDupe.Enabled – Enable glow item frame dupe (default: true)
-
-Settings.EnableItemCheck – Enable blocked item check system (default: true)
-
-OtherDupes.GrindStone – Enable Grindstone dupe (default: false)
-
-OtherDupes.DonkeyDupe.Enabled – Enable Donkey dupe (default: false)
-
-OtherDupes.DonkeyDupe.MinTiming – Minimum timing window in ms (default: 100)
-
-OtherDupes.DonkeyDupe.MaxTiming – Maximum timing window in ms (default: 800)
-
-ItemBlacklist – List of blocked items by NamespacedKey & Names
-
-Commands
---------
-
-/duperealod – Reloads the plugin config if config.yml was changed manually.(Permission: dupeutils.reload)
-/configdupes - Opens a GUI where you can configure the plugin.
-
-Permissions
------------
-
-dupeutils.reload – Allows reloading plugin configuration
-
-Maven Integration
------------------
-
-Add SecVersDupeUtils as a dependency:
-```xml
-<repositories>
-    <repository>
-        <id>your-repo</id>
-        <url>https://repo.yourdomain.com/repository/maven-public/</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>org.secverse</groupId>
-        <artifactId>SecVersDupeUtils</artifactId>
-        <version>1.0.0</version>
-        <scope>provided</scope>
-    </dependency>
-</dependencies>
 ```
 
-Replace the repository with your actual Maven repository if published privately.
+================================================================================
 
-Setup
------
+🎮 GUI CONFIGURATION
 
-1. Place the SecVersDupeUtils.jar in your /plugins folder
-2. Start or reload your server
-3. Configure with /configdupes as needed
+Use /dupe config in-game for easy configuration:
 
+• Left Click - Toggle dupe on/off
+• Right Click - Open detailed settings
+• Adjust Values - Click concrete blocks to increase/decrease
+• Live Updates - Changes apply immediately
 
-Disclaimer
-----------
+================================================================================
 
-This plugin is designed for educational and exploit testing purposes. Duplication mechanics may heavily affect server economy and gameplay balance. Use responsibly and at your own risk.
+🤝 CREDITS & ACKNOWLEDGMENTS
 
-License
--------
+Special Thanks:
+@HackThePyramids (https://github.com/HackThePyramids)
+Massive help with development, code architecture, and feature
+implementation. This plugin wouldn't be where it is without your
+contributions! 🙏
 
-BSD-3 License © SecVerse Development
+Development:
+SecVers Team - Plugin development and maintenance
+Community - Bug reports and feature suggestions
+
+================================================================================
+
+📊 STATISTICS
+
+• 6+ Dupe Methods - More than most premium plugins
+• 100% Free - No paywalls, no limitations
+• Active Development - Regular updates and new features
+• In-Game GUI - No need to edit config files
+
+================================================================================
+
+🐛 BUG REPORTS & FEATURE REQUESTS
+
+Found a bug or have an idea?
+
+1. Check existing issues on GitHub first
+2. Create a new issue with:
+    - Clear description
+    - Steps to reproduce (for bugs)
+    - Server version & plugin version
+    - Any error messages
+
+GitHub Issues: https://github.com/bunbunconmeow/SecVersDupeUtils/issues
+
+================================================================================
+
+📜 LICENSE
+
+This project is licensed under the MIT License.
+See the LICENSE file for details.
+
+================================================================================
+
+🔮 ROADMAP
+
+Coming Soon:
+PlaceholderAPI Integration
+- [ ] LuckyPerms and Vault based Cooldown & Limit System\
+- [ ] Economy Integration\
+- [ ] Up to 30+ More Dupe Methods
+- [ ] Multi-Language Support
+
+Under Consideration:
+- [ ] Dupe Recipe System
+- [ ] Particle Effects & Animations
+- [ ] Backup & Rollback System
+- [ ] Web Dashboard
+
+================================================================================
+
+⚠️ DISCLAIMER
+
+This plugin is designed for anarchy, creative, or testing servers.\
+Use at your own discretion. The developers are not responsible for any
+damage to your server economy or gameplay balance.
+
+================================================================================
+
+💬 SUPPORT
+
+Official Website: https://secvers.org
+Plugin Page: https://secvers.org/plugins/dupe-utility
+Donate: https://secvers.org/info/donate
+Email: support@secvers.org
+
+================================================================================
+
+⭐ SHOW YOUR SUPPORT
+
+If you like this plugin, please consider:
+⭐ Starring the GitHub repository
+🐛 Reporting bugs
+💡 Suggesting features
+📣 Sharing with others
+❤️ Donating to support development
+
+================================================================================
+
+Made with ❤️ by SecVers
+
+Download: https://secvers.org/plugins/dupe-utility
+Donate: https://secvers.org/info/donate
+
+Want to contribute? Check out our Contributing Guidelines!
+
+================================================================================

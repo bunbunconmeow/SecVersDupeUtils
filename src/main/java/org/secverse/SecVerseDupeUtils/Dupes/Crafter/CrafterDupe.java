@@ -1,4 +1,4 @@
-package org.secverse.SecVerseDupeUtils.Crafter;
+package org.secverse.SecVerseDupeUtils.Dupes.Crafter;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;

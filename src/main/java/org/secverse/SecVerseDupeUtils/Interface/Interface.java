@@ -10,11 +10,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.secverse.SecVerseDupeUtils.Crafter.CrafterDupe;
-import org.secverse.SecVerseDupeUtils.Death.DeathDupe;
-import org.secverse.SecVerseDupeUtils.Donkey.DonkeyShulkerDupe;
-import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
-import org.secverse.SecVerseDupeUtils.ItemFrame.ItemFrameDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Crafter.CrafterDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Death.DeathDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Donkey.DonkeyShulkerDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.GrindStone.GrindStoneDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.ItemFrame.ItemFrameDupe;
 
 import java.util.Arrays;
 import java.util.HashMap;

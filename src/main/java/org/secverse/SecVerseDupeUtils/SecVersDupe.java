@@ -6,12 +6,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.secverse.SecVerseDupeUtils.Crafter.CrafterDupe;
-import org.secverse.SecVerseDupeUtils.Death.DeathDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Crafter.CrafterDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Death.DeathDupe;
 import org.secverse.SecVerseDupeUtils.Interface.Interface;
-import org.secverse.SecVerseDupeUtils.ItemFrame.ItemFrameDupe;
-import org.secverse.SecVerseDupeUtils.Donkey.DonkeyShulkerDupe;
-import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.ItemFrame.ItemFrameDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Donkey.DonkeyShulkerDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.GrindStone.GrindStoneDupe;
 import org.secverse.SecVerseDupeUtils.SecVersCom.Telemetry;
 import org.secverse.SecVerseDupeUtils.SecVersCom.UpdateChecker;
 
@@ -146,6 +146,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
             Map<String, Object> add = new HashMap<>();
             add.put("event", "plugin_disable");
             telemetry.sendTelemetryAsync(add);
+            telemetry = null;
         }
     }
 }

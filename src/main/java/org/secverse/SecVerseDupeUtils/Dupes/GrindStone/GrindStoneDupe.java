@@ -1,4 +1,4 @@
-package org.secverse.SecVerseDupeUtils.GrindStone;
+package org.secverse.SecVerseDupeUtils.Dupes.GrindStone;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

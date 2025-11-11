@@ -1,4 +1,4 @@
-package org.secverse.SecVerseDupeUtils.Death;
+package org.secverse.SecVerseDupeUtils.Dupes.Death;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

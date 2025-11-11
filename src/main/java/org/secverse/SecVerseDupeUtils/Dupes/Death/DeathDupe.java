@@ -1,4 +1,4 @@
-package org.secverse.SecVerseDupeUtils.Death;
+package org.secverse.SecVerseDupeUtils.Dupes.Death;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.secverse.SecVerseDupeUtils.helper.EventsKeys;
+import org.secverse.SecVerseDupeUtils.helper.CleanShulker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +48,20 @@ public class DeathDupe implements Listener {
         // Store the player's inventory and death location
         ItemStack[] inventory = player.getInventory().getContents().clone();
         Location deathLocation = player.getLocation();
+
+        // Filter out blacklisted items and clean shulkers before storing
+        EventsKeys ek = new EventsKeys(plugin);
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] != null) {
+                if (ek.isBlockedItem(inventory[i])) {
+                    inventory[i] = null;
+                    Bukkit.getLogger().info("[DeathDupe] Removed blacklisted item from inventory for: " + player.getName());
+                } else {
+                    // Clean shulkers that might contain blacklisted items
+                    CleanShulker.cleanShulker(inventory[i], ek);
+                }
+            }
+        }
 
         // Store the death data
         playerDeathData.put(playerId, new DeathData(inventory, deathLocation));

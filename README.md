@@ -12,6 +12,7 @@ Features
 - Glow Item Frame Dupe – duplicate items from glow frames
 - Donkey Shulker Dupe – dupe shulker contents based on timing kill exploit
 - Grindstone Dupe – experimental dupe exploit
+- Dropper Dupe – duplicate items from droppers (2x duplication)
 - Blacklist System – prevents duplication of specific custom items
 - Timing-based dupes for realistic exploit-like behavior
 - Reload Command to apply config changes live
@@ -60,6 +61,10 @@ OtherDupes:
     MaxTiming: 1000    # Maximum in ms
     destroyCrafter: true    # Destroys the Crafter after Dupe
     dropOriginals: false     # Golden Apple, Netherite Block, Torches drop
+  DropperDupe:
+    Enabled: false
+    MinTiming: 100     # Minimum in ms
+    MaxTiming: 1000    # Maximum in ms
 
 
 ItemBlacklist:
@@ -88,6 +93,12 @@ OtherDupes.DonkeyDupe.Enabled – Enable Donkey dupe (default: false)
 OtherDupes.DonkeyDupe.MinTiming – Minimum timing window in ms (default: 100)
 
 OtherDupes.DonkeyDupe.MaxTiming – Maximum timing window in ms (default: 800)
+
+OtherDupes.DropperDupe.Enabled – Enable Dropper dupe (default: false)
+
+OtherDupes.DropperDupe.MinTiming – Minimum timing window in ms (default: 100)
+
+OtherDupes.DropperDupe.MaxTiming – Maximum timing window in ms (default: 1000)
 
 ItemBlacklist – List of blocked items by NamespacedKey & Names
 

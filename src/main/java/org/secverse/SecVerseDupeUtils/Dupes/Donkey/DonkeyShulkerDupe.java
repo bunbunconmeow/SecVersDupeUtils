@@ -1,4 +1,4 @@
-package org.secverse.SecVerseDupeUtils.Donkey;
+package org.secverse.SecVerseDupeUtils.Dupes.Donkey;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;

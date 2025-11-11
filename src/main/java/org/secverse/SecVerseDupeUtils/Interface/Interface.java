@@ -10,15 +10,17 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.secverse.SecVerseDupeUtils.Crafter.CrafterDupe;
-import org.secverse.SecVerseDupeUtils.Death.DeathDupe;
-import org.secverse.SecVerseDupeUtils.Donkey.DonkeyShulkerDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Crafter.CrafterDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Death.DeathDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Donkey.DonkeyShulkerDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Dropper.DropperDupe;
 import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
-import org.secverse.SecVerseDupeUtils.ItemFrame.ItemFrameDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.ItemFrame.ItemFrameDupe;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Interface implements Listener {
     private final Plugin plugin;
@@ -26,7 +28,9 @@ public class Interface implements Listener {
     private final DonkeyShulkerDupe donkeyDupe;
     private final GrindStoneDupe grindstoneDupe;
     private final CrafterDupe crafterDupe;
+    private final DropperDupe dropperDupe;
     private final DeathDupe deathDupe;
+
 
     // Language strings - will be moved to language file later
     private final Map<String, String> lang = new HashMap<>();
@@ -39,16 +43,18 @@ public class Interface implements Listener {
         DONKEY_SETTINGS,
         GRINDSTONE_SETTINGS,
         CRAFTER_SETTINGS,
+        DROPPER_SETTINGS,
         DEATH_SETTINGS
     }
 
     public Interface(Plugin plugin, ItemFrameDupe frameDupe, DonkeyShulkerDupe donkeyDupe,
-                     GrindStoneDupe grindstoneDupe, CrafterDupe crafterDupe, DeathDupe deathDupe) {
+                     GrindStoneDupe grindstoneDupe, CrafterDupe crafterDupe, DropperDupe dropperDupe, DeathDupe deathDupe) {
         this.plugin = plugin;
         this.frameDupe = frameDupe;
         this.donkeyDupe = donkeyDupe;
         this.grindstoneDupe = grindstoneDupe;
         this.crafterDupe = crafterDupe;
+        this.dropperDupe = dropperDupe;
         this.deathDupe = deathDupe;
 
         initializeLanguage();
@@ -97,6 +103,7 @@ public class Interface implements Listener {
         lang.put("dupe.donkey.name", "Donkey Dupe");
         lang.put("dupe.grindstone.name", "Grindstone Dupe");
         lang.put("dupe.crafter.name", "Crafter Dupe");
+        lang.put("dupe.dropper.name", "Dropper Dupe");
         lang.put("dupe.death.name", "Death Dupe");
 
         // Messages
@@ -161,6 +168,9 @@ public class Interface implements Listener {
             case CRAFTER_SETTINGS:
                 openCrafterSettings(player);
                 break;
+            case DROPPER_SETTINGS:
+                openDropperSettings(player);
+                break;
             case DEATH_SETTINGS:
                 openDeathSettings(player);
                 break;
@@ -168,54 +178,37 @@ public class Interface implements Listener {
     }
 
     private void openMainGUI(Player player) {
+        openMainGUI(player, 1); // Start with page 1
+    }
+
+    private void openMainGUI(Player player, int page) {
         Inventory gui = Bukkit.createInventory(null, 45, getLang("gui.title"));
 
         // Fill with glass panes
         fillWithGlass(gui);
 
-        // Item Frame Dupe (Slot 11)
-        gui.setItem(11, createMainMenuItem(
-                Material.ITEM_FRAME,
-                "FrameDupe.Enabled",
-                "dupe.itemframe.name"
-        ));
+        // Create a list of all dupe items
+        ItemStack[] dupeItems = new ItemStack[]{
+            createMainMenuItem(Material.ITEM_FRAME, "FrameDupe.Enabled", "dupe.itemframe.name"),
+            createMainMenuItem(Material.GLOW_ITEM_FRAME, "GLOW_FrameDupe.Enabled", "dupe.glowframe.name"),
+            createMainMenuItem(Material.DONKEY_SPAWN_EGG, "OtherDupes.DonkeyDupe.Enabled", "dupe.donkey.name"),
+            createMainMenuItem(Material.GRINDSTONE, "OtherDupes.GrindStone.Enabled", "dupe.grindstone.name"),
+            createMainMenuItem(Material.CRAFTER, "OtherDupes.CrafterDupe.Enabled", "dupe.crafter.name"),
+            createMainMenuItem(Material.DROPPER, "OtherDupes.DropperDupe.Enabled", "dupe.dropper.name"),
+            createMainMenuItem(Material.SKELETON_SPAWN_EGG, "OtherDupes.DeathDupe.Enabled", "dupe.death.name")
+        };
 
-        // Glowing Item Frame Dupe (Slot 13)
-        gui.setItem(13, createMainMenuItem(
-                Material.GLOW_ITEM_FRAME,
-                "GLOW_FrameDupe.Enabled",
-                "dupe.glowframe.name"
-        ));
+        
 
-        // Donkey Dupe (Slot 15)
-        gui.setItem(15, createMainMenuItem(
-                Material.DONKEY_SPAWN_EGG,
-                "OtherDupes.DonkeyDupe.Enabled",
-                "dupe.donkey.name"
-        ));
+        // Add other items in default positions
+        int[] defaultSlots = {10, 12, 14, 16, 28, 30, 32};
+        for (int i = 0; i < 7; i++) {
+            
+            gui.setItem(defaultSlots[i], dupeItems[i]);
+            
+        }
 
-        // Grindstone Dupe (Slot 29)
-        gui.setItem(29, createMainMenuItem(
-                Material.GRINDSTONE,
-                "OtherDupes.GrindStone.Enabled",
-                "dupe.grindstone.name"
-        ));
-
-        // Crafter Dupe (Slot 31)
-        gui.setItem(31, createMainMenuItem(
-                Material.CRAFTER,
-                "OtherDupes.CrafterDupe.Enabled",
-                "dupe.crafter.name"
-        ));
-
-        // Death Dupe (Slot 33)
-        gui.setItem(33, createMainMenuItem(
-                Material.SKELETON_SKULL,
-                "OtherDupes.DeathDupe.Enabled",
-                "dupe.death.name"
-        ));
-
-        // Reload Button (Slot 44 - bottom right)
+        // Reload Button (Slot 44)
         gui.setItem(44, createReloadButton());
 
         player.openInventory(gui);
@@ -268,6 +261,7 @@ public class Interface implements Listener {
         item.setItemMeta(meta);
         return item;
     }
+
 
     // ==================== ITEM FRAME SETTINGS ====================
     private void openItemFrameSettings(Player player) {
@@ -450,6 +444,31 @@ public class Interface implements Listener {
         player.openInventory(gui);
     }
 
+    // ==================== DROPPER SETTINGS ====================
+    private void openDropperSettings(Player player) {
+        String basePath = "OtherDupes.DropperDupe";
+        Inventory gui = Bukkit.createInventory(null, 45,
+                getLang("gui.title.settings", getLang("dupe.dropper.name")));
+
+        fillWithGlass(gui);
+
+        // Enable/Disable Toggle (Slot 4)
+        gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.dropper.name"));
+
+        // Multiplier Settings (Slots 11-15)
+        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(13, createValueDisplay(Material.PAPER, "gui.multiplier",
+                plugin.getConfig().getInt(basePath + ".Multiplier", 2) + "x"));
+        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+
+        // Back Button (Slot 40)
+        gui.setItem(40, createBackButton());
+
+        player.openInventory(gui);
+    }
+
     // ==================== HELPER METHODS ====================
 
     private void fillWithGlass(Inventory gui) {
@@ -553,6 +572,7 @@ public class Interface implements Listener {
                 !title.contains(getLang("dupe.donkey.name")) &&
                 !title.contains(getLang("dupe.grindstone.name")) &&
                 !title.contains(getLang("dupe.crafter.name")) &&
+                !title.contains(getLang("dupe.dropper.name")) &&
                 !title.contains(getLang("dupe.death.name"))) {
             return;
         }
@@ -626,12 +646,22 @@ public class Interface implements Listener {
                 }
                 break;
 
+            case DROPPER:
+                if (isLeftClick) {
+                    toggleEnabled(player, "OtherDupes.DropperDupe", "dupe.dropper.name");
+                    dropperDupe.reload();
+                    openMainGUI(player);
+                } else {
+                    openGUI(player, GUIType.DROPPER_SETTINGS);
+                }
+                break;
+
             case BARRIER:
                 // Reload button
                 reloadAllConfigs(player);
                 openMainGUI(player);
                 break;
-            case SKELETON_SKULL:
+            case SKELETON_SPAWN_EGG:
                 if (isLeftClick) {
                     toggleEnabled(player, "OtherDupes.DeathDupe", "dupe.death.name");
                     deathDupe.reload();
@@ -688,6 +718,8 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
             handleGrindstoneSettingsClick(player, slot, clickedItem);
         } else if (title.contains(getLang("dupe.crafter.name"))) {
             handleCrafterSettingsClick(player, slot, clickedItem);
+        } else if (title.contains(getLang("dupe.dropper.name"))) {
+            handleDropperSettingsClick(player, slot, clickedItem);
         } else if (title.contains(getLang("dupe.death.name"))) {
             handleDeathSettingsClick(player, slot, clickedItem);
         }
@@ -843,6 +875,23 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         }
     }
 
+    private void handleDropperSettingsClick(Player player, int slot, ItemStack item) {
+        String basePath = "OtherDupes.DropperDupe";
+
+        if (slot == 4 && (item.getType() == Material.LIME_DYE || item.getType() == Material.GRAY_DYE)) {
+            toggleEnabled(player, basePath, "dupe.dropper.name");
+            dropperDupe.reload();
+            openDropperSettings(player);
+        }
+        // Multiplier adjustments (slots 11-15)
+        else if (slot >= 11 && slot <= 15 && item.getType().name().contains("CONCRETE")) {
+            int adjustment = getAdjustmentValue(slot, 11);
+            adjustIntValue(player, basePath + ".Multiplier", adjustment, 1, 100);
+            dropperDupe.reload();
+            openDropperSettings(player);
+        }
+    }
+
     // ==================== ADJUSTMENT HELPER METHODS ====================
 
     private int getAdjustmentValue(int slot, int baseSlot) {
@@ -934,6 +983,7 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         donkeyDupe.reload();
         grindstoneDupe.reload();
         crafterDupe.reload();
+        dropperDupe.reload();
         deathDupe.reload();
 
         player.sendMessage(getLang("color.success") + getLang("msg.config_reloaded"));

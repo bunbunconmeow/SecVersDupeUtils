@@ -1,4 +1,4 @@
-package org.secverse.SecVerseDupeUtils.ItemFrame;
+package org.secverse.SecVerseDupeUtils.Dupes.ItemFrame;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.GlowItemFrame;

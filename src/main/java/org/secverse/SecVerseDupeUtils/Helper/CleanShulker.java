@@ -1,4 +1,4 @@
-package org.secverse.SecVerseDupeUtils.helper;
+package org.secverse.SecVerseDupeUtils.Helper;
 
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;

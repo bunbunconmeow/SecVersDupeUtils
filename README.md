@@ -2,7 +2,7 @@
 
 A comprehensive and configurable dupe management plugin for Minecraft servers
 
-Paper 1.21+ | [BSG-3 License](https://secvers.org/info/license) | Version 2.1
+Paper 1.21+ | [BSD-3 License](https://secvers.org/info/license) | Version 2.1
 
 ================================================================================
 
@@ -145,17 +145,17 @@ Massive help with development, code architecture, and feature
 implementation. This plugin wouldn't be where it is without your
 contributions! 🙏
 
-Development:
-SecVers Team - Plugin development and maintenance
+Development:\
+SecVers Team - Plugin development and maintenance\
 Community - Bug reports and feature suggestions
 
 ================================================================================
 
 📊 STATISTICS
 
-• 6+ Dupe Methods - More than most premium plugins
-• 100% Free - No paywalls, no limitations
-• Active Development - Regular updates and new features
+• 6+ Dupe Methods - More than most premium plugins\
+• 100% Free - No paywalls, no limitations\
+• Active Development - Regular updates and new features\
 • In-Game GUI - No need to edit config files
 
 ================================================================================
@@ -177,8 +177,8 @@ GitHub Issues: https://github.com/bunbunconmeow/SecVersDupeUtils/issues
 
 📜 LICENSE
 
-This project is licensed under the MIT License.
-See the LICENSE file for details.
+This project is licensed under the [BSD-3 License](https://secvers.org/info/license).
+
 
 ================================================================================
 
@@ -209,9 +209,9 @@ damage to your server economy or gameplay balance.
 
 💬 SUPPORT
 
-Official Website: https://secvers.org
-Plugin Page: https://secvers.org/plugins/dupe-utility
-Donate: https://secvers.org/info/donate
+Official Website: https://secvers.org <br/>
+Plugin Page: https://secvers.org/plugins/dupe-utility <br/>
+Donate: https://secvers.org/info/donate <br/>
 Email: support@secvers.org
 
 ================================================================================

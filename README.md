@@ -218,11 +218,11 @@ Email: support@secvers.org
 
 ⭐ SHOW YOUR SUPPORT
 
-If you like this plugin, please consider:
-⭐ Starring the GitHub repository
-🐛 Reporting bugs
-💡 Suggesting features
-📣 Sharing with others
+If you like this plugin, please consider:\
+⭐ Starring the GitHub repository\
+🐛 Reporting bugs\
+💡 Suggesting features\
+📣 Sharing with others\
 ❤️ Donating to support development
 
 ================================================================================

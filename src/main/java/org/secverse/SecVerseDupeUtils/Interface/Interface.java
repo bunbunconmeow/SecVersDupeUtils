@@ -281,20 +281,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.itemframe.name"));
 
         // Probability Settings (Slots 20-24)
-        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(22, createValueDisplay(Material.PAPER, "gui.probability",
+        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(13, createValueDisplay(Material.PAPER, "gui.probability",
                 plugin.getConfig().getInt(basePath + ".Probability-percentage", 100) + "%"));
-        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Multiplier Settings (Slots 29-33)
-        gui.setItem(29, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(30, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(31, createValueDisplay(Material.PAPER, "gui.multiplier",
+        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(22, createValueDisplay(Material.PAPER, "gui.multiplier",
                 plugin.getConfig().getInt(basePath + ".Multiplier", 1) + "x"));
-        gui.setItem(32, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(33, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Back Button (Slot 40)
         gui.setItem(40, createBackButton());
@@ -314,20 +314,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.glowframe.name"));
 
         // Probability Settings (Slots 20-24)
-        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(22, createValueDisplay(Material.PAPER, "gui.probability",
+        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(13, createValueDisplay(Material.PAPER, "gui.probability",
                 plugin.getConfig().getInt(basePath + ".Probability-percentage", 100) + "%"));
-        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Multiplier Settings (Slots 29-33)
-        gui.setItem(29, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(30, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(31, createValueDisplay(Material.PAPER, "gui.multiplier",
+        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(22, createValueDisplay(Material.PAPER, "gui.multiplier",
                 plugin.getConfig().getInt(basePath + ".Multiplier", 1) + "x"));
-        gui.setItem(32, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(33, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Back Button (Slot 40)
         gui.setItem(40, createBackButton());
@@ -347,20 +347,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.donkey.name"));
 
         // Min Timing Settings (Slots 19-23)
-        gui.setItem(19, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(20, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(21, createValueDisplay(Material.CLOCK, "gui.min_timing",
+        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(13, createValueDisplay(Material.CLOCK, "gui.min_timing",
                 plugin.getConfig().getLong(basePath + ".MinTiming", 100L) + "ms"));
-        gui.setItem(22, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(23, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Max Timing Settings (Slots 28-32)
-        gui.setItem(28, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(29, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(30, createValueDisplay(Material.CLOCK, "gui.max_timing",
+        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(22, createValueDisplay(Material.CLOCK, "gui.max_timing",
                 plugin.getConfig().getLong(basePath + ".MaxTiming", 5000L) + "ms"));
-        gui.setItem(31, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(32, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Back Button (Slot 40)
         gui.setItem(40, createBackButton());
@@ -380,20 +380,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.grindstone.name"));
 
         // Min Timing Settings (Slots 10-14)
-        gui.setItem(10, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(11, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(12, createValueDisplay(Material.CLOCK, "gui.min_timing",
+        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(13, createValueDisplay(Material.CLOCK, "gui.min_timing",
                 plugin.getConfig().getLong(basePath + ".MinTiming", 1200L) + "ms"));
-        gui.setItem(13, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(14, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Max Timing Settings (Slots 19-23)
-        gui.setItem(19, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(20, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(21, createValueDisplay(Material.CLOCK, "gui.max_timing",
+        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(22, createValueDisplay(Material.CLOCK, "gui.max_timing",
                 plugin.getConfig().getLong(basePath + ".MaxTiming", 2200L) + "ms"));
-        gui.setItem(22, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(23, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Drop Naturally Toggle (Slot 29)
         gui.setItem(29, createBooleanToggle(basePath + ".dropNaturally",
@@ -701,16 +701,16 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
             frameDupe.reload();
             openItemFrameSettings(player);
         }
-        // Probability adjustments (slots 20-24)
-        else if (slot >= 20 && slot <= 24 && item.getType().name().contains("CONCRETE")) {
-            int adjustment = getAdjustmentValue(slot, 20);
+        // Probability adjustments (slots 11-15)
+        else if (slot >= 11 && slot <= 15 && item.getType().name().contains("CONCRETE")) {
+            int adjustment = getAdjustmentValue(slot, 11);
             adjustIntValue(player, basePath + ".Probability-percentage", adjustment, 0, 100);
             frameDupe.reload();
             openItemFrameSettings(player);
         }
-        // Multiplier adjustments (slots 29-33)
-        else if (slot >= 29 && slot <= 33 && item.getType().name().contains("CONCRETE")) {
-            int adjustment = getAdjustmentValue(slot, 29);
+        // Multiplier adjustments (slots 20-24)
+        else if (slot >= 20 && slot <= 24 && item.getType().name().contains("CONCRETE")) {
+            int adjustment = getAdjustmentValue(slot, 20);
             adjustIntValue(player, basePath + ".Multiplier", adjustment, 1, 100);
             frameDupe.reload();
             openItemFrameSettings(player);
@@ -726,15 +726,15 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
             openGlowFrameSettings(player);
         }
         // Probability adjustments (slots 20-24)
-        else if (slot >= 20 && slot <= 24 && item.getType().name().contains("CONCRETE")) {
-            int adjustment = getAdjustmentValue(slot, 20);
+        else if (slot >= 11 && slot <= 15 && item.getType().name().contains("CONCRETE")) {
+            int adjustment = getAdjustmentValue(slot, 11);
             adjustIntValue(player, basePath + ".Probability-percentage", adjustment, 0, 100);
             frameDupe.reload();
             openGlowFrameSettings(player);
         }
         // Multiplier adjustments (slots 29-33)
-        else if (slot >= 29 && slot <= 33 && item.getType().name().contains("CONCRETE")) {
-            int adjustment = getAdjustmentValue(slot, 29);
+        else if (slot >= 20 && slot <= 24 && item.getType().name().contains("CONCRETE")) {
+            int adjustment = getAdjustmentValue(slot, 20);
             adjustIntValue(player, basePath + ".Multiplier", adjustment, 1, 100);
             frameDupe.reload();
             openGlowFrameSettings(player);
@@ -749,17 +749,17 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
             donkeyDupe.reload();
             openDonkeySettings(player);
         }
-        // Min Timing adjustments (slots 19-23)
-        else if (slot >= 19 && slot <= 23 && item.getType().name().contains("CONCRETE")) {
-            long adjustment = getTimingAdjustment(slot, 19);
+        // Min Timing adjustments (slots 11-15)
+        else if (slot >= 11 && slot <= 15 && item.getType().name().contains("CONCRETE")) {
+            long adjustment = getTimingAdjustment(slot, 11);
             adjustLongValue(player, basePath + ".MinTiming", adjustment, 0,
                     plugin.getConfig().getLong(basePath + ".MaxTiming"));
             donkeyDupe.reload();
             openDonkeySettings(player);
         }
-        // Max Timing adjustments (slots 28-32)
-        else if (slot >= 28 && slot <= 32 && item.getType().name().contains("CONCRETE")) {
-            long adjustment = getTimingAdjustment(slot, 28);
+        // Max Timing adjustments (slots 20-24)
+        else if (slot >= 20 && slot <= 24 && item.getType().name().contains("CONCRETE")) {
+            long adjustment = getTimingAdjustment(slot, 20);
             adjustLongValue(player, basePath + ".MaxTiming", adjustment,
                     plugin.getConfig().getLong(basePath + ".MinTiming"), Long.MAX_VALUE);
             donkeyDupe.reload();
@@ -776,16 +776,16 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
             openGrindstoneSettings(player);
         }
         // Min Timing adjustments (slots 10-14)
-        else if (slot >= 10 && slot <= 14 && item.getType().name().contains("CONCRETE")) {
-            long adjustment = getTimingAdjustment(slot, 10);
+        else if (slot >= 11 && slot <= 15 && item.getType().name().contains("CONCRETE")) {
+            long adjustment = getTimingAdjustment(slot, 11);
             adjustLongValue(player, basePath + ".MinTiming", adjustment, 0,
                     plugin.getConfig().getLong(basePath + ".MaxTiming"));
             grindstoneDupe.reload();
             openGrindstoneSettings(player);
         }
         // Max Timing adjustments (slots 19-23)
-        else if (slot >= 19 && slot <= 23 && item.getType().name().contains("CONCRETE")) {
-            long adjustment = getTimingAdjustment(slot, 19);
+        else if (slot >= 20 && slot <= 24 && item.getType().name().contains("CONCRETE")) {
+            long adjustment = getTimingAdjustment(slot, 20);
             adjustLongValue(player, basePath + ".MaxTiming", adjustment,
                     plugin.getConfig().getLong(basePath + ".MinTiming"), Long.MAX_VALUE);
             grindstoneDupe.reload();

@@ -139,8 +139,5 @@ public class DeathDupe implements Listener {
             return inventory;
         }
 
-        public Location getDeathLocation() {
-            return deathLocation;
-        }
     }
 }

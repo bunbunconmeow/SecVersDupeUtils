@@ -80,35 +80,63 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("duperealod")) {
-            if (!sender.hasPermission("dupeutils.reload")) {
+        if (command.getName().equalsIgnoreCase("dupe")) {
+
+            // Base-Permission Check
+            if (!sender.hasPermission("dupeutils.command")) {
                 sender.sendMessage("§cYou do not have permission to use this command.");
                 return true;
             }
 
-            this.reloadConfig();
-            frameDupe.reload();
-            donkeyDupe.reload();
-            grindstoneDupe.reload();
-            crafterDupe.reload();
-            deathDupe.reload();
-
-            sender.sendMessage("§aSecVers Dupe Utils config reloaded.");
-            return true;
-        } else if (command.getName().equalsIgnoreCase("configdupes")) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage("§cThis command can only be used by players.");
+            // No Args -> Help
+            if (args.length == 0) {
+                sender.sendMessage("§6=== SecVers Dupe Utils ===");
+                sender.sendMessage("§e/dupe reload §7- Reload the config");
+                sender.sendMessage("§e/dupe config §7- Open config GUI");
                 return true;
             }
 
-            if (!sender.hasPermission("dupeutils.configdupes")) {
-                sender.sendMessage("§cYou do not have permission to use this command.");
+            // Subcommand: reload
+            if (args[0].equalsIgnoreCase("reload")) {
+                if (!sender.hasPermission("dupeutils.reload")) {
+                    sender.sendMessage("§cYou do not have permission to use this command.");
+                    return true;
+                }
+
+                this.reloadConfig();
+                frameDupe.reload();
+                donkeyDupe.reload();
+                grindstoneDupe.reload();
+                crafterDupe.reload();
+                deathDupe.reload();
+
+                sender.sendMessage("§aSecVers Dupe Utils config reloaded.");
                 return true;
             }
 
-            dupeInterface.openConfigDupesGUI((Player) sender);
-            return true;
+            // Subcommand: config
+            else if (args[0].equalsIgnoreCase("config")) {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage("§cThis command can only be used by players.");
+                    return true;
+                }
+
+                if (!sender.hasPermission("dupeutils.configdupes")) {
+                    sender.sendMessage("§cYou do not have permission to use this command.");
+                    return true;
+                }
+
+                dupeInterface.openConfigDupesGUI((Player) sender);
+                return true;
+            }
+
+            // unknown Subcommand
+            else {
+                sender.sendMessage("§cUnknown subcommand. Use §e/dupe§c for help.");
+                return true;
+            }
         }
+
         return false;
     }
 

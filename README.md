@@ -140,7 +140,7 @@ Use /dupe config in-game for easy configuration:
 🤝 CREDITS & ACKNOWLEDGMENTS
 
 Special Thanks:
-@HackThePyramids (https://github.com/HackThePyramids)
+[@HackThePyramids](https://github.com/HackThePyramids)
 Massive help with development, code architecture, and feature
 implementation. This plugin wouldn't be where it is without your
 contributions! 🙏

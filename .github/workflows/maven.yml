@@ -1,4 +1,9 @@
 name: Java CI with Maven
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+  dependency-graph: write
 
 on:
   push:
@@ -10,10 +15,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      actions: read
-      security-events: write
 
     steps:
     - uses: actions/checkout@v4

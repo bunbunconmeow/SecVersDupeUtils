@@ -27,8 +27,5 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Submit dependency snapshot
-      if: github.event.pull_request == null || github.event.pull_request.head.repo.full_name == github.repository 
-      uses: advanced-security/maven-dependency-submission-action@v1
+
 

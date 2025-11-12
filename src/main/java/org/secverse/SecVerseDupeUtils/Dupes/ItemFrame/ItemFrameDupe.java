@@ -8,8 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.secverse.SecVerseDupeUtils.SecVersDupe;
-import org.secverse.SecVerseDupeUtils.Helper.CleanShulker;
-import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
+import org.secverse.SecVerseDupeUtils.helper.CleanShulker;
+import org.secverse.SecVerseDupeUtils.helper.EventsKeys;
 
 public class ItemFrameDupe {
     private final SecVersDupe plugin;

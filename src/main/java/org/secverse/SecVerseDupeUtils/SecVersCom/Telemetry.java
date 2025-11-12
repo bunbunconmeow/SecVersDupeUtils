@@ -128,6 +128,26 @@ public class Telemetry {
     }
 
     /**
+     * Send telemetry synchronously. This is used during plugin disable
+     * when async tasks can't be scheduled.
+     *
+     * @param additional optional extra fields to include in the payload
+     */
+    public void sendTelemetrySync(Map<String, Object> additional) {
+        if (!enabled) {
+            plugin.getLogger().info("Telemetry disabled in config; skipping send.");
+            return;
+        }
+        final String payload = buildPayload(additional);
+
+        try {
+            sendPost(payload);
+        } catch (Exception e) {
+            plugin.getLogger().warning("Failed to send telemetry: " + e.getMessage());
+        }
+    }
+
+    /**
      * Sends a JSON payload to a URL using POST.
      *
      * @param jsonPayload the JSON string

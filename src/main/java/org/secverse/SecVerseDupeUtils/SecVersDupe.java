@@ -11,9 +11,11 @@ import org.secverse.SecVerseDupeUtils.Dupes.Death.DeathDupe;
 import org.secverse.SecVerseDupeUtils.Interface.Interface;
 import org.secverse.SecVerseDupeUtils.Dupes.ItemFrame.ItemFrameDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.Donkey.DonkeyShulkerDupe;
-import org.secverse.SecVerseDupeUtils.Dupes.GrindStone.GrindStoneDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.Dropper.DropperDupe;
+import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
 import org.secverse.SecVerseDupeUtils.SecVersCom.Telemetry;
 import org.secverse.SecVerseDupeUtils.SecVersCom.UpdateChecker;
+import org.bukkit.plugin.IllegalPluginAccessException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +25,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
     private DonkeyShulkerDupe donkeyDupe;
     private GrindStoneDupe grindstoneDupe;
     private CrafterDupe crafterDupe;
+    private DropperDupe dropperDupe;
     private DeathDupe deathDupe;
     private Interface dupeInterface;
     private UpdateChecker updateChecker;
@@ -37,11 +40,11 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         donkeyDupe = new DonkeyShulkerDupe(this);
         grindstoneDupe = new GrindStoneDupe(this);
         crafterDupe = new CrafterDupe(this);
+        dropperDupe = new DropperDupe(this);
         deathDupe = new DeathDupe(this);
 
         // Initialisiere Interface
-        // Initialisiere Interface
-        dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe, crafterDupe, deathDupe);
+        dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe, crafterDupe, dropperDupe, deathDupe);
 
         // Registriere Events
         getServer().getPluginManager().registerEvents(frameDupe.new FrameAll(), this);
@@ -49,6 +52,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(donkeyDupe, this);
         getServer().getPluginManager().registerEvents(grindstoneDupe, this);
         getServer().getPluginManager().registerEvents(crafterDupe, this);
+        getServer().getPluginManager().registerEvents(dropperDupe, this);
         getServer().getPluginManager().registerEvents(deathDupe, this);
         getServer().getPluginManager().registerEvents(dupeInterface, this);
 
@@ -108,6 +112,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                 donkeyDupe.reload();
                 grindstoneDupe.reload();
                 crafterDupe.reload();
+                dropperDupe.reload();
                 deathDupe.reload();
 
                 sender.sendMessage("§aSecVers Dupe Utils config reloaded.");
@@ -145,8 +150,13 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         if(telemetry != null) {
             Map<String, Object> add = new HashMap<>();
             add.put("event", "plugin_disable");
-            telemetry.sendTelemetryAsync(add);
-            telemetry = null;
+            // Send telemetry synchronously to avoid IllegalPluginAccessException
+            try {
+                telemetry.sendTelemetrySync(add);
+            } catch (IllegalPluginAccessException e) {
+                // Plugin is already disabled, cannot send telemetry
+                getLogger().warning("Failed to send disable telemetry: " + e.getMessage());
+            }
         }
     }
 }

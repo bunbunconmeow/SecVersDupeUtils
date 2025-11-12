@@ -8,14 +8,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.secverse.SecVerseDupeUtils.Dupes.Crafter.CrafterDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.Death.DeathDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.GrindStone.GrindStoneDupe;
 import org.secverse.SecVerseDupeUtils.Interface.Interface;
 import org.secverse.SecVerseDupeUtils.Dupes.ItemFrame.ItemFrameDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.Donkey.DonkeyShulkerDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.Dropper.DropperDupe;
-import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
 import org.secverse.SecVerseDupeUtils.SecVersCom.Telemetry;
 import org.secverse.SecVerseDupeUtils.SecVersCom.UpdateChecker;
 import org.bukkit.plugin.IllegalPluginAccessException;
+
 
 import java.util.HashMap;
 import java.util.Map;

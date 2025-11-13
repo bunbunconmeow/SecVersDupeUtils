@@ -127,8 +127,60 @@ ItemBlacklist:
     Names:
       - "test_item"
       - "extra_item"
+        
+Translation:
+  # Enable translation system
+  enabled: true
+  # Auto-detect language based on player IP
+  ipbased: false
+  # Default language (fallback)
+  default: "English"
+  # Available translations (auto-updated on server start)
+  translations:
+    - "English"
+    - "German"
 
 ```
+
+# SecVerse Dupe Utils - Community Translations
+
+## How to Create a Translation
+
+1. Copy `english.json` as a template
+2. Rename it to your language (e.g., `french.json`, `spanish.json`)
+3. Edit the metadata section:
+    - `language`: English name of the language
+    - `nativeName`: Name in the native language (e.g., "Français", "Español")
+    - `version`: Start with "1.0.0"
+    - `author`: Your name or username
+    - `description`: Brief description
+    - `countryCodes`: List of ISO country codes (e.g., ["FR", "BE", "CH"])
+
+4. Translate all strings in the `translations` section
+5. Keep color codes (§a, §c, etc.) and placeholders ({0}, {1}, etc.) unchanged
+6. Test your translation in-game
+7. Share your translation file!
+
+## Supported Color Codes
+- §a = Green (success)
+- §c = Red (error)
+- §e = Yellow (info/value)
+- §7 = Gray (description)
+- §6 = Gold
+- §r = Reset
+
+## Placeholders
+- {0}, {1}, etc. = Dynamic values that will be replaced
+- Example: "Value set to {0}" → "Wert gesetzt auf {0}"
+
+## File Format
+- UTF-8 encoding
+- JSON format
+- File name: `languagename.json` (lowercase)
+
+## Contributing
+Share your translations on our Discord or GitHub!
+
 
 ================================================================================
 

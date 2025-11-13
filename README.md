@@ -43,6 +43,9 @@ https://secvers.org/plugins/dupe-utility
 Support Development:
 https://secvers.org/info/donate
 
+Dupe FAQ:
+https://secvers.org/plugins/dupe-utility
+
 ================================================================================
 
 🎮 COMMANDS

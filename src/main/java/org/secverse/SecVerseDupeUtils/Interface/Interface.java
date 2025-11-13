@@ -17,6 +17,7 @@ import org.secverse.SecVerseDupeUtils.Dupes.Donkey.DonkeyShulkerDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.Dropper.DropperDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.GrindStone.GrindStoneDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.ItemFrame.ItemFrameDupe;
+import org.secverse.SecVerseDupeUtils.Translation.TranslationWorker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +33,8 @@ public class Interface implements Listener {
     private final CrafterDupe crafterDupe;
     private final DropperDupe dropperDupe;
     private final DeathDupe deathDupe;
-
+    private final TranslationGUI languageGUI;
+    private final TranslationWorker translator;
 
     // Language strings - will be moved to language file later
     private final Map<String, String> lang = new HashMap<>();
@@ -51,7 +53,7 @@ public class Interface implements Listener {
     }
 
     public Interface(Plugin plugin, ItemFrameDupe frameDupe, DonkeyShulkerDupe donkeyDupe,
-                     GrindStoneDupe grindstoneDupe, CrafterDupe crafterDupe, DropperDupe dropperDupe, DeathDupe deathDupe) {
+                     GrindStoneDupe grindstoneDupe, CrafterDupe crafterDupe, DropperDupe dropperDupe, DeathDupe deathDupe, TranslationWorker translator) {
         this.plugin = plugin;
         this.frameDupe = frameDupe;
         this.donkeyDupe = donkeyDupe;
@@ -59,92 +61,18 @@ public class Interface implements Listener {
         this.crafterDupe = crafterDupe;
         this.dropperDupe = dropperDupe;
         this.deathDupe = deathDupe;
+        this.translator = translator;
+        this.languageGUI = new TranslationGUI(plugin, translator);
 
-        initializeLanguage();
+        plugin.getServer().getPluginManager().registerEvents(languageGUI, plugin);
     }
 
-    private void initializeLanguage() {
-        // GUI
-        lang.put("gui.title", "Configure Dupes");
-        lang.put("gui.title.settings", "{0} Settings");
-        lang.put("gui.enabled", "Enabled");
-        lang.put("gui.disabled", "Disabled");
-        lang.put("gui.probability", "Probability");
-        lang.put("gui.multiplier", "Multiplier");
-        lang.put("gui.min_timing", "Min Timing");
-        lang.put("gui.max_timing", "Max Timing");
-        lang.put("gui.drop_naturally", "Drop Naturally");
-        lang.put("gui.add_to_inventory", "Add to Inventory");
-        lang.put("gui.destroy_crafter", "Destroy Crafter");
-        lang.put("gui.drop_originals", "Drop Originals");
-        lang.put("gui.yes", "Yes");
-        lang.put("gui.no", "No");
-        lang.put("gui.left_click", "Left-click");
-        lang.put("gui.right_click", "Right-click");
-        lang.put("gui.shift_left_click", "Shift+Left-click");
-        lang.put("gui.shift_right_click", "Shift+Right-click");
-        lang.put("gui.to_toggle", "to toggle");
-        lang.put("gui.to_change_probability", "to change probability");
-        lang.put("gui.to_change_multiplier", "to change multiplier");
-        lang.put("gui.to_cycle_mode", "to cycle mode");
-        lang.put("gui.to_toggle_option", "to toggle option");
-        lang.put("gui.to_increase", "to increase");
-        lang.put("gui.to_decrease", "to decrease");
-        lang.put("gui.to_open_settings", "to open settings");
-        lang.put("gui.reload", "Reload Configuration");
-        lang.put("gui.reload_desc", "Reloads all dupe configurations");
-        lang.put("gui.back", "Back to Main Menu");
-        lang.put("gui.increase_small", "Increase by +10");
-        lang.put("gui.decrease_small", "Decrease by -10");
-        lang.put("gui.increase_large", "Increase by +100");
-        lang.put("gui.decrease_large", "Decrease by -100");
-        lang.put("gui.click_to_adjust", "Click to adjust");
-
-        // Dupe Names
-        lang.put("dupe.itemframe.name", "Item Frame Dupe");
-        lang.put("dupe.glowframe.name", "Glowing Item Frame Dupe");
-        lang.put("dupe.donkey.name", "Donkey Dupe");
-        lang.put("dupe.grindstone.name", "Grindstone Dupe");
-        lang.put("dupe.crafter.name", "Crafter Dupe");
-        lang.put("dupe.dropper.name", "Dropper Dupe");
-        lang.put("dupe.death.name", "Death Dupe");
-
-        // Messages
-        lang.put("msg.enabled", "enabled");
-        lang.put("msg.disabled", "disabled");
-        lang.put("msg.probability_set", "probability set to");
-        lang.put("msg.multiplier_set", "multiplier set to");
-        lang.put("msg.mode_drop_only", "Mode: Drop Only");
-        lang.put("msg.mode_inventory_only", "Mode: Inventory Only");
-        lang.put("msg.mode_both", "Mode: Drop + Inventory");
-        lang.put("msg.destroy_crafter", "Destroy Crafter");
-        lang.put("msg.drop_originals", "Drop Originals");
-        lang.put("msg.timing_set", "Timing set to");
-        lang.put("msg.value_set", "Value set to");
-        lang.put("msg.config_reloaded", "Configuration reloaded successfully!");
-        lang.put("msg.min_cannot_exceed_max", "Min timing cannot exceed max timing!");
-        lang.put("msg.max_cannot_below_min", "Max timing cannot be below min timing!");
-        lang.put("msg.value_too_low", "Value cannot be set below 0!");
-
-        // Colors
-        lang.put("color.success", "§a");
-        lang.put("color.error", "§c");
-        lang.put("color.info", "§e");
-        lang.put("color.value", "§e");
-        lang.put("color.description", "§7");
-        lang.put("color.reset", "§r");
+    private String getLang(Player player, String key) {
+        return translator.isEnabled() ? translator.getTranslation(player, key) : key;
     }
 
-    public String getLang(String key) {
-        return lang.getOrDefault(key, key);
-    }
-
-    public String getLang(String key, Object... args) {
-        String message = lang.getOrDefault(key, key);
-        for (int i = 0; i < args.length; i++) {
-            message = message.replace("{" + i + "}", String.valueOf(args[i]));
-        }
-        return message;
+    private String getLang(Player player, String key, Object... args) {
+        return translator.isEnabled() ? translator.getTranslation(player, key, args) : key;
     }
 
     public void openConfigDupesGUI(Player player) {
@@ -188,99 +116,126 @@ public class Interface implements Listener {
     }
 
     private void openMainGUI(Player player, int page) {
-        Inventory gui = Bukkit.createInventory(null, 45, getLang("gui.title"));
+        Inventory gui = Bukkit.createInventory(null, 45, getLang(player, "gui.title"));
 
         // Fill with glass panes
         fillWithGlass(gui);
 
         // Create a list of all dupe items
         ItemStack[] dupeItems = new ItemStack[]{
-            createMainMenuItem(Material.ITEM_FRAME, "FrameDupe.Enabled", "dupe.itemframe.name"),
-            createMainMenuItem(Material.GLOW_ITEM_FRAME, "GLOW_FrameDupe.Enabled", "dupe.glowframe.name"),
-            createMainMenuItem(Material.DONKEY_SPAWN_EGG, "OtherDupes.DonkeyDupe.Enabled", "dupe.donkey.name"),
-            createMainMenuItem(Material.GRINDSTONE, "OtherDupes.GrindStone.Enabled", "dupe.grindstone.name"),
-            createMainMenuItem(Material.CRAFTER, "OtherDupes.CrafterDupe.Enabled", "dupe.crafter.name"),
-            createMainMenuItem(Material.DROPPER, "OtherDupes.DropperDupe.Enabled", "dupe.dropper.name"),
-            createMainMenuItem(Material.SKELETON_SPAWN_EGG, "OtherDupes.DeathDupe.Enabled", "dupe.death.name")
+                createMainMenuItem(player, Material.ITEM_FRAME, "FrameDupe.Enabled", "dupe.itemframe.name"),
+                createMainMenuItem(player, Material.GLOW_ITEM_FRAME, "GLOW_FrameDupe.Enabled", "dupe.glowframe.name"),
+                createMainMenuItem(player, Material.DONKEY_SPAWN_EGG, "OtherDupes.DonkeyDupe.Enabled", "dupe.donkey.name"),
+                createMainMenuItem(player, Material.GRINDSTONE, "OtherDupes.GrindStone.Enabled", "dupe.grindstone.name"),
+                createMainMenuItem(player, Material.CRAFTER, "OtherDupes.CrafterDupe.Enabled", "dupe.crafter.name"),
+                createMainMenuItem(player, Material.DROPPER, "OtherDupes.DropperDupe.Enabled", "dupe.dropper.name"),
+                createMainMenuItem(player, Material.SKELETON_SPAWN_EGG, "OtherDupes.DeathDupe.Enabled", "dupe.death.name")
         };
-
-        
 
         // Add other items in default positions
         int[] defaultSlots = {10, 12, 14, 16, 28, 30, 32};
         for (int i = 0; i < 7; i++) {
-            
             gui.setItem(defaultSlots[i], dupeItems[i]);
-            
+        }
+
+        if (translator.isEnabled()) {
+            gui.setItem(8, createLanguageButton(player));
         }
 
         // Reload Button (Slot 44)
-        gui.setItem(44, createReloadButton());
+        gui.setItem(44, createReloadButton(player));
 
         // Blacklist Button (Slot 36 - bottom left)
-        gui.setItem(36, createBlacklistButton());
+        gui.setItem(36, createBlacklistButton(player));
 
         player.openInventory(gui);
     }
 
-    private ItemStack createMainMenuItem(Material material, String enabledPath, String nameKey) {
+    private ItemStack createMainMenuItem(Player player, Material material, String enabledPath, String nameKey) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
         boolean enabled = plugin.getConfig().getBoolean(enabledPath, false);
 
-        String statusColor = enabled ? getLang("color.success") : getLang("color.error");
-        String status = enabled ? getLang("gui.enabled") : getLang("gui.disabled");
+        String statusColor = enabled ? getLang(player, "color.success") : getLang(player, "color.error");
+        String status = enabled ? getLang(player, "gui.enabled") : getLang(player, "gui.disabled");
 
-        meta.setDisplayName(statusColor + getLang(nameKey) + ": " + status);
+        meta.setDisplayName(statusColor + getLang(player, nameKey) + ": " + status);
         meta.setLore(Arrays.asList(
                 "",
-                getLang("color.info") + getLang("gui.left_click") + " " +
-                        getLang("color.description") + getLang("gui.to_toggle"),
-                getLang("color.info") + getLang("gui.right_click") + " " +
-                        getLang("color.description") + getLang("gui.to_open_settings")
+                getLang(player, "color.info") + getLang(player, "gui.left_click") + " " +
+                        getLang(player, "color.description") + getLang(player, "gui.to_toggle"),
+                getLang(player, "color.info") + getLang(player, "gui.right_click") + " " +
+                        getLang(player, "color.description") + getLang(player, "gui.to_open_settings")
         ));
 
         item.setItemMeta(meta);
         return item;
     }
 
-    private ItemStack createReloadButton() {
+
+    private ItemStack createLanguageButton(Player player) {
+        ItemStack item = new ItemStack(Material.WRITABLE_BOOK);
+        ItemMeta meta = item.getItemMeta();
+
+        String currentLang = translator.getPlayerLanguage(player);
+        TranslationWorker.LanguageMetadata metadata = translator.getLanguageMetadata(currentLang);
+        String displayName = metadata != null ? metadata.getNativeName() : currentLang;
+
+        meta.setDisplayName(getLang(player, "color.info") + getLang(player, "gui.language"));
+        meta.setLore(Arrays.asList(
+                "",
+                getLang(player, "color.description") + getLang(player, "gui.language.current") + ": " +
+                        getLang(player, "color.value") + displayName,
+                "",
+                getLang(player, "color.description") + "Available: " +
+                        getLang(player, "color.value") + translator.getAvailableLanguages().size() + " languages",
+                "",
+                getLang(player, "color.info") + getLang(player, "gui.left_click") + " " +
+                        getLang(player, "color.description") + getLang(player, "gui.to_open_settings")
+        ));
+
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private ItemStack createReloadButton(Player player) {
         ItemStack item = new ItemStack(Material.BARRIER);
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(getLang("color.info") + getLang("gui.reload"));
+
+        meta.setDisplayName(getLang(player, "color.info") + getLang(player, "gui.reload"));
         meta.setLore(Arrays.asList(
-                getLang("color.description") + getLang("gui.reload_desc"),
+                getLang(player, "color.description") + getLang(player, "gui.reload_desc"),
                 "",
-                getLang("color.info") + getLang("gui.left_click") + " " +
-                        getLang("color.description") + "to reload"
+                getLang(player, "color.info") + getLang(player, "gui.left_click") + " " +
+                        getLang(player, "color.description") + "to reload"
         ));
 
         item.setItemMeta(meta);
         return item;
     }
 
-    private ItemStack createBackButton() {
+    private ItemStack createBackButton(Player player) {
         ItemStack item = new ItemStack(Material.ARROW);
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(getLang("color.info") + getLang("gui.back"));
+        meta.setDisplayName(getLang(player, "color.info") + getLang(player, "gui.back"));
 
         item.setItemMeta(meta);
         return item;
     }
 
-    private ItemStack createBlacklistButton() {
+    private ItemStack createBlacklistButton(Player player) {
         ItemStack item = new ItemStack(Material.ANVIL);
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(getLang("color.info") + "Item Blacklist");
+        meta.setDisplayName(getLang(player, "color.info") + "Item Blacklist");
         meta.setLore(Arrays.asList(
-                getLang("color.description") + "Manage blacklisted items",
+                getLang(player, "color.description") + "Manage blacklisted items",
                 "",
-                getLang("color.info") + getLang("gui.left_click") + " " +
-                        getLang("color.description") + "to open blacklist settings"
+                getLang(player, "color.info") + getLang(player, "gui.left_click") + " " +
+                        getLang(player, "color.description") + "to open blacklist settings"
         ));
 
         item.setItemMeta(meta);
@@ -291,32 +246,32 @@ public class Interface implements Listener {
     // ==================== ITEM FRAME SETTINGS ====================
     private void openItemFrameSettings(Player player) {
         String basePath = "FrameDupe";
-        Inventory gui = Bukkit.createInventory(null, 45,
-                getLang("gui.title.settings", getLang("dupe.itemframe.name")));
+        String title = getLang(player, "gui.title.settings", getLang(player, "dupe.itemframe.name"));
+        Inventory gui = Bukkit.createInventory(null, 54, title);
 
         fillWithGlass(gui);
 
         // Enable/Disable Toggle (Slot 4)
-        gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.itemframe.name"));
+        gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.itemframe.name"));
 
         // Probability Settings (Slots 20-24)
-        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(13, createValueDisplay(Material.PAPER, "gui.probability",
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(13, createValueDisplay(player, Material.PAPER, "gui.probability",
                 plugin.getConfig().getInt(basePath + ".Probability-percentage", 100) + "%"));
-        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Multiplier Settings (Slots 29-33)
-        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(22, createValueDisplay(Material.PAPER, "gui.multiplier",
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(22, createValueDisplay(player, Material.PAPER, "gui.multiplier",
                 plugin.getConfig().getInt(basePath + ".Multiplier", 1) + "x"));
-        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Back Button (Slot 40)
-        gui.setItem(40, createBackButton());
+        gui.setItem(40, createBackButton(player));
 
         player.openInventory(gui);
     }
@@ -325,31 +280,31 @@ public class Interface implements Listener {
     private void openGlowFrameSettings(Player player) {
         String basePath = "GLOW_FrameDupe";
         Inventory gui = Bukkit.createInventory(null, 45,
-                getLang("gui.title.settings", getLang("dupe.glowframe.name")));
+                getLang(player, "gui.title.settings", getLang(player, "dupe.glowframe.name")));
 
         fillWithGlass(gui);
 
         // Enable/Disable Toggle (Slot 4)
-        gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.glowframe.name"));
+        gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.glowframe.name"));
 
         // Probability Settings (Slots 20-24)
-        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(13, createValueDisplay(Material.PAPER, "gui.probability",
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(13, createValueDisplay(player, Material.PAPER, "gui.probability",
                 plugin.getConfig().getInt(basePath + ".Probability-percentage", 100) + "%"));
-        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Multiplier Settings (Slots 29-33)
-        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(22, createValueDisplay(Material.PAPER, "gui.multiplier",
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(22, createValueDisplay(player, Material.PAPER, "gui.multiplier",
                 plugin.getConfig().getInt(basePath + ".Multiplier", 1) + "x"));
-        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Back Button (Slot 40)
-        gui.setItem(40, createBackButton());
+        gui.setItem(40, createBackButton(player));
 
         player.openInventory(gui);
     }
@@ -358,32 +313,31 @@ public class Interface implements Listener {
     private void openDonkeySettings(Player player) {
         String basePath = "OtherDupes.DonkeyDupe";
         Inventory gui = Bukkit.createInventory(null, 45,
-                getLang("gui.title.settings", getLang("dupe.donkey.name")));
+                getLang(player, "gui.title.settings", getLang(player,"dupe.donkey.name")));
 
         fillWithGlass(gui);
 
         // Enable/Disable Toggle (Slot 4)
-        gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.donkey.name"));
+        gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.donkey.name"));
 
         // Min Timing Settings (Slots 19-23)
-        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(13, createValueDisplay(Material.CLOCK, "gui.min_timing",
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(13, createValueDisplay(player, Material.CLOCK, "gui.min_timing",
                 plugin.getConfig().getLong(basePath + ".MinTiming", 100L) + "ms"));
-        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Max Timing Settings (Slots 28-32)
-        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(22, createValueDisplay(Material.CLOCK, "gui.max_timing",
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(22, createValueDisplay(player, Material.CLOCK, "gui.max_timing",
                 plugin.getConfig().getLong(basePath + ".MaxTiming", 5000L) + "ms"));
-        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Back Button (Slot 40)
-        gui.setItem(40, createBackButton());
-
+        gui.setItem(40, createBackButton(player));
         player.openInventory(gui);
     }
 
@@ -391,39 +345,39 @@ public class Interface implements Listener {
     private void openGrindstoneSettings(Player player) {
         String basePath = "OtherDupes.GrindStone";
         Inventory gui = Bukkit.createInventory(null, 45,
-                getLang("gui.title.settings", getLang("dupe.grindstone.name")));
+                getLang(player, "gui.title.settings", getLang(player, "dupe.grindstone.name")));
 
         fillWithGlass(gui);
 
         // Enable/Disable Toggle (Slot 4)
-        gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.grindstone.name"));
+        gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.grindstone.name"));
 
         // Min Timing Settings (Slots 10-14)
-        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(13, createValueDisplay(Material.CLOCK, "gui.min_timing",
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(13, createValueDisplay(player, Material.CLOCK, "gui.min_timing",
                 plugin.getConfig().getLong(basePath + ".MinTiming", 1200L) + "ms"));
-        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Max Timing Settings (Slots 19-23)
-        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(22, createValueDisplay(Material.CLOCK, "gui.max_timing",
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(22, createValueDisplay(player, Material.CLOCK, "gui.max_timing",
                 plugin.getConfig().getLong(basePath + ".MaxTiming", 2200L) + "ms"));
-        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Drop Naturally Toggle (Slot 29)
-        gui.setItem(29, createBooleanToggle(basePath + ".dropNaturally",
+        gui.setItem(29, createBooleanToggle(player, basePath + ".dropNaturally",
                 "gui.drop_naturally", Material.DROPPER));
 
         // Add to Inventory Toggle (Slot 33)
-        gui.setItem(33, createBooleanToggle(basePath + ".addToInventory",
+        gui.setItem(33, createBooleanToggle(player, basePath + ".addToInventory",
                 "gui.add_to_inventory", Material.CHEST));
 
         // Back Button (Slot 40)
-        gui.setItem(40, createBackButton());
+        gui.setItem(40, createBackButton(player));
 
         player.openInventory(gui);
     }
@@ -432,39 +386,39 @@ public class Interface implements Listener {
     private void openCrafterSettings(Player player) {
         String basePath = "OtherDupes.CrafterDupe";
         Inventory gui = Bukkit.createInventory(null, 45,
-                getLang("gui.title.settings", getLang("dupe.crafter.name")));
+                getLang(player, "gui.title.settings", getLang(player, "dupe.crafter.name")));
 
         fillWithGlass(gui);
 
         // Enable/Disable Toggle (Slot 4)
-        gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.crafter.name"));
+        gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.crafter.name"));
 
         // Min Timing Settings (Slots 11-15)
-        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(13, createValueDisplay(Material.CLOCK, "gui.min_timing",
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(13, createValueDisplay(player, Material.CLOCK, "gui.min_timing",
                 plugin.getConfig().getLong(basePath + ".MinTiming", 100L) + "ms"));
-        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Max Timing Settings (Slots 20-24)
-        gui.setItem(20, createAdjustButton(Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(21, createAdjustButton(Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(22, createValueDisplay(Material.CLOCK, "gui.max_timing",
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(22, createValueDisplay(player, Material.CLOCK, "gui.max_timing",
                 plugin.getConfig().getLong(basePath + ".MaxTiming", 1000L) + "ms"));
-        gui.setItem(23, createAdjustButton(Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(24, createAdjustButton(Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
 
         // Destroy Crafter Toggle (Slot 29)
-        gui.setItem(29, createBooleanToggle(basePath + ".destroyCrafter",
+        gui.setItem(29, createBooleanToggle(player, basePath + ".destroyCrafter",
                 "gui.destroy_crafter", Material.TNT));
 
         // Drop Originals Toggle (Slot 33)
-        gui.setItem(33, createBooleanToggle(basePath + ".dropOriginals",
+        gui.setItem(33, createBooleanToggle(player, basePath + ".dropOriginals",
                 "gui.drop_originals", Material.DROPPER));
 
         // Back Button (Slot 40)
-        gui.setItem(40, createBackButton());
+        gui.setItem(40, createBackButton(player));
 
         player.openInventory(gui);
     }
@@ -473,23 +427,23 @@ public class Interface implements Listener {
     private void openDropperSettings(Player player) {
         String basePath = "OtherDupes.DropperDupe";
         Inventory gui = Bukkit.createInventory(null, 45,
-                getLang("gui.title.settings", getLang("dupe.dropper.name")));
+                getLang(player, "gui.title.settings", getLang(player, "dupe.dropper.name")));
 
         fillWithGlass(gui);
 
         // Enable/Disable Toggle (Slot 4)
-        gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.dropper.name"));
+        gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.dropper.name"));
 
         // Multiplier Settings (Slots 11-15)
-        gui.setItem(11, createAdjustButton(Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(12, createAdjustButton(Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
-        gui.setItem(13, createValueDisplay(Material.PAPER, "gui.multiplier",
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(13, createValueDisplay(player, Material.PAPER, "gui.multiplier",
                 plugin.getConfig().getInt(basePath + ".Multiplier", 2) + "x"));
-        gui.setItem(14, createAdjustButton(Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(15, createAdjustButton(Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
 
         // Back Button (Slot 40)
-        gui.setItem(40, createBackButton());
+        gui.setItem(40, createBackButton(player));
 
         player.openInventory(gui);
     }
@@ -509,77 +463,70 @@ public class Interface implements Listener {
         }
     }
 
-    private ItemStack createToggleItem(String configPath, String nameKey) {
+    private ItemStack createToggleItem(Player player, String configPath, String nameKey) {
         boolean enabled = plugin.getConfig().getBoolean(configPath, false);
 
         Material material = enabled ? Material.LIME_DYE : Material.GRAY_DYE;
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
-        String statusColor = enabled ? getLang("color.success") : getLang("color.error");
-        String status = enabled ? getLang("gui.enabled") : getLang("gui.disabled");
+        String statusColor = enabled ? getLang(player, "color.success") : getLang(player, "color.error");
+        String status = enabled ? getLang(player, "gui.enabled") : getLang(player, "gui.disabled");
 
-        meta.setDisplayName(statusColor + getLang(nameKey));
+        meta.setDisplayName(statusColor + getLang(player, nameKey));
         meta.setLore(Arrays.asList(
-                getLang("color.description") + "Status: " + statusColor + status,
+                getLang(player, "color.description") + "Status: " + statusColor + status,
                 "",
-                getLang("color.info") + getLang("gui.left_click") + " " +
-                        getLang("color.description") + getLang("gui.to_toggle")
+                getLang(player, "color.info") + getLang(player, "gui.left_click") + " " +
+                        getLang(player, "color.description") + getLang(player, "gui.to_toggle")
         ));
 
         item.setItemMeta(meta);
         return item;
     }
 
-    private ItemStack createValueDisplay(Material material, String labelKey, String value) {
+    private ItemStack createValueDisplay(Player player, Material material, String labelKey, String value) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(getLang(player, "color.info") + getLang(player, labelKey));
+        meta.setLore(Arrays.asList(
+                getLang(player, "color.description") + "Current: " + getLang(player, "color.value") + value,
+                "",
+                getLang(player, "color.description") + "Use buttons to adjust"
+        ));
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private ItemStack createAdjustButton(Player player, Material material, int adjustment, String label) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(getLang("color.info") + getLang(labelKey));
+        String prefix = adjustment > 0 ? "+" : "";
+        meta.setDisplayName(getLang(player, "color.info") + prefix + adjustment);
         meta.setLore(Arrays.asList(
-                getLang("color.description") + "Current: " + getLang("color.value") + value,
-                "",
-                getLang("color.description") + "Use buttons to adjust"
+                getLang(player, "color.description") + getLang(player, label)
         ));
 
         item.setItemMeta(meta);
         return item;
     }
 
-    private ItemStack createAdjustButton(Material material, int adjustment, String label) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-
-        String color = adjustment > 0 ? getLang("color.success") : getLang("color.error");
-        String sign = adjustment > 0 ? "+" : "";
-
-        meta.setDisplayName(color + sign + adjustment);
-        meta.setLore(Arrays.asList(
-                getLang("color.description") + (label.startsWith("gui.") ? getLang(label) : label),
-                "",
-                getLang("color.info") + getLang("gui.left_click") + " " +
-                        getLang("color.description") + getLang("gui.click_to_adjust")
-        ));
-
-        item.setItemMeta(meta);
-        return item;
-    }
-
-    private ItemStack createBooleanToggle(String configPath, String labelKey, Material material) {
+    private ItemStack createBooleanToggle(Player player, String configPath, String labelKey, Material material) {
         boolean value = plugin.getConfig().getBoolean(configPath, false);
 
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
-        String statusColor = value ? getLang("color.success") : getLang("color.error");
-        String status = value ? getLang("gui.yes") : getLang("gui.no");
+        String statusColor = value ? getLang(player, "color.success") : getLang(player, "color.error");
+        String status = value ? getLang(player, "gui.enabled") : getLang(player, "gui.disabled");
 
-        meta.setDisplayName(getLang("color.info") + getLang(labelKey));
+        meta.setDisplayName(getLang(player, "color.info") + getLang(player, labelKey));
         meta.setLore(Arrays.asList(
-                getLang("color.description") + "Status: " + statusColor + status,
+                getLang(player, "color.description") + "Status: " + statusColor + status,
                 "",
-                getLang("color.info") + getLang("gui.left_click") + " " +
-                        getLang("color.description") + getLang("gui.to_toggle")
+                getLang(player, "color.info") + getLang(player, "gui.left_click") + " " +
+                        getLang(player, "color.description") + getLang(player, "gui.to_toggle")
         ));
 
         item.setItemMeta(meta);
@@ -613,7 +560,7 @@ public class Interface implements Listener {
                     plugin.getLogger().info("[DEBUG] Adding item to blacklist: " + item.getType().name());
                     addItemToBlacklist(item);
                     gui.setItem(22, null); // Reset slot to empty
-                    player.sendMessage(getLang("color.success") + item.getType().name() + " added to blacklist!");
+                    player.sendMessage(getLang(player, "color.success") + item.getType().name() + " added to blacklist!");
                 } else {
                     plugin.getLogger().info("[DEBUG] No valid item found in slot 22 after drag.");
                 }
@@ -626,23 +573,23 @@ public class Interface implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         String title = event.getView().getTitle();
-
+        Player player = (Player) event.getWhoClicked();
         // Check if it's one of our GUIs
-        if (!title.equals(getLang("gui.title")) &&
+        if (!title.equals(getLang(player, "gui.title")) &&
                 !title.equals("Item Blacklist") &&
-                !title.contains(getLang("dupe.itemframe.name")) &&
-                !title.contains(getLang("dupe.glowframe.name")) &&
-                !title.contains(getLang("dupe.donkey.name")) &&
-                !title.contains(getLang("dupe.grindstone.name")) &&
-                !title.contains(getLang("dupe.crafter.name")) &&
-                !title.contains(getLang("dupe.dropper.name")) &&
-                !title.contains(getLang("dupe.death.name"))) {
+                !title.contains(getLang(player,"dupe.itemframe.name")) &&
+                !title.contains(getLang(player,"dupe.glowframe.name")) &&
+                !title.contains(getLang(player,"dupe.donkey.name")) &&
+                !title.contains(getLang(player,"dupe.grindstone.name")) &&
+                !title.contains(getLang(player,"dupe.crafter.name")) &&
+                !title.contains(getLang(player,"dupe.dropper.name")) &&
+                !title.contains(getLang(player, "dupe.death.name"))) {
             return;
         }
 
         // For blacklist GUI, handle specially
         if (title.equals("Item Blacklist")) {
-            Player player = (Player) event.getWhoClicked();
+
             int slot = event.getSlot();
             ItemStack clickedItem = event.getCurrentItem();
 
@@ -663,7 +610,7 @@ public class Interface implements Listener {
                         // Give the item back to the player
                         player.getInventory().addItem(cursor.clone());
                         event.getView().setCursor(null);
-                        player.sendMessage(getLang("color.success") + cursor.getType().name() + " added to blacklist!");
+                        player.sendMessage(getLang(player,"color.success") + cursor.getType().name() + " added to blacklist!");
                         event.setCancelled(true);
                         return;
                     }
@@ -677,13 +624,12 @@ public class Interface implements Listener {
         // Cancel for other GUIs
         event.setCancelled(true);
 
-        Player player = (Player) event.getWhoClicked();
         ItemStack clickedItem = event.getCurrentItem();
 
         if (clickedItem == null || clickedItem.getType() == Material.GRAY_STAINED_GLASS_PANE) return;
 
         // Handle Main GUI
-        if (title.equals(getLang("gui.title"))) {
+        if (title.equals(getLang(player,"gui.title"))) {
             handleMainGUIClick(player, clickedItem, event.getClick().isLeftClick());
             return;
         }
@@ -779,15 +725,15 @@ public class Interface implements Listener {
 private void openDeathSettings(Player player) {
     String basePath = "OtherDupes.DeathDupe";
     Inventory gui = Bukkit.createInventory(null, 45,
-            getLang("gui.title.settings", getLang("dupe.death.name")));
+            getLang(player,"gui.title.settings", getLang(player,"dupe.death.name")));
 
     fillWithGlass(gui);
 
     // Enable/Disable Toggle (Slot 4)
-    gui.setItem(4, createToggleItem(basePath + ".Enabled", "dupe.death.name"));
+    gui.setItem(4, createToggleItem(player,basePath + ".Enabled", "dupe.death.name"));
 
     // Back Button (Slot 40)
-    gui.setItem(40, createBackButton());
+    gui.setItem(40, createBackButton(player));
 
     player.openInventory(gui);
 }
@@ -801,14 +747,14 @@ private void openBlacklistSettings(Player player) {
     // Center slot for adding items (Slot 22) - hopper as visual indicator
     ItemStack hopper = new ItemStack(Material.HOPPER);
     ItemMeta hopperMeta = hopper.getItemMeta();
-    hopperMeta.setDisplayName(getLang("color.info") + "Drop items here to blacklist");
-    hopperMeta.setLore(Arrays.asList(getLang("color.description") + "Click here with an item to add it to the blacklist"));
+    hopperMeta.setDisplayName(getLang(player,"color.info") + "Drop items here to blacklist");
+    hopperMeta.setLore(Arrays.asList(getLang(player,"color.description") + "Click here with an item to add it to the blacklist"));
     hopper.setItemMeta(hopperMeta);
     gui.setItem(22, hopper);
     plugin.getLogger().info("[DEBUG] Blacklist GUI opened. Slot 22 item: " + (gui.getItem(22) != null ? gui.getItem(22).getType().name() : "null"));
 
     // Back Button (Slot 40)
-    gui.setItem(40, createBackButton());
+    gui.setItem(40, createBackButton(player));
 
     player.openInventory(gui);
 }
@@ -832,19 +778,19 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         }
 
         // Determine which settings GUI we're in
-        if (title.contains(getLang("dupe.itemframe.name"))) {
+        if (title.contains(getLang(player,"dupe.itemframe.name"))) {
             handleItemFrameSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang("dupe.glowframe.name"))) {
+        } else if (title.contains(getLang(player,"dupe.glowframe.name"))) {
             handleGlowFrameSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang("dupe.donkey.name"))) {
+        } else if (title.contains(getLang(player,"dupe.donkey.name"))) {
             handleDonkeySettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang("dupe.grindstone.name"))) {
+        } else if (title.contains(getLang(player,"dupe.grindstone.name"))) {
             handleGrindstoneSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang("dupe.crafter.name"))) {
+        } else if (title.contains(getLang(player,"dupe.crafter.name"))) {
             handleCrafterSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang("dupe.dropper.name"))) {
+        } else if (title.contains(getLang(player,"dupe.dropper.name"))) {
             handleDropperSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang("dupe.death.name"))) {
+        } else if (title.contains(getLang(player,"dupe.death.name"))) {
             handleDeathSettingsClick(player, slot, clickedItem);
         }
     }
@@ -1048,17 +994,17 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
 
         if (newValue == current) {
             if (adjustment < 0) {
-                player.sendMessage(getLang("color.error") + getLang("msg.value_too_low"));
+                player.sendMessage(getLang(player,"color.error") + getLang(player,"msg.value_too_low"));
             } else {
-                player.sendMessage(getLang("color.error") + "Value cannot exceed " + max);
+                player.sendMessage(getLang(player,"color.error") + "Value cannot exceed " + max);
             }
             return;
         }
 
         plugin.getConfig().set(path, newValue);
         plugin.saveConfig();
-        player.sendMessage(getLang("color.success") + getLang("msg.value_set") + " " +
-                getLang("color.value") + newValue);
+        player.sendMessage(getLang(player,"color.success") + getLang(player,"msg.value_set") + " " +
+                getLang(player,"color.value") + newValue);
         plugin.reloadConfig();
     }
 
@@ -1068,17 +1014,17 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
 
         if (newValue == current) {
             if (adjustment < 0) {
-                player.sendMessage(getLang("color.error") + getLang("msg.value_too_low"));
+                player.sendMessage(getLang(player,"color.error") + getLang(player,"msg.value_too_low"));
             } else {
-                player.sendMessage(getLang("color.error") + "Value at maximum");
+                player.sendMessage(getLang(player,"color.error") + "Value at maximum");
             }
             return;
         }
 
         plugin.getConfig().set(path, newValue);
         plugin.saveConfig();
-        player.sendMessage(getLang("color.success") + getLang("msg.timing_set") + " " +
-                getLang("color.value") + newValue + "ms");
+        player.sendMessage(getLang(player,"color.success") + getLang(player,"msg.timing_set") + " " +
+                getLang(player,"color.value") + newValue + "ms");
         plugin.reloadConfig();
     }
 
@@ -1087,9 +1033,9 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         plugin.getConfig().set(basePath + ".Enabled", enabled);
         plugin.saveConfig();
 
-        String statusColor = enabled ? getLang("color.success") : getLang("color.error");
-        String status = enabled ? getLang("msg.enabled") : getLang("msg.disabled");
-        player.sendMessage(statusColor + getLang(nameKey) + " " + status);
+        String statusColor = enabled ? getLang(player,"color.success") : getLang(player,"color.error");
+        String status = enabled ? getLang(player,"msg.enabled") : getLang(player,"msg.disabled");
+        player.sendMessage(statusColor + getLang(player,nameKey) + " " + status);
 
         plugin.reloadConfig();
     }
@@ -1141,12 +1087,8 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         dropperDupe.reload();
         deathDupe.reload();
 
-        player.sendMessage(getLang("color.success") + getLang("msg.config_reloaded"));
+        player.sendMessage(getLang(player,"color.success") + getLang(player,"msg.config_reloaded"));
     }
 
-    // Method to reload language (for future language file support)
-    public void reloadLanguage() {
-        // TODO: Load from language file
-        initializeLanguage();
-    }
+
 }

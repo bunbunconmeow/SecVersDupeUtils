@@ -16,6 +16,7 @@ import org.secverse.SecVerseDupeUtils.Dupes.Dropper.DropperDupe;
 import org.secverse.SecVerseDupeUtils.SecVersCom.Telemetry;
 import org.secverse.SecVerseDupeUtils.SecVersCom.UpdateChecker;
 import org.bukkit.plugin.IllegalPluginAccessException;
+import org.secverse.SecVerseDupeUtils.Translation.TranslationWorker;
 
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
     private Interface dupeInterface;
     private UpdateChecker updateChecker;
     private Telemetry telemetry;
+    private TranslationWorker translationWorker;
 
     @Override
     public void onEnable() {
@@ -46,9 +48,10 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         crafterDupe = new CrafterDupe(this);
         dropperDupe = new DropperDupe(this);
         deathDupe = new DeathDupe(this);
+        translationWorker = new TranslationWorker(this);
 
         // Initialisiere Interface
-        dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe, crafterDupe, dropperDupe, deathDupe);
+        dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe, crafterDupe, dropperDupe, deathDupe, translationWorker);
 
         // Registriere Events
         getServer().getPluginManager().registerEvents(frameDupe.new FrameAll(), this);

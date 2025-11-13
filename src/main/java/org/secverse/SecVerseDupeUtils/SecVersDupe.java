@@ -18,8 +18,11 @@ import org.secverse.SecVerseDupeUtils.SecVersCom.UpdateChecker;
 import org.bukkit.plugin.IllegalPluginAccessException;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class SecVersDupe extends JavaPlugin implements Listener {
     private ItemFrameDupe frameDupe;
@@ -144,6 +147,25 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         }
 
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (command.getName().equalsIgnoreCase("dupe")) {
+            if (args.length == 1) {
+                List<String> completions = new ArrayList<>();
+                if (sender.hasPermission("dupeutils.reload")) {
+                    completions.add("reload");
+                }
+                if (sender.hasPermission("dupeutils.configdupes")) {
+                    completions.add("config");
+                }
+                return completions.stream()
+                        .filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase()))
+                        .collect(Collectors.toList());
+            }
+        }
+        return null;
     }
 
     @Override

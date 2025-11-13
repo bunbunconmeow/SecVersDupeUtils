@@ -39,6 +39,8 @@ public class DonkeyShulkerDupe implements Listener {
         plEnabled = config.getBoolean("OtherDupes.DonkeyDupe.Enabled");
         min = config.getLong("OtherDupes.DonkeyDupe.MinTiming", 100);
         max = config.getLong("OtherDupes.DonkeyDupe.MaxTiming", 800);
+
+        ek.reload();
     }
 
     @EventHandler

@@ -12,8 +12,8 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.secverse.SecVerseDupeUtils.helper.EventsKeys;
-import org.secverse.SecVerseDupeUtils.helper.CleanShulker;
+import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
+import org.secverse.SecVerseDupeUtils.Helper.CleanShulker;
 
 import java.util.*;
 import java.util.logging.Level;

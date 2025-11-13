@@ -37,6 +37,13 @@ public class EventsKeys {
     }
 
     public boolean isBlockedItem(ItemStack item) {
+        // Check for material blacklists
+        for (BlacklistEntry entry : cachedBlacklist) {
+            if ("minecraft".equals(entry.key.getNamespace()) && entry.key.getKey().equalsIgnoreCase(item.getType().name())) {
+                return true;
+            }
+        }
+
         if (!item.hasItemMeta()) return false;
 
         ItemMeta meta = item.getItemMeta();

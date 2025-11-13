@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,13 +15,14 @@ import org.secverse.SecVerseDupeUtils.Dupes.Crafter.CrafterDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.Death.DeathDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.Donkey.DonkeyShulkerDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.Dropper.DropperDupe;
-import org.secverse.SecVerseDupeUtils.GrindStone.GrindStoneDupe;
+import org.secverse.SecVerseDupeUtils.Dupes.GrindStone.GrindStoneDupe;
 import org.secverse.SecVerseDupeUtils.Dupes.ItemFrame.ItemFrameDupe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class Interface implements Listener {
     private final Plugin plugin;
@@ -44,7 +46,8 @@ public class Interface implements Listener {
         GRINDSTONE_SETTINGS,
         CRAFTER_SETTINGS,
         DROPPER_SETTINGS,
-        DEATH_SETTINGS
+        DEATH_SETTINGS,
+        BLACKLIST_SETTINGS
     }
 
     public Interface(Plugin plugin, ItemFrameDupe frameDupe, DonkeyShulkerDupe donkeyDupe,
@@ -174,6 +177,9 @@ public class Interface implements Listener {
             case DEATH_SETTINGS:
                 openDeathSettings(player);
                 break;
+            case BLACKLIST_SETTINGS:
+                openBlacklistSettings(player);
+                break;
         }
     }
 
@@ -210,6 +216,9 @@ public class Interface implements Listener {
 
         // Reload Button (Slot 44)
         gui.setItem(44, createReloadButton());
+
+        // Blacklist Button (Slot 36 - bottom left)
+        gui.setItem(36, createBlacklistButton());
 
         player.openInventory(gui);
     }
@@ -257,6 +266,22 @@ public class Interface implements Listener {
         ItemMeta meta = item.getItemMeta();
 
         meta.setDisplayName(getLang("color.info") + getLang("gui.back"));
+
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private ItemStack createBlacklistButton() {
+        ItemStack item = new ItemStack(Material.ANVIL);
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(getLang("color.info") + "Item Blacklist");
+        meta.setLore(Arrays.asList(
+                getLang("color.description") + "Manage blacklisted items",
+                "",
+                getLang("color.info") + getLang("gui.left_click") + " " +
+                        getLang("color.description") + "to open blacklist settings"
+        ));
 
         item.setItemMeta(meta);
         return item;
@@ -562,11 +587,49 @@ public class Interface implements Listener {
     }
 
     @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        String title = event.getView().getTitle();
+        plugin.getLogger().info("[DEBUG] InventoryDragEvent triggered. Title: '" + title + "', Slots: " + event.getInventorySlots() + ", Raw slots: " + event.getRawSlots());
+
+        if (!title.equals("Item Blacklist")) {
+            plugin.getLogger().info("[DEBUG] Title does not match 'Item Blacklist', ignoring drag event.");
+            return;
+        }
+
+        // Check if dragging into slot 22
+        if (event.getInventorySlots().contains(22)) {
+            plugin.getLogger().info("[DEBUG] Dragging into slot 22 detected.");
+            event.setCancelled(false); // Ensure the drag is allowed
+            // Allow the drag, then handle after
+            Player player = (Player) event.getWhoClicked();
+            Inventory gui = event.getInventory();
+
+            // Schedule task to handle after the drag completes
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                plugin.getLogger().info("[DEBUG] Scheduled task running for drag handling.");
+                ItemStack item = gui.getItem(22);
+                plugin.getLogger().info("[DEBUG] Item in slot 22: " + (item != null ? item.getType().name() : "null"));
+                if (item != null && item.getType() != Material.AIR) {
+                    plugin.getLogger().info("[DEBUG] Adding item to blacklist: " + item.getType().name());
+                    addItemToBlacklist(item);
+                    gui.setItem(22, null); // Reset slot to empty
+                    player.sendMessage(getLang("color.success") + item.getType().name() + " added to blacklist!");
+                } else {
+                    plugin.getLogger().info("[DEBUG] No valid item found in slot 22 after drag.");
+                }
+            });
+        } else {
+            plugin.getLogger().info("[DEBUG] Not dragging into slot 22, slots: " + event.getInventorySlots());
+        }
+    }
+
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         String title = event.getView().getTitle();
 
         // Check if it's one of our GUIs
         if (!title.equals(getLang("gui.title")) &&
+                !title.equals("Item Blacklist") &&
                 !title.contains(getLang("dupe.itemframe.name")) &&
                 !title.contains(getLang("dupe.glowframe.name")) &&
                 !title.contains(getLang("dupe.donkey.name")) &&
@@ -577,6 +640,41 @@ public class Interface implements Listener {
             return;
         }
 
+        // For blacklist GUI, handle specially
+        if (title.equals("Item Blacklist")) {
+            Player player = (Player) event.getWhoClicked();
+            int slot = event.getSlot();
+            ItemStack clickedItem = event.getCurrentItem();
+
+            // Only cancel clicks in the GUI inventory, allow player inventory for picking up items
+            if (event.getClickedInventory() != null && event.getClickedInventory().equals(event.getView().getTopInventory())) {
+                if (slot == 40 && clickedItem != null && clickedItem.getType() == Material.ARROW) {
+                    // Back button
+                    openMainGUI(player);
+                    event.setCancelled(true);
+                    return;
+                }
+                if (slot == 22) {
+                    // Handle adding item to blacklist by clicking on slot 22
+                    ItemStack cursor = event.getCursor();
+                    if (cursor != null && cursor.getType() != Material.AIR) {
+                        plugin.getLogger().info("[DEBUG] Adding item to blacklist via click: " + cursor.getType().name());
+                        addItemToBlacklist(cursor.clone());
+                        // Give the item back to the player
+                        player.getInventory().addItem(cursor.clone());
+                        event.getView().setCursor(null);
+                        player.sendMessage(getLang("color.success") + cursor.getType().name() + " added to blacklist!");
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+                // Cancel the event to prevent picking up items from GUI
+                event.setCancelled(true);
+            }
+            return;
+        }
+
+        // Cancel for other GUIs
         event.setCancelled(true);
 
         Player player = (Player) event.getWhoClicked();
@@ -661,6 +759,10 @@ public class Interface implements Listener {
                 reloadAllConfigs(player);
                 openMainGUI(player);
                 break;
+            case ANVIL:
+                // Blacklist button
+                openGUI(player, GUIType.BLACKLIST_SETTINGS);
+                break;
             case SKELETON_SPAWN_EGG:
                 if (isLeftClick) {
                     toggleEnabled(player, "OtherDupes.DeathDupe", "dupe.death.name");
@@ -690,6 +792,27 @@ private void openDeathSettings(Player player) {
     player.openInventory(gui);
 }
 
+// ==================== BLACKLIST SETTINGS ====================
+private void openBlacklistSettings(Player player) {
+    Inventory gui = Bukkit.createInventory(null, 45, "Item Blacklist");
+
+    fillWithGlass(gui);
+
+    // Center slot for adding items (Slot 22) - hopper as visual indicator
+    ItemStack hopper = new ItemStack(Material.HOPPER);
+    ItemMeta hopperMeta = hopper.getItemMeta();
+    hopperMeta.setDisplayName(getLang("color.info") + "Drop items here to blacklist");
+    hopperMeta.setLore(Arrays.asList(getLang("color.description") + "Click here with an item to add it to the blacklist"));
+    hopper.setItemMeta(hopperMeta);
+    gui.setItem(22, hopper);
+    plugin.getLogger().info("[DEBUG] Blacklist GUI opened. Slot 22 item: " + (gui.getItem(22) != null ? gui.getItem(22).getType().name() : "null"));
+
+    // Back Button (Slot 40)
+    gui.setItem(40, createBackButton());
+
+    player.openInventory(gui);
+}
+
 private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
     String basePath = "OtherDupes.DeathDupe";
 
@@ -699,6 +822,7 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         openDeathSettings(player);
     }
 }
+
 
     private void handleSettingsGUIClick(Player player, ItemStack clickedItem, String title, int slot) {
         // Back button
@@ -973,6 +1097,37 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
     private void toggleBoolean(Player player, String path) {
         boolean current = plugin.getConfig().getBoolean(path, false);
         plugin.getConfig().set(path, !current);
+        plugin.saveConfig();
+        plugin.reloadConfig();
+    }
+
+    private void addItemToBlacklist(ItemStack item) {
+        List<Map<String, Object>> blacklist = new ArrayList<>();
+        for (Map<?, ?> map : plugin.getConfig().getMapList("ItemBlacklist")) {
+            Map<String, Object> newMap = new HashMap<>();
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
+                newMap.put((String) entry.getKey(), entry.getValue());
+            }
+            blacklist.add(newMap);
+        }
+
+        // Check if already blacklisted
+        String materialName = item.getType().name();
+        String lowerMaterialName = materialName.toLowerCase();
+        for (Map<String, Object> entry : blacklist) {
+            if ("minecraft".equals(entry.get("Namespace")) && lowerMaterialName.equals(entry.get("Key"))) {
+                return; // Already blacklisted
+            }
+        }
+
+        // Add new entry
+        Map<String, Object> newEntry = new HashMap<>();
+        newEntry.put("Namespace", "minecraft");
+        newEntry.put("Key", lowerMaterialName);
+        newEntry.put("Names", new ArrayList<String>());
+
+        blacklist.add(newEntry);
+        plugin.getConfig().set("ItemBlacklist", blacklist);
         plugin.saveConfig();
         plugin.reloadConfig();
     }

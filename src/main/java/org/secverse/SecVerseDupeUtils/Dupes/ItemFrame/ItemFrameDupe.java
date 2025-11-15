@@ -11,6 +11,7 @@ import org.secverse.SecVerseDupeUtils.SecVersDupe;
 import org.secverse.SecVerseDupeUtils.Helper.CleanShulker;
 import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
 
+// @ToDo: Permission Integration
 public class ItemFrameDupe {
     private final SecVersDupe plugin;
     private EventsKeys ek;

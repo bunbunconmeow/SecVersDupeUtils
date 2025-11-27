@@ -209,6 +209,17 @@ public class TranslationWorker {
 
         if (language.equalsIgnoreCase("German")) {
             // German translations
+            // Translation Menu
+            translations.put("gui.language", "Sprache");
+            translations.put("gui.language_desc", "Wähle deine bevorzugte Sprache");
+            translations.put("gui.language.desc", "Klicke um die Sprache zu ändern");
+            translations.put("gui.language.current", "Aktuelle Sprache");
+            translations.put("gui.language.version", "Version");
+            translations.put("gui.language.author", "Autor");
+            translations.put("gui.language.title", "§6Sprach Einstellungen");
+            translations.put("gui.language.click_to_select", "Klicken zum Auswählen");
+
+            // Menu
             translations.put("gui.title", "§6SecVerse Dupe Konfiguration");
             translations.put("gui.title.settings", "§6{0} Einstellungen");
             translations.put("gui.enabled", "§aAktiviert");
@@ -238,26 +249,23 @@ public class TranslationWorker {
             translations.put("gui.reload", "Konfiguration neu laden");
             translations.put("gui.reload_desc", "Lädt alle Dupe-Konfigurationen neu");
             translations.put("gui.back", "Zurück zum Hauptmenü");
-            translations.put("gui.increase_small", "Erhöhen um +10");
-            translations.put("gui.decrease_small", "Verringern um -10");
-            translations.put("gui.increase_large", "Erhöhen um +100");
-            translations.put("gui.decrease_large", "Verringern um -100");
-            translations.put("gui.click_to_adjust", "Klicken zum Anpassen");
+            translations.put("gui.blacklist", "Blacklist");
+            translations.put("gui.blacklist_desc", "Verwalte blockierte Items");
 
-            // Dupe names
-            translations.put("dupe.itemframe.name", "Rahmen-Dupe");
-            translations.put("dupe.itemframe.desc", "Dupliziere Items in Rahmen");
-            translations.put("dupe.glowframe.name", "Leuchtrahmen-Dupe");
-            translations.put("dupe.glowframe.desc", "Dupliziere Items in Leuchtrahmen");
-            translations.put("dupe.donkey.name", "Esel-Shulker-Dupe");
-            translations.put("dupe.donkey.desc", "Dupliziere Shulker-Boxen mit Eseln");
-            translations.put("dupe.grindstone.name", "Schleifstein-Dupe");
-            translations.put("dupe.grindstone.desc", "Dupliziere Items am Schleifstein");
-            translations.put("dupe.crafter.name", "Crafter-Dupe");
-            translations.put("dupe.crafter.desc", "Dupliziere Items im Crafter");
-            translations.put("dupe.dropper.name", "Dropper-Dupe");
-            translations.put("dupe.dropper.desc", "Dupliziere Items mit Droppern");
-            translations.put("dupe.death.name", "Tod-Dupe");
+            // Dupe names and descriptions
+            translations.put("dupe.itemframe.name", "Item Frame Dupe");
+            translations.put("dupe.itemframe.desc", "Dupliziere Items mit Item Frames");
+            translations.put("dupe.glowframe.name", "Glow Frame Dupe");
+            translations.put("dupe.glowframe.desc", "Dupliziere Items mit Glow Item Frames");
+            translations.put("dupe.donkey.name", "Donkey Shulker Dupe");
+            translations.put("dupe.donkey.desc", "Dupliziere Items mit Esel und Shulkern");
+            translations.put("dupe.grindstone.name", "Grindstone Dupe");
+            translations.put("dupe.grindstone.desc", "Dupliziere Items mit Schleifstein");
+            translations.put("dupe.crafter.name", "Crafter Dupe");
+            translations.put("dupe.crafter.desc", "Dupliziere Items mit Crafter");
+            translations.put("dupe.dropper.name", "Dropper Dupe");
+            translations.put("dupe.dropper.desc", "Dupliziere Items mit Dropper");
+            translations.put("dupe.death.name", "Death Dupe");
             translations.put("dupe.death.desc", "Behalte Items beim Tod");
 
             // Messages
@@ -267,20 +275,20 @@ public class TranslationWorker {
             translations.put("msg.multiplier_set", "Multiplikator gesetzt auf");
             translations.put("msg.mode_drop_only", "Modus: Nur Droppen");
             translations.put("msg.mode_inventory_only", "Modus: Nur Inventar");
-            translations.put("msg.mode_both", "Modus: Drop + Inventar");
+            translations.put("msg.mode_both", "Modus: Droppen + Inventar");
             translations.put("msg.destroy_crafter", "Crafter zerstören");
             translations.put("msg.drop_originals", "Originale droppen");
-            translations.put("msg.timing_set", "Zeit gesetzt auf");
+            translations.put("msg.timing_set", "Timing gesetzt auf");
             translations.put("msg.value_set", "Wert gesetzt auf");
             translations.put("msg.config_reloaded", "§aKonfiguration erfolgreich neu geladen!");
-            translations.put("msg.min_cannot_exceed_max", "§cMinimale Zeit kann nicht größer als maximale Zeit sein!");
-            translations.put("msg.max_cannot_below_min", "§cMaximale Zeit kann nicht kleiner als minimale Zeit sein!");
+            translations.put("msg.min_cannot_exceed_max", "§cMin Timing kann nicht größer als Max Timing sein!");
+            translations.put("msg.max_cannot_below_min", "§cMax Timing kann nicht kleiner als Min Timing sein!");
             translations.put("msg.value_too_low", "§cWert kann nicht unter 0 gesetzt werden!");
             translations.put("msg.language_changed", "§aSprache geändert zu: {0}");
             translations.put("msg.language_list", "§eVerfügbare Sprachen: {0}");
             translations.put("msg.language_invalid", "§cUngültige Sprache! Verfügbare Sprachen: {0}");
 
-            // Colors (same for all languages)
+            // Colors
             translations.put("color.success", "§a");
             translations.put("color.error", "§c");
             translations.put("color.info", "§e");
@@ -290,6 +298,17 @@ public class TranslationWorker {
 
         } else {
             // English translations (default)
+            // Translation Menu
+            translations.put("gui.language", "Language");
+            translations.put("gui.language_desc", "Select your preferred language");
+            translations.put("gui.language.desc", "Click to change language");
+            translations.put("gui.language.current", "Current Language");
+            translations.put("gui.language.version", "Version");
+            translations.put("gui.language.author", "Author");
+            translations.put("gui.language.title", "§6Language Settings");
+            translations.put("gui.language.click_to_select", "Click to select");
+
+            // Menu
             translations.put("gui.title", "§6SecVerse Dupe Configuration");
             translations.put("gui.title.settings", "§6{0} Settings");
             translations.put("gui.enabled", "§aEnabled");
@@ -319,19 +338,16 @@ public class TranslationWorker {
             translations.put("gui.reload", "Reload Configuration");
             translations.put("gui.reload_desc", "Reloads all dupe configurations");
             translations.put("gui.back", "Back to Main Menu");
-            translations.put("gui.increase_small", "Increase by +10");
-            translations.put("gui.decrease_small", "Decrease by -10");
-            translations.put("gui.increase_large", "Increase by +100");
-            translations.put("gui.decrease_large", "Decrease by -100");
-            translations.put("gui.click_to_adjust", "Click to adjust");
+            translations.put("gui.blacklist", "Blacklist");
+            translations.put("gui.blacklist_desc", "Manage blocked items");
 
-            // Dupe names
+            // Dupe names and descriptions
             translations.put("dupe.itemframe.name", "Item Frame Dupe");
-            translations.put("dupe.itemframe.desc", "Duplicate items in item frames");
-            translations.put("dupe.glowframe.name", "Glowing Item Frame Dupe");
-            translations.put("dupe.glowframe.desc", "Duplicate items in glowing item frames");
+            translations.put("dupe.itemframe.desc", "Duplicate items using item frames");
+            translations.put("dupe.glowframe.name", "Glow Frame Dupe");
+            translations.put("dupe.glowframe.desc", "Duplicate items using glow item frames");
             translations.put("dupe.donkey.name", "Donkey Shulker Dupe");
-            translations.put("dupe.donkey.desc", "Duplicate shulker boxes using donkeys");
+            translations.put("dupe.donkey.desc", "Duplicate items using donkeys and shulkers");
             translations.put("dupe.grindstone.name", "Grindstone Dupe");
             translations.put("dupe.grindstone.desc", "Duplicate items using grindstone");
             translations.put("dupe.crafter.name", "Crafter Dupe");
@@ -466,104 +482,10 @@ public class TranslationWorker {
             return playerLanguages.get(player.getUniqueId());
         }
 
-        // Check if IP-based detection is enabled
-        if (ipBased) {
-            String language = detectLanguageFromIP(player);
-            if (language != null) {
-                playerLanguages.put(player.getUniqueId(), language);
-                return language;
-            }
-        }
-
         // Use default language
         return defaultLanguage;
     }
 
-    /**
-     * Detect language based on player's IP address
-     */
-    private String detectLanguageFromIP(Player player) {
-        String ip = player.getAddress().getAddress().getHostAddress();
-
-        // Skip local IPs
-        if (ip.startsWith("127.") || ip.startsWith("192.168.") || ip.startsWith("10.")) {
-            return null;
-        }
-
-        // Check cache first
-        if (ipCountryCache.containsKey(ip)) {
-            return countryCodeToLanguage(ipCountryCache.get(ip));
-        }
-
-        // Query IP geolocation service (async to avoid blocking)
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                String countryCode = queryIPGeolocation(ip);
-                if (countryCode != null) {
-                    ipCountryCache.put(ip, countryCode);
-                    String language = countryCodeToLanguage(countryCode);
-                    if (language != null) {
-                        playerLanguages.put(player.getUniqueId(), language);
-                        plugin.getLogger().info("Detected language " + language + " for player " + player.getName() + " (Country: " + countryCode + ")");
-                    }
-                }
-            } catch (Exception e) {
-                plugin.getLogger().warning("Failed to detect language for IP " + ip + ": " + e.getMessage());
-            }
-        });
-
-        return null;
-    }
-
-    /**
-     * Query IP geolocation service
-     */
-    private String queryIPGeolocation(String ip) {
-        try {
-            URL url = new URL("http://ip-api.com/json/" + ip + "?fields=countryCode");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
-            conn.setRequestProperty("User-Agent", "SecVerseDupeUtils");
-
-            if (conn.getResponseCode() == 200) {
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                    }
-
-                    Map<String, String> result = gson.fromJson(response.toString(), new TypeToken<Map<String, String>>(){}.getType());
-                    return result.get("countryCode");
-                }
-            }
-        } catch (Exception e) {
-            plugin.getLogger().fine("IP geolocation query failed: " + e.getMessage());
-        }
-
-        return null;
-    }
-
-    /**
-     * Convert country code to language using metadata
-     */
-    private String countryCodeToLanguage(String countryCode) {
-        if (countryCode == null) return null;
-
-        // Check all loaded languages for matching country codes
-        for (Map.Entry<String, LanguageMetadata> entry : languageMetadata.entrySet()) {
-            if (entry.getValue().getCountryCodes().contains(countryCode.toUpperCase())) {
-                // Return capitalized language name
-                String lang = entry.getKey();
-                return lang.substring(0, 1).toUpperCase() + lang.substring(1);
-            }
-        }
-
-        // Default fallback
-        return null;
-    }
 
     /**
      * Set player's language preference

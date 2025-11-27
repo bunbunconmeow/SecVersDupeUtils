@@ -147,8 +147,6 @@ ItemBlacklist:
 Translation:
   # Enable translation system
   enabled: true
-  # Auto-detect language based on player IP
-  ipbased: false
   # Default language (fallback)
   default: "English"
   # Available translations (auto-updated on server start)

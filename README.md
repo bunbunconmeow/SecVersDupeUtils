@@ -24,10 +24,10 @@ Version 3 Goals
 - [X] Multi-Language Support
     - [X] English
     - [X] German
-    - [ ] Russian
-    - [ ] Chinese
-    - [ ] Korean
-    - [ ] Japanese
+    - [X] Russian
+    - [X] Chinese
+    - [X] Korean
+    - [X] Japanese
 - [X] Anti-Illegal
     - [X] Whitelist Items
     - [X] MBT Removals
@@ -62,6 +62,7 @@ Advanced Configuration System:
 - ⏱️ Timing Controls - Adjust delay windows for dupes
 - 🔧 Per-Dupe Settings - Independent configuration for each method
 - 📊 Real-time Adjustments - Changes apply without server restart
+- Translations - Add you own Translations!
 
 Professional Features:
 ✅ Permission-Based UI Access - Fine-grained control over who can use what

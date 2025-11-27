@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.bukkit.Material.WRITABLE_BOOK;
+
 public class Interface implements Listener {
     private final Plugin plugin;
     private final ItemFrameDupe frameDupe;
@@ -108,6 +110,7 @@ public class Interface implements Listener {
             case BLACKLIST_SETTINGS:
                 openBlacklistSettings(player);
                 break;
+
         }
     }
 
@@ -175,27 +178,45 @@ public class Interface implements Listener {
 
 
     private ItemStack createLanguageButton(Player player) {
-        ItemStack item = new ItemStack(Material.WRITABLE_BOOK);
+        ItemStack item = new ItemStack(WRITABLE_BOOK);
         ItemMeta meta = item.getItemMeta();
 
-        String currentLang = translator.getPlayerLanguage(player);
-        TranslationWorker.LanguageMetadata metadata = translator.getLanguageMetadata(currentLang);
-        String displayName = metadata != null ? metadata.getNativeName() : currentLang;
+        if (meta == null) {
+            plugin.getLogger().warning("[DEBUG] ItemMeta is null for language button!");
+            return item;
+        }
+
+        String currentLang = "unknown";
+        String displayName = "Unknown";
+        int availableCount = 0;
+
+        try {
+            if (translator.isEnabled()) {
+                currentLang = translator.getPlayerLanguage(player);
+                TranslationWorker.LanguageMetadata metadata = translator.getLanguageMetadata(currentLang);
+                displayName = metadata != null ? metadata.getNativeName() : currentLang.toUpperCase();
+                availableCount = translator.getAvailableLanguages().size();
+            }
+        } catch (Exception e) {
+            plugin.getLogger().warning("[DEBUG] Error getting language info: " + e.getMessage());
+        }
 
         meta.setDisplayName(getLang(player, "color.info") + getLang(player, "gui.language"));
-        meta.setLore(Arrays.asList(
-                "",
-                getLang(player, "color.description") + getLang(player, "gui.language.current") + ": " +
-                        getLang(player, "color.value") + displayName,
-                "",
-                getLang(player, "color.description") + "Available: " +
-                        getLang(player, "color.value") + translator.getAvailableLanguages().size() + " languages",
-                "",
-                getLang(player, "color.info") + getLang(player, "gui.left_click") + " " +
-                        getLang(player, "color.description") + getLang(player, "gui.to_open_settings")
-        ));
 
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.add(getLang(player, "color.description") + getLang(player, "gui.language.current") + ": " +
+                getLang(player, "color.value") + displayName);
+        lore.add("");
+        lore.add(getLang(player, "color.description") + "Available: " +
+                getLang(player, "color.value") + availableCount + " languages");
+        lore.add("");
+        lore.add(getLang(player, "color.info") + getLang(player, "gui.left_click") + " " +
+                getLang(player, "color.description") + getLang(player, "gui.to_open_settings"));
+
+        meta.setLore(lore);
         item.setItemMeta(meta);
+
         return item;
     }
 
@@ -701,12 +722,10 @@ public class Interface implements Listener {
                 break;
 
             case BARRIER:
-                // Reload button
                 reloadAllConfigs(player);
                 openMainGUI(player);
                 break;
             case ANVIL:
-                // Blacklist button
                 openGUI(player, GUIType.BLACKLIST_SETTINGS);
                 break;
             case SKELETON_SPAWN_EGG:
@@ -717,6 +736,9 @@ public class Interface implements Listener {
                 } else {
                     openGUI(player, GUIType.DEATH_SETTINGS);
                 }
+                break;
+            case WRITABLE_BOOK:
+                languageGUI.open(player);
                 break;
         }
     }

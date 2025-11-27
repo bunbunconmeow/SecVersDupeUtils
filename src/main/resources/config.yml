@@ -79,10 +79,39 @@ OtherDupes:
     MaxTiming: 2200   # Maximum in ms
     dropNaturally: true
     addToInventory: false
+    Ranks:
+      vip:
+        Permission: "dupeutils.grindstonedupe.vip"
+        Multiplier: 2
+        Probability-percentage: 100
+      premium:
+        Permission: "dupeutils.grindstonedupe.premium"
+        Multiplier: 3
+        Probability-percentage: 100
+      admin:
+        Permission: "dupeutils.grindstonedupe.admin"
+        Multiplier: 5
+        Probability-percentage: 100
   DonkeyDupe:
     Enabled: false
     MinTiming: 100   # Minimum in ms
     MaxTiming: 5000   # Maximum in ms
+    Ranks:
+      vip:
+        Permission: "dupeutils.DonkeyDupe.vip"
+        Enabled: false
+        MinTiming: 100   # Minimum in ms
+        MaxTiming: 5000   # Maximum in ms
+      premium:
+        Permission: "dupeutils.DonkeyDupe.premium"
+        Enabled: false
+        MinTiming: 100   # Minimum in ms
+        MaxTiming: 5000   # Maximum in ms
+      admin:
+        Permission: "dupeutils.DonkeyDupe.admin"
+        Enabled: false
+        MinTiming: 100   # Minimum in ms
+        MaxTiming: 5000   # Maximum in ms
   CrafterDupe:
     Enabled: false
     MinTiming: 100     # Minimum in ms
@@ -92,6 +121,19 @@ OtherDupes:
   DropperDupe:
     Enabled: false
     Multiplier: 2
+    Ranks:
+      vip:
+        Permission: "dupeutils.dropperdupe.vip"
+        Multiplier: 3
+        Probability-percentage: 100
+      premium:
+        Permission: "dupeutils.dropperdupe.premium"
+        Multiplier: 5
+        Probability-percentage: 100
+      admin:
+        Permission: "dupeutils.dropperdupe.admin"
+        Multiplier: 10
+        Probability-percentage: 100
   DeathDupe:
     Enabled: false
 

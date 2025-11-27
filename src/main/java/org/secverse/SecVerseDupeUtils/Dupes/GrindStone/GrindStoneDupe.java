@@ -10,9 +10,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
+import org.secverse.SecVerseDupeUtils.Permissions.PermissionLoader;
+import org.secverse.SecVerseDupeUtils.Permissions.RankConfig;
 import org.bukkit.event.Listener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import static org.secverse.SecVerseDupeUtils.Helper.CleanShulker.cleanShulker;
@@ -22,64 +25,50 @@ public class GrindStoneDupe implements Listener {
     private final HashMap<UUID, ItemStack> storedShulkers = new HashMap<>();
     private Plugin plugin;
     private EventsKeys ek;
+    private PermissionLoader permissionLoader;
     private boolean isEnabled;
     private long minTiming;
     private long maxTiming;
     private boolean dropNaturally;
     private boolean addToInventory;
+    private int baseMultiplier;
 
     public GrindStoneDupe(Plugin lplugin) {
         this.plugin = lplugin;
         this.ek = new EventsKeys(lplugin);
+        this.permissionLoader = new PermissionLoader(lplugin);
         loadConfig();
     }
 
     private void loadConfig() {
         String basePath = "OtherDupes.GrindStone";
-
-        isEnabled = plugin.getConfig().getBoolean(basePath + ".Enabled", false);
-        minTiming = plugin.getConfig().getLong(basePath + ".MinTiming", 1200L);
-        maxTiming = plugin.getConfig().getLong(basePath + ".MaxTiming", 2200L);
-        dropNaturally = plugin.getConfig().getBoolean(basePath + ".dropNaturally", true);
-        addToInventory = plugin.getConfig().getBoolean(basePath + ".addToInventory", false);
-
+        this.isEnabled = plugin.getConfig().getBoolean(basePath + ".Enabled", false);
+        this.minTiming = plugin.getConfig().getLong(basePath + ".MinTiming", 1200);
+        this.maxTiming = plugin.getConfig().getLong(basePath + ".MaxTiming", 2200);
+        this.dropNaturally = plugin.getConfig().getBoolean(basePath + ".dropNaturally", true);
+        this.addToInventory = plugin.getConfig().getBoolean(basePath + ".addToInventory", false);
+        this.baseMultiplier = plugin.getConfig().getInt(basePath + ".Multiplier", 1);
     }
 
     public void reload() {
         loadConfig();
+        permissionLoader.loadRanks();
         insertTimes.clear();
         storedShulkers.clear();
-        plugin.getLogger().info("[GrindStone Exploit] Reloaded | Status: " + (isEnabled ? "§aEnabled" : "§cDisabled"));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onGrindstoneClick(InventoryClickEvent event) {
         if (!isEnabled) return;
         if (event.getInventory().getType() != InventoryType.GRINDSTONE) return;
+        if (!(event.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player) event.getWhoClicked();
-        ItemStack clickedItem = event.getCurrentItem();
-        ItemStack cursorItem = event.getCursor();
 
-        // Shulker Box Detection
-        if (isShulkerBox(clickedItem) || isShulkerBox(cursorItem)) {
-            event.setCancelled(false);
-            if (isShulkerBox(cursorItem) && event.getRawSlot() < 2) {
-                handleShulkerInsert(player, cursorItem);
-            }
-            else if (isShulkerBox(clickedItem) && event.getRawSlot() < 3) {
-                handleShulkerTake(player, clickedItem, event);
-            }
+        // Check base permission
+        if (!player.hasPermission("dupeutils.grindstonedupe")) {
+            return;
         }
-    }
-
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
-    public void onGrindstoneInteract(InventoryClickEvent event) {
-        if (!isEnabled) return;
-        if (event.getInventory().getType() != InventoryType.GRINDSTONE) return;
-
-        Player player = (Player) event.getWhoClicked();
 
         new BukkitRunnable() {
             @Override
@@ -106,7 +95,6 @@ public class GrindStoneDupe implements Listener {
 
         insertTimes.put(uuid, currentTime);
         storedShulkers.put(uuid, shulker.clone());
-
     }
 
     private void handleShulkerTake(Player player, ItemStack shulker, InventoryClickEvent event) {
@@ -127,23 +115,55 @@ public class GrindStoneDupe implements Listener {
     }
 
     private void performDupe(Player player, ItemStack shulker, long timeDiff) {
+        // Get multiplier based on player's rank
+        int multiplier = getPlayerMultiplier(player);
+
         ItemStack toDupe = shulker.clone();
 
+        // Clean the shulker from blocked/illegal items
         if (ek.isBlockedItem(toDupe)) {
+            cleanShulker(toDupe, ek, ek.getIllegalItemValidator());
+        } else {
+            // Also clean non-blocked shulkers for illegal items inside
             cleanShulker(toDupe, ek, ek.getIllegalItemValidator());
         }
 
-        ItemStack duped = toDupe.clone();
+        // Duplicate based on multiplier
+        for (int i = 0; i < multiplier; i++) {
+            ItemStack duped = toDupe.clone();
 
-        if (dropNaturally) player.getWorld().dropItemNaturally(player.getLocation(), duped);
+            if (dropNaturally) {
+                player.getWorld().dropItemNaturally(player.getLocation(), duped);
+            }
 
-        if (addToInventory) {
-            HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(duped.clone());
-            if (!leftover.isEmpty()) {
-                for (ItemStack item : leftover.values()) player.getWorld().dropItemNaturally(player.getLocation(), item);
+            if (addToInventory) {
+                HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(duped.clone());
+                if (!leftover.isEmpty()) {
+                    for (ItemStack item : leftover.values()) {
+                        player.getWorld().dropItemNaturally(player.getLocation(), item);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets the multiplier for a player based on their highest rank
+     */
+    private int getPlayerMultiplier(Player player) {
+        List<RankConfig> ranks = permissionLoader.getRanksForDupe("GrindStoneDupe");
+
+        int highestMultiplier = baseMultiplier;
+
+        for (RankConfig rank : ranks) {
+            if (player.hasPermission(rank.getPermission())) {
+                if (rank.getMultiplier() > highestMultiplier) {
+                    highestMultiplier = rank.getMultiplier();
+                }
             }
         }
 
+        return highestMultiplier;
     }
 
     private boolean isShulkerBox(ItemStack item) {

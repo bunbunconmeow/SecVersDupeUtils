@@ -32,7 +32,6 @@ public class ItemFrameDupe {
 
     public void reload() {
         this.ek.reload();
-        this.permissionLoader.reload();
 
         // Reload FrameDupe settings
         this.ITEM_FRAME_Enabled = plugin.getConfig().getBoolean("FrameDupe.Enabled", false);
@@ -83,7 +82,7 @@ public class ItemFrameDupe {
         int multiplier = defaultMultiplier;
         int probability = defaultProbability;
 
-        RankConfig rank = permissionLoader.getBestRank(player, dupeType);
+        RankConfig rank = permissionLoader.getHighestRank(player, dupeType);
         if (rank != null) {
             multiplier = rank.getMultiplier();
             probability = rank.getProbability();

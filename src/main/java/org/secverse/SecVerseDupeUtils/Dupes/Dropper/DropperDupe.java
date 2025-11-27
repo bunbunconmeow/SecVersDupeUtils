@@ -14,6 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
 import org.secverse.SecVerseDupeUtils.Helper.CleanShulker;
+import org.secverse.SecVerseDupeUtils.Permissions.PermissionLoader;
+import org.secverse.SecVerseDupeUtils.Permissions.RankConfig;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -24,14 +26,16 @@ public class DropperDupe implements Listener {
     private final Map<UUID, Long> exploitTimings = new HashMap<>();
     private final Plugin plugin;
     private final Logger log;
+    private final PermissionLoader permissionLoader;
 
     private boolean enabled;
     private boolean debug;
-    private int multiplier;
+    private int baseMultiplier;
 
     public DropperDupe(Plugin plugin) {
         this.plugin = plugin;
         this.log = plugin.getLogger();
+        this.permissionLoader = new PermissionLoader(plugin);
         loadConfig();
     }
 
@@ -40,22 +44,21 @@ public class DropperDupe implements Listener {
     private void loadConfig() {
         String path = "OtherDupes.DropperDupe";
         enabled = plugin.getConfig().getBoolean(path + ".Enabled", false);
-        debug = false;
-        multiplier = plugin.getConfig().getInt(path + ".Multiplier", 2);
+        debug = plugin.getConfig().getBoolean(path + ".Debug", false);
+        baseMultiplier = plugin.getConfig().getInt(path + ".Multiplier", 2);
 
         info("Config loaded: enabled=" + enabled
                 + ", debug=" + debug
-                + ", multiplier=" + multiplier);
+                + ", baseMultiplier=" + baseMultiplier);
     }
 
     public void reload() {
         info("Reload requested...");
         loadConfig();
+        permissionLoader.loadRanks();
         exploitTimings.clear();
         info("Reload complete. Cleared timing entries.");
     }
-
-    // -------------- Events --------------
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockDispense(BlockDispenseEvent event) {
@@ -70,47 +73,70 @@ public class DropperDupe implements Listener {
             return;
         }
 
-        executeExploit(event, block, nearest);
-        debug("Exploit executed.");
-    }
+        // Check base permission
+        if (!nearest.hasPermission("dupeutils.dropperdupe")) {
+            debug("Player " + nearest.getName() + " lacks permission dupeutils.dropperdupe");
+            return;
+        }
 
-    // -------------- Exploit logic --------------
+        executeExploit(event, block, nearest);
+        debug("Exploit executed for player: " + nearest.getName());
+    }
 
     private void executeExploit(BlockDispenseEvent event, Block dropperBlock, Player p) {
         try {
-            // Get the item that was actually dispensed
             ItemStack original = event.getItem();
             if (original == null || original.getType() == Material.AIR) {
                 debug("No item to duplicate in dropper");
                 return;
             }
 
-            // Check if item is blacklisted
+            ItemStack toCheck = original.clone();
+
             EventsKeys ek = new EventsKeys(plugin);
-            if (ek.isBlockedItem(original)) {
-                debug("Item is blacklisted, skipping duplication: " + itemToStr(original));
+            if (ek.isBlockedItem(toCheck)) {
+                debug("Item is blacklisted, skipping duplication: " + itemToStr(toCheck));
                 return;
             }
 
-            // Clean shulkers that might contain blacklisted items
-            CleanShulker.cleanShulker(original, ek, ek.getIllegalItemValidator());
+            CleanShulker.cleanShulker(toCheck, ek, ek.getIllegalItemValidator());
+            int multiplier = getPlayerMultiplier(p);
 
-            debug("Execute: duplicating " + itemToStr(original));
+            debug("Execute: duplicating " + itemToStr(toCheck) + " with multiplier " + multiplier);
 
-            // Drop duplicates based on multiplier
             var dropLoc = dropperBlock.getLocation().add(0.5, 0.5, 0.5);
-            for (int i = 0; i < multiplier - 1; i++) { // -1 because we already have the original
-                ItemStack dupe = original.clone();
+
+            // Duplicate items (multiplier - 1 because original is already dispensed)
+            for (int i = 0; i < multiplier - 1; i++) {
+                ItemStack dupe = toCheck.clone();
                 dropperBlock.getWorld().dropItemNaturally(dropLoc, dupe);
             }
 
             // Play sound effect
             p.playSound(p.getLocation(), Sound.BLOCK_DISPENSER_DISPENSE, 1.0F, 0.5F);
-            debug("Duplication complete and SFX played.");
+            debug("Duplication complete and SFX played for " + p.getName() + " (x" + multiplier + ")");
 
         } catch (Throwable t) {
             error("Error in executeExploit: " + t.getMessage(), t);
         }
+    }
+
+    private int getPlayerMultiplier(Player player) {
+        List<RankConfig> ranks = permissionLoader.getRanksForDupe("DropperDupe");
+
+        int highestMultiplier = baseMultiplier;
+
+        for (RankConfig rank : ranks) {
+            if (player.hasPermission(rank.getPermission())) {
+                if (rank.getMultiplier() > highestMultiplier) {
+                    highestMultiplier = rank.getMultiplier();
+                    debug("Player " + player.getName() + " has rank " + rank.getRankName()
+                            + " with multiplier " + rank.getMultiplier());
+                }
+            }
+        }
+
+        return highestMultiplier;
     }
 
     // -------------- Helpers --------------
@@ -148,7 +174,6 @@ public class DropperDupe implements Listener {
                 + "," + String.format(Locale.US, "%.1f", p.getLocation().getZ()) + ")";
     }
 
-    // -------------- Logging --------------
 
     private void info(String msg) {
         log.log(Level.INFO, "[DropperDupe] " + msg);

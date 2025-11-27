@@ -4,8 +4,47 @@ A comprehensive and configurable dupe management plugin for Minecraft servers
 
 Paper 1.21+ | [BSD-3 License](https://secvers.org/info/license) | Version 2.1
 
-================================================================================
+---
+## 🔮 v3.0.0 Roadmap
 
+
+Coming Soon:
+Version 3 Goals
+- [ ] v2.1.0 Bug Fixes & New Functions
+  - [ ] Code-Refactoring
+  - [X] Clean Shulker Bundle Support
+  - [X] Event Keys better code quality
+  - [ ] Death Dupe Rework
+  - [ ] TNT Hopper Dupe
+- [X] Permissions based Dupes
+    - [X] Item Frame Dupe
+    - [X] Grind Stone Dupe
+    - [X] Dropper Dupe
+    - [X] Donkey Dupe
+- [X] Multi-Language Support
+    - [X] English
+    - [X] German
+    - [ ] Russian
+    - [ ] Chinese
+    - [ ] Korean
+    - [ ] Japanese
+- [X] Anti-Illegal
+    - [X] Whitelist Items
+    - [X] MBT Removals
+- [ ] Particle Effects & Animations
+    - [X] Crafter Dupe
+    - [ ] Option for ItemFrame
+    - [ ] Option for Grind Stone
+
+
+Under Consideration:
+- [ ] Crafter Dupe Recipe System
+- [ ] Particle Effects & Animations
+- [ ] Backup & Rollback System
+- [ ] Web Dashboard
+- [ ] Custom Anti-Illegal Replacements
+- [ ] Folia Port
+---
 🌟 FEATURES
 
 6+ Dupe Methods Available:
@@ -33,8 +72,7 @@ Professional Features:
 
 🔔 Update Checker - Stay informed about new versions
 
-================================================================================
-
+---
 📥 DOWNLOAD & SUPPORT
 
 Official Download:
@@ -46,8 +84,7 @@ https://secvers.org/info/donate
 Dupe FAQ:
 https://secvers.org/plugins/dupe-utility
 
-================================================================================
-
+---
 🎮 COMMANDS
 
 /dupe\
@@ -62,7 +99,7 @@ Permission: dupeutils.reload
 Description: Open configuration GUI\
 Permission: dupeutils.configdupes
 
-================================================================================
+---
 
 🔐 PERMISSIONS
 
@@ -70,7 +107,7 @@ Permission: dupeutils.configdupes
 - dupeutils.reload        - Permission to reload configs
 - dupeutils.configdupes   - Permission to open config GUI
 
-================================================================================
+---
 
 ⚙️ CONFIGURATION EXAMPLE
 
@@ -198,7 +235,7 @@ Translation:
     - "German"
 
 ```
-
+---
 # SecVerse Dupe Utils - Community Translations
 
 ## How to Create a Translation
@@ -239,7 +276,7 @@ Translation:
 Share your translations on our Discord or GitHub!
 
 
-================================================================================
+---
 
 🎮 GUI CONFIGURATION
 
@@ -250,7 +287,7 @@ Use /dupe config in-game for easy configuration:
 • Adjust Values - Click concrete blocks to increase/decrease
 • Live Updates - Changes apply immediately
 
-================================================================================
+---
 
 🤝 CREDITS & ACKNOWLEDGMENTS
 
@@ -264,7 +301,7 @@ Development:\
 SecVers Team - Plugin development and maintenance\
 Community - Bug reports and feature suggestions
 
-================================================================================
+---
 
 📊 STATISTICS
 
@@ -273,7 +310,7 @@ Community - Bug reports and feature suggestions
 • Active Development - Regular updates and new features\
 • In-Game GUI - No need to edit config files
 
-================================================================================
+---
 
 🐛 BUG REPORTS & FEATURE REQUESTS
 
@@ -288,51 +325,14 @@ Found a bug or have an idea?
 
 GitHub Issues: https://github.com/bunbunconmeow/SecVersDupeUtils/issues
 
-================================================================================
+---
 
 📜 LICENSE
 
 This project is licensed under the [BSD-3 License](https://secvers.org/info/license).
 
 
-================================================================================
-
-🔮 ROADMAP
-
-Coming Soon:
-Version 3 Goals
-- [ ] Permissions based Dupes
-  - [X] Item Frame Dupe
-  - [ ] Grind Stone Dupe
-  - [ ] Dropper Dupe
-  - [ ] Donkey Dupe
-  - [ ] Crafter Duper
-  - [ ] Death Dupe
-- [X] Multi-Language Support
-  - [X] English 
-  - [X] German
-  - [ ] Russian
-  - [ ] Chinese
-  - [ ] Korean
-  - [ ] Japanese
-- [X] Anti-Illegal
-  - [X] Whitelist Items
-  - [ ] MBT Removals
-  - [ ] Custom Replacements
-- [ ] Particle Effects & Animations
-  - [X] Crafter Dupe
-  - [ ] Option for ItemFrame
-  - [ ] Option for Grind Stone
-- [ ] Economy Integration 
-
-
-Under Consideration:
-- [ ] Crafter Dupe Recipe System
-- [ ] Particle Effects & Animations
-- [ ] Backup & Rollback System
-- [ ] Web Dashboard
-
-================================================================================
+---
 
 ⚠️ DISCLAIMER
 
@@ -340,8 +340,7 @@ This plugin is designed for anarchy, creative, or testing servers.\
 Use at your own discretion. The developers are not responsible for any
 damage to your server economy or gameplay balance.
 
-================================================================================
-
+---
 💬 SUPPORT
 
 Official Website: https://secvers.org <br/>
@@ -349,8 +348,7 @@ Plugin Page: https://secvers.org/plugins/dupe-utility <br/>
 Donate: https://secvers.org/info/donate <br/>
 Email: support@secvers.org
 
-================================================================================
-
+---
 ⭐ SHOW YOUR SUPPORT
 
 If you like this plugin, please consider:\
@@ -360,8 +358,7 @@ If you like this plugin, please consider:\
 📣 Sharing with others\
 ❤️ Donating to support development
 
-================================================================================
-
+---
 Made with ❤️ by SecVers
 
 Download: https://secvers.org/plugins/dupe-utility
@@ -369,4 +366,4 @@ Donate: https://secvers.org/info/donate
 
 Want to contribute? Check out our Contributing Guidelines!
 
-================================================================================
+---

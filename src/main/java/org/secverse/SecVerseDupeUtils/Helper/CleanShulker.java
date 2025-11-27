@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 public class CleanShulker {
     public static void cleanShulker(ItemStack item, EventsKeys ek, IllegalItemValidator validator) {
         Plugin plugin = ek.getPlugin();
-        
+
         if (!plugin.getConfig().getBoolean("Settings.EnableItemCheck", true)) return;
         if (!(item.getItemMeta() instanceof BlockStateMeta meta)) return;
         if (!(meta.getBlockState() instanceof ShulkerBox shulkerBox)) return;

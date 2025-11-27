@@ -88,14 +88,66 @@ FrameDupe:
   Enabled: true
   Probability-percentage: 100
   Multiplier: 1
+  Ranks:
+    vip:
+      Permission: "dupeutils.framedupe.vip"
+      Multiplier: 2
+      Probability-percentage: 25
+    premium:
+      Permission: "dupeutils.framedupe.premium"
+      Multiplier: 3
+      Probability-percentage: 50
+    admin:
+      Permission: "dupeutils.framedupe.admin"
+      Multiplier: 5
+      Probability-percentage: 100
 
 GLOW_FrameDupe:
   Enabled: true
   Probability-percentage: 100
   Multiplier: 1
+  Ranks:
+    vip:
+      Permission: "dupeutils.framedupe.vip"
+      Multiplier: 2
+      Probability-percentage: 25
+    premium:
+      Permission: "dupeutils.framedupe.premium"
+      Multiplier: 3
+      Probability-percentage: 50
+    admin:
+      Permission: "dupeutils.framedupe.admin"
+      Multiplier: 5
+      Probability-percentage: 100
 
 Settings:
   EnableItemCheck: true
+  DisableIllegalItem: true
+  # Detailed illegal item detection settings
+  IllegalItemDetection:
+    # Check for items with Unbreakable tag
+    CheckUnbreakable: true
+    # Check for stacked items beyond normal stack size
+    CheckOverstacked: true
+    # Check for enchantments beyond vanilla limits
+    CheckIllegalEnchantments: true
+    # Check for items not obtainable in survival
+    CheckUnobtainableItems: true
+    # Allow custom names and lore (for plugins like EssentialsX, etc.)
+    AllowCustomNames: true
+    AllowCustomLore: true
+    # Action to take on illegal items
+    # Options: REMOVE, RESET, LOG_ONLY
+    Action: REMOVE
+    # Automatically fix enchantments instead of removing
+    AutoFixEnchantments: true
+    # Log illegal items to console
+    LogIllegalItems: true
+    # Whitelist for specific items that should bypass checks
+    Whitelist:
+      - "BARRIER"  # Example: Allow barriers even though not survival obtainable
+      - "COMMAND_BLOCK"
+
 
 OtherDupes:
   GrindStone:
@@ -120,14 +172,19 @@ OtherDupes:
   DeathDupe:
     Enabled: false
 
-
 ItemBlacklist:
+  - Namespace: "minecraft"
+    Key: "tnt"
+    Names: []
+  - Namespace: "minecraft"
+    Key: "stone"
+    Names: []
   - Namespace: "exampleplugin"
     Key: "specialtype"
     Names:
       - "test_item"
       - "extra_item"
-        
+
 Translation:
   # Enable translation system
   enabled: true
@@ -243,14 +300,34 @@ This project is licensed under the [BSD-3 License](https://secvers.org/info/lice
 🔮 ROADMAP
 
 Coming Soon:
-PlaceholderAPI Integration
-- [ ] LuckyPerms and Vault based Cooldown & Limit System\
-- [ ] Economy Integration\
-- [ ] Up to 30+ More Dupe Methods
-- [ ] Multi-Language Support
+Version 3 Goals
+- [ ] Permissions based Dupes
+  - [X] Item Frame Dupe
+  - [ ] Grind Stone Dupe
+  - [ ] Dropper Dupe
+  - [ ] Donkey Dupe
+  - [ ] Crafter Duper
+  - [ ] Death Dupe
+- [X] Multi-Language Support
+  - [X] English 
+  - [X] German
+  - [ ] Russian
+  - [ ] Chinese
+  - [ ] Korean
+  - [ ] Japanese
+- [X] Anti-Illegal
+  - [X] Whitelist Items
+  - [ ] MBT Removals
+  - [ ] Custom Replacements
+- [ ] Particle Effects & Animations
+  - [X] Crafter Dupe
+  - [ ] Option for ItemFrame
+  - [ ] Option for Grind Stone
+- [ ] Economy Integration 
+
 
 Under Consideration:
-- [ ] Dupe Recipe System
+- [ ] Crafter Dupe Recipe System
 - [ ] Particle Effects & Animations
 - [ ] Backup & Rollback System
 - [ ] Web Dashboard

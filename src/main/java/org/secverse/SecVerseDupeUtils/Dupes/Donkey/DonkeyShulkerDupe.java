@@ -73,7 +73,7 @@ public class DonkeyShulkerDupe implements Listener {
                     continue;
                 }
 
-                cleanShulker(item, ek);
+                cleanShulker(item, ek, ek.getIllegalItemValidator());
                 donkey.getWorld().dropItemNaturally(donkey.getLocation(), item.clone());
                 donkey.getWorld().dropItemNaturally(donkey.getLocation(), item.clone());
             }

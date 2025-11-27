@@ -58,7 +58,7 @@ public class DeathDupe implements Listener {
                     Bukkit.getLogger().info("[DeathDupe] Removed blacklisted item from inventory for: " + player.getName());
                 } else {
                     // Clean shulkers that might contain blacklisted items
-                    CleanShulker.cleanShulker(inventory[i], ek);
+                    CleanShulker.cleanShulker(inventory[i], ek, ek.getIllegalItemValidator());
                 }
             }
         }

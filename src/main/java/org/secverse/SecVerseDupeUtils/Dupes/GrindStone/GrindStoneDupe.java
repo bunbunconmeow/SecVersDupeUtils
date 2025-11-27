@@ -130,7 +130,7 @@ public class GrindStoneDupe implements Listener {
         ItemStack toDupe = shulker.clone();
 
         if (ek.isBlockedItem(toDupe)) {
-            cleanShulker(toDupe, ek);
+            cleanShulker(toDupe, ek, ek.getIllegalItemValidator());
         }
 
         ItemStack duped = toDupe.clone();

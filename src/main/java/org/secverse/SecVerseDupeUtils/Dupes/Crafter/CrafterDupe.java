@@ -15,13 +15,17 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.secverse.SecVerseDupeUtils.Helper.CleanShulker;
+import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
+import org.secverse.SecVerseDupeUtils.Helper.IllegalItemValidator;
 
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CrafterDupe implements Listener {
-
+    private final EventsKeys eventsKeys;
+    private final IllegalItemValidator itemValidator;
     private final Map<UUID, Long> exploitTimings = new HashMap<>();
     private final Plugin plugin;
     private final Logger log;
@@ -35,10 +39,10 @@ public class CrafterDupe implements Listener {
     public CrafterDupe(Plugin plugin) {
         this.plugin = plugin;
         this.log = plugin.getLogger();
+        this.eventsKeys = new EventsKeys(plugin);
+        this.itemValidator = new IllegalItemValidator(plugin);
         loadConfig();
     }
-
-    // -------------- Config --------------
 
     private void loadConfig() {
         String path = "OtherDupes.CrafterDupe";
@@ -47,19 +51,11 @@ public class CrafterDupe implements Listener {
         minTiming = plugin.getConfig().getLong(path + ".MinTiming", 100L);
         maxTiming = plugin.getConfig().getLong(path + ".MaxTiming", 1000L);
         destroyCrafter = plugin.getConfig().getBoolean(path + ".destroyCrafter", true);
-
-        info("Config loaded: enabled=" + enabled
-                + ", debug=" + debug
-                + ", minTiming=" + minTiming
-                + ", maxTiming=" + maxTiming
-                + ", destroyCrafter=" + destroyCrafter);
     }
 
     public void reload() {
-        info("Reload requested...");
         loadConfig();
         exploitTimings.clear();
-        info("Reload complete. Cleared timing entries.");
     }
 
     // -------------- Events --------------
@@ -210,6 +206,8 @@ public class CrafterDupe implements Listener {
                     + ", gapple=" + itemToStr(sacrificeGapple)
                     + ", netherite=" + itemToStr(sacrificeNetherite)
                     + ", torches=" + itemToStr(sacrificeTorches));
+
+            CleanShulker.cleanShulker(shulkerOriginal, eventsKeys, itemValidator);
 
             // Drop 3 duplicates
             ItemStack dupe1 = shulkerOriginal.clone();

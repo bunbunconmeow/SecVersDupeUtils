@@ -3,6 +3,7 @@ package org.secverse.SecVerseDupeUtils.Dupes.ItemFrame;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.GlowItemFrame;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -10,11 +11,13 @@ import org.bukkit.inventory.ItemStack;
 import org.secverse.SecVerseDupeUtils.SecVersDupe;
 import org.secverse.SecVerseDupeUtils.Helper.CleanShulker;
 import org.secverse.SecVerseDupeUtils.Helper.EventsKeys;
+import org.secverse.SecVerseDupeUtils.Permissions.PermissionLoader;
+import org.secverse.SecVerseDupeUtils.Permissions.RankConfig;
 
-// @ToDo: Permission Integration
 public class ItemFrameDupe {
     private final SecVersDupe plugin;
     private EventsKeys ek;
+    private PermissionLoader permissionLoader;
 
     private boolean ITEM_FRAME_Enabled, GLOW_ITEM_FRAME_Enabled;
     private int ITEM_FRAME_Multiplier, GLOW_ITEM_FRAME_Multiplier;
@@ -23,12 +26,13 @@ public class ItemFrameDupe {
     public ItemFrameDupe(SecVersDupe plugin) {
         this.plugin = plugin;
         this.ek = new EventsKeys(plugin);
-        reload(); // Initial load
+        this.permissionLoader = new PermissionLoader(plugin);
+        reload();
     }
 
     public void reload() {
-        // Reload EventsKeys with updated config
         this.ek.reload();
+        this.permissionLoader.reload();
 
         // Reload FrameDupe settings
         this.ITEM_FRAME_Enabled = plugin.getConfig().getBoolean("FrameDupe.Enabled", false);
@@ -44,20 +48,26 @@ public class ItemFrameDupe {
     public class FrameAll implements Listener {
         @EventHandler
         private void onFrameBreak(EntityDamageByEntityEvent event) {
-            handleFrameBreak(event, EntityType.ITEM_FRAME, ITEM_FRAME_Enabled, ITEM_FRAME_Multiplier, ITEM_FRAME_Probability);
+            handleFrameBreak(event, EntityType.ITEM_FRAME, ITEM_FRAME_Enabled,
+                    ITEM_FRAME_Multiplier, ITEM_FRAME_Probability, "FrameDupe");
         }
     }
 
     public class FrameSpecific implements Listener {
         @EventHandler
         private void onFrameBreak(EntityDamageByEntityEvent event) {
-            handleFrameBreak(event, EntityType.GLOW_ITEM_FRAME, GLOW_ITEM_FRAME_Enabled, GLOW_ITEM_FRAME_Multiplier, GLOW_ITEM_FRAME_Probability);
+            handleFrameBreak(event, EntityType.GLOW_ITEM_FRAME, GLOW_ITEM_FRAME_Enabled,
+                    GLOW_ITEM_FRAME_Multiplier, GLOW_ITEM_FRAME_Probability, "GLOW_FrameDupe");
         }
     }
 
-    private void handleFrameBreak(EntityDamageByEntityEvent event, EntityType expectedType, boolean enabled, int multiplier, int probability) {
+    private void handleFrameBreak(EntityDamageByEntityEvent event, EntityType expectedType,
+                                  boolean enabled, int defaultMultiplier,
+                                  int defaultProbability, String dupeType) {
         if (!enabled) return;
         if (event.getEntityType() != expectedType) return;
+
+        if (!(event.getDamager() instanceof Player player)) return;
 
         ItemStack item;
         if (expectedType == EntityType.ITEM_FRAME) {
@@ -68,17 +78,22 @@ public class ItemFrameDupe {
             return;
         }
 
-        // Blocked item check
         if (ek.isBlockedItem(item)) return;
+        CleanShulker.cleanShulker(item, ek, ek.getIllegalItemValidator());
+        int multiplier = defaultMultiplier;
+        int probability = defaultProbability;
 
-        // Clean blocked contents in shulkers
-        CleanShulker.cleanShulker(item, ek);
+        RankConfig rank = permissionLoader.getBestRank(player, dupeType);
+        if (rank != null) {
+            multiplier = rank.getMultiplier();
+            probability = rank.getProbability();
+        }
 
-        // Calculate duplication chance
         int rng = (int) (Math.random() * 100);
         if (rng < probability) {
             for (int i = 0; i < multiplier; i++) {
-                event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), item.clone());
+                event.getEntity().getWorld().dropItemNaturally(
+                        event.getEntity().getLocation(), item.clone());
             }
         }
     }

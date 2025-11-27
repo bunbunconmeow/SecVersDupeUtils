@@ -1,4 +1,5 @@
 package org.secverse.SecVerseDupeUtils.Helper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +14,19 @@ import org.bukkit.plugin.Plugin;
 public class EventsKeys {
     private final Plugin plugin;
     private final List<BlacklistEntry> cachedBlacklist;
+    private IllegalItemValidator illegalItemValidator;
 
     public EventsKeys(Plugin plugin) {
         this.plugin = plugin;
         this.cachedBlacklist = loadBlacklist();
+
+        // Initialize illegal item validator if enabled
+        if (plugin.getConfig().getBoolean("Settings.DisableIllegalItem", true)) {
+            this.illegalItemValidator = new IllegalItemValidator(plugin);
+        }
+    }
+    public Plugin getPlugin() {
+        return plugin;
     }
 
     private List<BlacklistEntry> loadBlacklist() {
@@ -39,7 +49,8 @@ public class EventsKeys {
     public boolean isBlockedItem(ItemStack item) {
         // Check for material blacklists
         for (BlacklistEntry entry : cachedBlacklist) {
-            if ("minecraft".equals(entry.key.getNamespace()) && entry.key.getKey().equalsIgnoreCase(item.getType().name())) {
+            if ("minecraft".equals(entry.key.getNamespace()) &&
+                    entry.key.getKey().equalsIgnoreCase(item.getType().name())) {
                 return true;
             }
         }
@@ -60,9 +71,25 @@ public class EventsKeys {
         return false;
     }
 
+
+    public IllegalItemValidator getIllegalItemValidator() {
+        return illegalItemValidator;
+    }
+
     public void reload() {
         cachedBlacklist.clear();
         cachedBlacklist.addAll(loadBlacklist());
+
+        // Reload illegal item validator
+        if (plugin.getConfig().getBoolean("Settings.DisableIllegalItem", true)) {
+            if (illegalItemValidator == null) {
+                illegalItemValidator = new IllegalItemValidator(plugin);
+            } else {
+                illegalItemValidator.reload();
+            }
+        } else {
+            illegalItemValidator = null;
+        }
     }
 
     private static class BlacklistEntry {

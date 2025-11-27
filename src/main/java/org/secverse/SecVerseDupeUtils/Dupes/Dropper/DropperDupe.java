@@ -93,7 +93,7 @@ public class DropperDupe implements Listener {
             }
 
             // Clean shulkers that might contain blacklisted items
-            CleanShulker.cleanShulker(original, ek);
+            CleanShulker.cleanShulker(original, ek, ek.getIllegalItemValidator());
 
             debug("Execute: duplicating " + itemToStr(original));
 

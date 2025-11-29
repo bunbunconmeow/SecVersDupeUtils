@@ -10,15 +10,15 @@ commands:
   dupe:
     description: Basecommand for Dupe Utils
     usage: /dupe <reload|config>
-    permission: dupeutils.command
+    permission: DupeUtility.command
     permission-message: You do not have permission to use this command.
   reload:
     description: Reloads Dupe Utils config
     usage: /dupe reload
-    permission: dupeutils.reload
+    permission: DupeUtility.reload
     permission-message: You do not have permission to use this command.
   config:
     description: Opens GUI to configure dupes allowed
     usage: /dupe config
-    permission: dupeutils.configdupes
+    permission: DupeUtility.configdupes
     permission-message: You do not have permission to use this command.

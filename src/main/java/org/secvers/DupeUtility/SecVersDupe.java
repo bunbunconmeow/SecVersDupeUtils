@@ -137,7 +137,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
                     return true;
                 }
 
-                if (!sender.hasPermission("dupeutils.configdupes")) {
+                if (!sender.hasPermission("DupeUtility.configdupes")) {
                     sender.sendMessage("§cYou do not have permission to use this command.");
                     return true;
                 }
@@ -161,10 +161,10 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         if (command.getName().equalsIgnoreCase("dupe")) {
             if (args.length == 1) {
                 List<String> completions = new ArrayList<>();
-                if (sender.hasPermission("dupeutils.reload")) {
+                if (sender.hasPermission("DupeUtility.reload")) {
                     completions.add("reload");
                 }
-                if (sender.hasPermission("dupeutils.configdupes")) {
+                if (sender.hasPermission("DupeUtility.configdupes")) {
                     completions.add("config");
                 }
                 return completions.stream()
@@ -180,11 +180,9 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         if(telemetry != null) {
             Map<String, Object> add = new HashMap<>();
             add.put("event", "plugin_disable");
-            // Send telemetry synchronously to avoid IllegalPluginAccessException
             try {
                 telemetry.sendTelemetrySync(add);
             } catch (IllegalPluginAccessException e) {
-                // Plugin is already disabled, cannot send telemetry
                 getLogger().warning("Failed to send disable telemetry: " + e.getMessage());
             }
         }

@@ -1,3 +1,6 @@
+# Config Version
+version: 3.0
+
 # Telemetry
 # We will collect only the current Version, OS, Server Name.
 telemetry:

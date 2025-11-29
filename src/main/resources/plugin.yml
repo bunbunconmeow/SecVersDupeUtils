@@ -1,6 +1,6 @@
-name: SecVerseDupeUtils
+name: DupeUtility
 version: '3.0 ALPHA'
-main: org.secverse.SecVerseDupeUtils.SecVersDupe
+main: org.secvers.DupeUtility.SecVersDupe
 api-version: '1.21'
 load: STARTUP
 authors: [ Mia_conmeow ]

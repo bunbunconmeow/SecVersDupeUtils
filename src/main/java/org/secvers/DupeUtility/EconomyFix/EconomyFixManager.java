@@ -24,6 +24,8 @@ public class EconomyFixManager {
     private boolean enderChestScanEnabled;
     private boolean containerScanEnabled;
     private boolean offlinePlayerScanEnabled;
+    private boolean offlineEChestScanEnabled;
+    private boolean ChunkLoadingEnabled;
     private int scanIntervalTicks;
 
     public EconomyFixManager(JavaPlugin plugin) {
@@ -37,21 +39,23 @@ public class EconomyFixManager {
      * Load configuration from config.yml
      */
     private void loadConfiguration() {
-        playerScanEnabled = config.getBoolean("EconomyFix.PlayerInventoryScan", true);
-        enderChestScanEnabled = config.getBoolean("EconomyFix.EnderChestScan", true);
-        containerScanEnabled = config.getBoolean("EconomyFix.WorldContainerScan", true);
-        offlinePlayerScanEnabled = config.getBoolean("EconomyFix.OfflinePlayerScan", false);
-
+        this.playerScanEnabled = config.getBoolean("EconomyFix.PlayerInventoryScan", true);
+        this.enderChestScanEnabled = config.getBoolean("EconomyFix.EnderChestScan", true);
+        this.containerScanEnabled = config.getBoolean("EconomyFix.WorldContainerScan", true);
+        this.offlinePlayerScanEnabled = config.getBoolean("EconomyFix.OfflinePlayerScan", false);
+        this.offlineEChestScanEnabled = config.getBoolean("EconomyFix.OfflineEnderChestScan", false);
+        this.ChunkLoadingEnabled  = config.getBoolean("EconomyFix.ChunkLoadingEnabled", false);
         int intervalMinutes = config.getInt("EconomyFix.PlayerScanInterval", 30);
-        scanIntervalTicks = intervalMinutes * 60 * 20; // Convert to ticks
+        this.scanIntervalTicks = intervalMinutes * 60 * 20; // Convert to ticks
     }
 
     /**
      * Initialize scanner components
      */
     private void initializeComponents() {
-        scanner = new ItemScanner(plugin, this);
-        offlineScanner = new OfflinePlayerScanner(plugin, scanner);
+        scanner = new ItemScanner(plugin);
+
+        offlineScanner = new OfflinePlayerScanner(plugin, scanner, this);
 
         plugin.getLogger().info("EconomyFix initialized successfully");
     }
@@ -108,6 +112,8 @@ public class EconomyFixManager {
         }
         return scanner.scanEnderChests();
     }
+
+
 
     /**
      * Scan world containers
@@ -184,9 +190,8 @@ public class EconomyFixManager {
     }
 
     // Getters
-    public boolean isPlayerScanEnabled() { return playerScanEnabled; }
-    public boolean isEnderChestScanEnabled() { return enderChestScanEnabled; }
-    public boolean isContainerScanEnabled() { return containerScanEnabled; }
     public boolean isOfflinePlayerScanEnabled() { return offlinePlayerScanEnabled; }
+    public boolean isOfflineEChestScanEnabled() { return offlineEChestScanEnabled; }
+    public boolean isChunkLoadingEnabled() { return ChunkLoadingEnabled; }
     public FileConfiguration getConfig() { return config; }
 }

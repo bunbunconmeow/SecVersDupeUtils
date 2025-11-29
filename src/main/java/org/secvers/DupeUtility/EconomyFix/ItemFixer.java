@@ -35,9 +35,10 @@ public class ItemFixer {
 
     // Materials that can be enchanted
     private static final Map<Material, Set<Enchantment>> ALLOWED_ENCHANTMENTS = new HashMap<>();
-
+    private static final Set<Material> NON_SURVIVAL_ITEMS = new HashSet<>();
     static {
         initializeValidationData();
+        initializeNonSurvivalItems();
     }
 
     public ItemFixer(JavaPlugin plugin) {
@@ -113,6 +114,169 @@ public class ItemFixer {
         // Initialize allowed enchantments per material type
         initializeAllowedEnchantments();
     }
+
+    private static void initializeNonSurvivalItems() {
+        // Command blocks
+        NON_SURVIVAL_ITEMS.add(Material.COMMAND_BLOCK);
+        NON_SURVIVAL_ITEMS.add(Material.CHAIN_COMMAND_BLOCK);
+        NON_SURVIVAL_ITEMS.add(Material.REPEATING_COMMAND_BLOCK);
+        NON_SURVIVAL_ITEMS.add(Material.COMMAND_BLOCK_MINECART);
+
+        // Structure blocks and related
+        NON_SURVIVAL_ITEMS.add(Material.STRUCTURE_BLOCK);
+        NON_SURVIVAL_ITEMS.add(Material.STRUCTURE_VOID);
+        NON_SURVIVAL_ITEMS.add(Material.JIGSAW);
+
+        // Barrier and light
+        NON_SURVIVAL_ITEMS.add(Material.BARRIER);
+        NON_SURVIVAL_ITEMS.add(Material.LIGHT);
+
+        // Bedrock
+        NON_SURVIVAL_ITEMS.add(Material.BEDROCK);
+
+        // Spawn eggs (all variants)
+        for (Material material : Material.values()) {
+            if (material.name().endsWith("_SPAWN_EGG")) {
+                NON_SURVIVAL_ITEMS.add(material);
+            }
+        }
+
+        // End portal frame
+        NON_SURVIVAL_ITEMS.add(Material.END_PORTAL_FRAME);
+        NON_SURVIVAL_ITEMS.add(Material.END_PORTAL);
+
+        // Nether portal
+        NON_SURVIVAL_ITEMS.add(Material.NETHER_PORTAL);
+
+        // End gateway
+        NON_SURVIVAL_ITEMS.add(Material.END_GATEWAY);
+
+        // Frosted ice
+        NON_SURVIVAL_ITEMS.add(Material.FROSTED_ICE);
+
+        // Budding amethyst
+        NON_SURVIVAL_ITEMS.add(Material.BUDDING_AMETHYST);
+
+        // Reinforced deepslate
+        NON_SURVIVAL_ITEMS.add(Material.REINFORCED_DEEPSLATE);
+
+        // Petrified oak slab
+        NON_SURVIVAL_ITEMS.add(Material.PETRIFIED_OAK_SLAB);
+
+        // Infested blocks (silverfish blocks) - technically obtainable but controversial
+        NON_SURVIVAL_ITEMS.add(Material.INFESTED_STONE);
+        NON_SURVIVAL_ITEMS.add(Material.INFESTED_COBBLESTONE);
+        NON_SURVIVAL_ITEMS.add(Material.INFESTED_STONE_BRICKS);
+        NON_SURVIVAL_ITEMS.add(Material.INFESTED_MOSSY_STONE_BRICKS);
+        NON_SURVIVAL_ITEMS.add(Material.INFESTED_CRACKED_STONE_BRICKS);
+        NON_SURVIVAL_ITEMS.add(Material.INFESTED_CHISELED_STONE_BRICKS);
+        NON_SURVIVAL_ITEMS.add(Material.INFESTED_DEEPSLATE);
+
+        // Farmland (can be created but not picked up)
+        NON_SURVIVAL_ITEMS.add(Material.FARMLAND);
+
+        // Piston head and moving piston
+        NON_SURVIVAL_ITEMS.add(Material.PISTON_HEAD);
+        NON_SURVIVAL_ITEMS.add(Material.MOVING_PISTON);
+
+        // Fire
+        NON_SURVIVAL_ITEMS.add(Material.FIRE);
+        NON_SURVIVAL_ITEMS.add(Material.SOUL_FIRE);
+
+        // Water and lava (as items)
+        NON_SURVIVAL_ITEMS.add(Material.WATER);
+        NON_SURVIVAL_ITEMS.add(Material.LAVA);
+        NON_SURVIVAL_ITEMS.add(Material.BUBBLE_COLUMN);
+
+        // Powder snow cauldrons with levels
+        NON_SURVIVAL_ITEMS.add(Material.POWDER_SNOW_CAULDRON);
+        NON_SURVIVAL_ITEMS.add(Material.WATER_CAULDRON);
+        NON_SURVIVAL_ITEMS.add(Material.LAVA_CAULDRON);
+
+        // Potted plants (the pot with plant, not separate items)
+        for (Material material : Material.values()) {
+            if (material.name().startsWith("POTTED_")) {
+                NON_SURVIVAL_ITEMS.add(material);
+            }
+        }
+
+        // Technical blocks
+        NON_SURVIVAL_ITEMS.add(Material.SPAWNER); // Spawners can't be obtained with Silk Touch legitimately
+        NON_SURVIVAL_ITEMS.add(Material.PLAYER_HEAD); // Player heads are not survival obtainable
+        NON_SURVIVAL_ITEMS.add(Material.PLAYER_WALL_HEAD);
+
+        // Debug stick
+        NON_SURVIVAL_ITEMS.add(Material.DEBUG_STICK);
+
+        // Knowledge book
+        NON_SURVIVAL_ITEMS.add(Material.KNOWLEDGE_BOOK);
+
+
+        // Air blocks
+        NON_SURVIVAL_ITEMS.add(Material.AIR);
+        NON_SURVIVAL_ITEMS.add(Material.CAVE_AIR);
+        NON_SURVIVAL_ITEMS.add(Material.VOID_AIR);
+
+        // Lit furnaces/smokers/blast furnaces
+        NON_SURVIVAL_ITEMS.add(Material.FURNACE); // Only when lit, but we'll check state
+        // Note: The lit state is handled by block data, not material
+
+        // Wall-mounted variants of certain blocks
+        for (Material material : Material.values()) {
+            String name = material.name();
+            // Wall signs, wall torches, wall banners, etc. are obtainable,
+            // but some wall variants might not be
+            if (name.contains("_WALL_") && !name.endsWith("_SIGN") &&
+                    !name.endsWith("_BANNER") && !name.equals("COBBLESTONE_WALL") &&
+                    !name.contains("_WALL_TORCH") && !name.contains("_WALL_FAN")) {
+                // Most wall variants ARE obtainable, so be careful here
+            }
+        }
+
+        // Attached stems
+        NON_SURVIVAL_ITEMS.add(Material.ATTACHED_MELON_STEM);
+        NON_SURVIVAL_ITEMS.add(Material.ATTACHED_PUMPKIN_STEM);
+
+        // Carrots, potatoes, beetroots as blocks (not items)
+        NON_SURVIVAL_ITEMS.add(Material.CARROTS);
+        NON_SURVIVAL_ITEMS.add(Material.POTATOES);
+        NON_SURVIVAL_ITEMS.add(Material.BEETROOTS);
+
+        // Cocoa (the block state, not the beans)
+        NON_SURVIVAL_ITEMS.add(Material.COCOA);
+
+        // Tall seagrass (top part)
+        NON_SURVIVAL_ITEMS.add(Material.TALL_SEAGRASS);
+
+        // Bamboo sapling (the small state)
+        NON_SURVIVAL_ITEMS.add(Material.BAMBOO_SAPLING);
+
+        // Sweet berry bush
+        NON_SURVIVAL_ITEMS.add(Material.SWEET_BERRY_BUSH);
+
+        // Kelp plant (different from kelp item)
+        NON_SURVIVAL_ITEMS.add(Material.KELP_PLANT);
+
+        // Big dripleaf stem
+        NON_SURVIVAL_ITEMS.add(Material.BIG_DRIPLEAF_STEM);
+
+        // Powder snow (as block, powder snow bucket IS obtainable)
+        NON_SURVIVAL_ITEMS.add(Material.POWDER_SNOW);
+
+        // Redstone wire (redstone dust IS obtainable)
+        NON_SURVIVAL_ITEMS.add(Material.REDSTONE_WIRE);
+
+        // Tripwire (string and tripwire hook ARE obtainable)
+        NON_SURVIVAL_ITEMS.add(Material.TRIPWIRE);
+
+        // Cake with candle variants
+        for (Material material : Material.values()) {
+            if (material.name().startsWith("CANDLE_CAKE")) {
+                NON_SURVIVAL_ITEMS.add(material);
+            }
+        }
+    }
+
 
     /**
      * Initialize which enchantments are allowed on which materials
@@ -268,6 +432,32 @@ public class ItemFixer {
         return fixedCount;
     }
 
+    private boolean validateSurvivalObtainable(ItemStack item, FixResult result) {
+        Material material = item.getType();
+
+        if (NON_SURVIVAL_ITEMS.contains(material)) {
+            result.addViolation(String.format(
+                    "Non-survival obtainable item: %s",
+                    material.name()
+            ));
+
+            // Remove the item completely (set to null)
+            result.replacementItem = null;
+            result.wasFixed = true;
+
+            if (verboseLogging) {
+                plugin.getLogger().warning(String.format(
+                        "Removed non-survival item: %s",
+                        material.name()
+                ));
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Fix a single item and return the result
      *
@@ -284,6 +474,9 @@ public class ItemFixer {
 
         // Check 1: Validate stack size for ALL items
         if (!validateStackSize(item, result)) {
+            return result;
+        }
+        if (!validateSurvivalObtainable(item, result)) {
             return result;
         }
 

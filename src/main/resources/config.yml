@@ -156,3 +156,14 @@ Translation:
   translations:
     - "English"
     - "German"
+
+EconomyFix:
+  PlayerInventoryScan: true
+  EnderChestScan: true
+  WorldContainerScan: true
+  OfflinePlayerScan: true
+  OfflineEnderChestScan: true
+  ChunkLoadingEnabled: true
+  PlayerScanInterval: 30
+  LogFixedItems: false
+  VerboseLogging: true

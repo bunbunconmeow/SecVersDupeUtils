@@ -11,6 +11,7 @@ public class OfflinePlayerScanner {
 
     private final JavaPlugin plugin;
     private final ItemFixer itemFixer;
+    private final ItemScanner itemScanner;
     private final EconomyFixManager manager;
 
     private final int maxPlayersPerScan;
@@ -25,9 +26,11 @@ public class OfflinePlayerScanner {
     private final Map<UUID, Long> lastScanTimes = new ConcurrentHashMap<>();
     private final long SCAN_COOLDOWN_MS;
 
-    public OfflinePlayerScanner(JavaPlugin plugin, ItemScanner manager) {
+    public OfflinePlayerScanner(JavaPlugin plugin, ItemScanner scanner,
+                                EconomyFixManager manager) {
         this.plugin = plugin;
         this.manager = manager;
+        this.itemScanner = scanner;
         this.itemFixer = new ItemFixer(plugin);
 
         this.maxPlayersPerScan = plugin.getConfig().getInt("EconomyFix.MaxOfflinePlayersPerScan", 50);

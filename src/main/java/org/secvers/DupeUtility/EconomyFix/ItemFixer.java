@@ -1,9 +1,13 @@
 package org.secvers.DupeUtility.EconomyFix;
 
+import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BundleMeta;
@@ -268,8 +272,25 @@ public class ItemFixer {
 
         // Tripwire (string and tripwire hook ARE obtainable)
         NON_SURVIVAL_ITEMS.add(Material.TRIPWIRE);
+        NON_SURVIVAL_ITEMS.add(Material.SPAWNER);
+        NON_SURVIVAL_ITEMS.add(Material.END_PORTAL_FRAME);
+
+        NON_SURVIVAL_ITEMS.add(Material.SPIDER_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.STRIPPED_PALE_OAK_WOOD);
+        NON_SURVIVAL_ITEMS.add(Material.ALLAY_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.BEE_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.ENDERMAN_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.ENDER_DRAGON_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.AXOLOTL_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.ARMADILLO_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.BAT_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.BLAZE_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.CAVE_SPIDER_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.COD_SPAWN_EGG);
+        NON_SURVIVAL_ITEMS.add(Material.WITHER_SPAWN_EGG);
 
         // Cake with candle variants
+
         for (Material material : Material.values()) {
             if (material.name().startsWith("CANDLE_CAKE")) {
                 NON_SURVIVAL_ITEMS.add(material);
@@ -476,6 +497,11 @@ public class ItemFixer {
         if (!validateStackSize(item, result)) {
             return result;
         }
+        // Check 2: Check NBT Data Stackable
+        if(!validateNBTStackable(item, result)) {
+            return result;
+        }
+
         if (!validateSurvivalObtainable(item, result)) {
             return result;
         }
@@ -521,14 +547,14 @@ public class ItemFixer {
         int currentAmount = item.getAmount();
         int maxStackSize = LEGITIMATE_STACK_SIZES.getOrDefault(material, 64);
 
+
         if (currentAmount > maxStackSize) {
             result.addViolation(String.format(
                     "Illegal stack size: %s x%d (max: %d)",
                     material.name(), currentAmount, maxStackSize
             ));
-
-            // Split into multiple stacks or reduce to max
             item.setAmount(maxStackSize);
+
             result.replacementItem = item;
             result.wasFixed = true;
 
@@ -555,7 +581,6 @@ public class ItemFixer {
                     material.name(), item.getAmount()
             ));
 
-            // Reduce to 1
             item.setAmount(1);
             result.replacementItem = item;
             result.wasFixed = true;
@@ -565,6 +590,68 @@ public class ItemFixer {
                         "Fixed stacked non-stackable: %s",
                         material.name()
                 ));
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Validate that non-stackable items (armor, tools) are not stacked
+     */
+    private boolean validateNBTStackable(ItemStack item, FixResult result) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return true;
+
+        Material material = item.getType();
+        int legitimateMax = LEGITIMATE_STACK_SIZES.getOrDefault(material, material.getMaxStackSize());
+
+        // ========== MAX STACK SIZE ==========
+        if (meta.hasMaxStackSize()) {
+            int metaMaxStack = meta.getMaxStackSize();
+
+            if (metaMaxStack > legitimateMax) {
+                meta.setMaxStackSize(legitimateMax);
+                result.addViolation(String.format(
+                        "Removed illegal max_stack_size: %d -> %d for %s",
+                        metaMaxStack, legitimateMax, material.name()
+                ));
+
+            }
+        }
+
+        // ========== MAX DAMAGE (DURABILITY) ==========
+        if (meta instanceof Damageable) {
+            Damageable damageable = (Damageable) meta;
+
+            if (damageable.hasMaxDamage()) {
+                int metaMaxDamage = damageable.getMaxDamage();
+                int vanillaMaxDamage = material.getMaxDurability();
+
+                if (vanillaMaxDamage > 0 && metaMaxDamage != vanillaMaxDamage) {
+                    damageable.setMaxDamage(vanillaMaxDamage);
+                    result.addViolation(String.format(
+                            "Fixed illegal max_damage: %d -> %d for %s",
+                            metaMaxDamage, vanillaMaxDamage, material.name()
+                    ));
+
+                }
+            }
+
+            // Also check current damage value
+            if (damageable.hasDamage()) {
+                int damage = damageable.getDamage();
+                int maxDamage = damageable.hasMaxDamage() ? damageable.getMaxDamage() : material.getMaxDurability();
+
+                if (damage > maxDamage) {
+                    damageable.setDamage(maxDamage);
+                    result.addViolation(String.format(
+                            "Fixed illegal damage: %d -> %d for %s",
+                            damage, maxDamage, material.name()
+                    ));
+
+                }
             }
         }
 

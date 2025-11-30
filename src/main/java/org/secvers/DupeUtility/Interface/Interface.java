@@ -267,7 +267,7 @@ public class Interface implements Listener {
     // ==================== ITEM FRAME SETTINGS ====================
     private void openItemFrameSettings(Player player) {
         String basePath = "FrameDupe";
-        String title = getLang(player, "gui.title.settings", getLang(player, "dupe.itemframe.name"));
+        String title = getLang(player, "dupe.itemframe.name");
         Inventory gui = Bukkit.createInventory(null, 54, title);
 
         fillWithGlass(gui);
@@ -300,8 +300,7 @@ public class Interface implements Listener {
     // ==================== GLOW FRAME SETTINGS ====================
     private void openGlowFrameSettings(Player player) {
         String basePath = "GLOW_FrameDupe";
-        Inventory gui = Bukkit.createInventory(null, 45,
-                getLang(player, "gui.title.settings", getLang(player, "dupe.glowframe.name")));
+        Inventory gui = Bukkit.createInventory(null, 45, getLang(player, "dupe.glowframe.name"));
 
         fillWithGlass(gui);
 
@@ -333,8 +332,7 @@ public class Interface implements Listener {
     // ==================== DONKEY SETTINGS ====================
     private void openDonkeySettings(Player player) {
         String basePath = "OtherDupes.DonkeyDupe";
-        Inventory gui = Bukkit.createInventory(null, 45,
-                getLang(player, "gui.title.settings", getLang(player,"dupe.donkey.name")));
+        Inventory gui = Bukkit.createInventory(null, 45, getLang(player,"dupe.donkey.name"));
 
         fillWithGlass(gui);
 
@@ -365,8 +363,7 @@ public class Interface implements Listener {
     // ==================== GRINDSTONE SETTINGS ====================
     private void openGrindstoneSettings(Player player) {
         String basePath = "OtherDupes.GrindStone";
-        Inventory gui = Bukkit.createInventory(null, 45,
-                getLang(player, "gui.title.settings", getLang(player, "dupe.grindstone.name")));
+        Inventory gui = Bukkit.createInventory(null, 45, getLang(player, "dupe.grindstone.name"));
 
         fillWithGlass(gui);
 
@@ -406,8 +403,7 @@ public class Interface implements Listener {
     // ==================== CRAFTER SETTINGS ====================
     private void openCrafterSettings(Player player) {
         String basePath = "OtherDupes.CrafterDupe";
-        Inventory gui = Bukkit.createInventory(null, 45,
-                getLang(player, "gui.title.settings", getLang(player, "dupe.crafter.name")));
+        Inventory gui = Bukkit.createInventory(null, 45,getLang(player, "dupe.crafter.name"));
 
         fillWithGlass(gui);
 
@@ -447,8 +443,7 @@ public class Interface implements Listener {
     // ==================== DROPPER SETTINGS ====================
     private void openDropperSettings(Player player) {
         String basePath = "OtherDupes.DropperDupe";
-        Inventory gui = Bukkit.createInventory(null, 45,
-                getLang(player, "gui.title.settings", getLang(player, "dupe.dropper.name")));
+        Inventory gui = Bukkit.createInventory(null, 45, getLang(player, "dupe.dropper.name"));
 
         fillWithGlass(gui);
 
@@ -608,9 +603,11 @@ public class Interface implements Listener {
             return;
         }
 
+        plugin.getLogger().info("[DEBUG] Creating GUI with title: '" + getLang(player, "dupe.death.name") + "'");
+
         // For blacklist GUI, handle specially
         if (title.equals("Item Blacklist")) {
-
+            event.setCancelled(true);
             int slot = event.getSlot();
             ItemStack clickedItem = event.getCurrentItem();
 
@@ -646,8 +643,9 @@ public class Interface implements Listener {
         event.setCancelled(true);
 
         ItemStack clickedItem = event.getCurrentItem();
-
-        if (clickedItem == null || clickedItem.getType() == Material.GRAY_STAINED_GLASS_PANE) return;
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+            return;
+        }
 
         // Handle Main GUI
         if (title.equals(getLang(player,"gui.title"))) {
@@ -746,8 +744,9 @@ public class Interface implements Listener {
 // ==================== DEATH SETTINGS ====================
 private void openDeathSettings(Player player) {
     String basePath = "OtherDupes.DeathDupe";
+    String title = getLang(player,"dupe.death.name");
     Inventory gui = Bukkit.createInventory(null, 45,
-            getLang(player,"gui.title.settings", getLang(player,"dupe.death.name")));
+            getLang(player,"gui.title.settings", title));
 
     fillWithGlass(gui);
 

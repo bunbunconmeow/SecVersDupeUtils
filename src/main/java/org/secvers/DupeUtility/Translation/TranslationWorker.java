@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.secvers.DupeUtility.Helper.LoggerColor;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -67,7 +68,7 @@ public class TranslationWorker {
      */
     private void initializeTranslations() {
         if (!enabled) {
-            plugin.getLogger().info("Translation system is disabled.");
+            plugin.getLogger().info(LoggerColor.GRAY + "Translation system is disabled." + LoggerColor.RESET);
             return;
         }
 
@@ -75,40 +76,97 @@ public class TranslationWorker {
             // Create translations folder if it doesn't exist
             if (!Files.exists(translationsFolder)) {
                 Files.createDirectories(translationsFolder);
-                plugin.getLogger().info("Created translations folder: " + translationsFolder);
+                plugin.getLogger().info(LoggerColor.YELLOW + "→ Created translations folder: " + LoggerColor.CYAN + translationsFolder + LoggerColor.RESET);
             }
 
             // Create default translation files (English and German)
+            plugin.getLogger().info(LoggerColor.YELLOW + "→ Creating default translation files..." + LoggerColor.RESET);
             createDefaultTranslationFile("English");
             createDefaultTranslationFile("German");
+            plugin.getLogger().info(LoggerColor.GREEN + "✓ Default translations created" + LoggerColor.RESET);
 
             // Scan folder for all available translations
+            plugin.getLogger().info(LoggerColor.YELLOW + "→ Scanning translations folder..." + LoggerColor.RESET);
             scanTranslationsFolder();
+            plugin.getLogger().info(LoggerColor.GREEN + "✓ Folder scanned" + LoggerColor.RESET);
 
             // Load all translations into cache
+            plugin.getLogger().info(LoggerColor.YELLOW + "→ Loading translations into cache..." + LoggerColor.RESET);
             loadAllTranslations();
+            plugin.getLogger().info(LoggerColor.GREEN + "✓ Translations cached" + LoggerColor.RESET);
 
             // Update config with detected languages
             updateConfigWithDetectedLanguages();
 
-            plugin.getLogger().info("§a═══════════════════════════════════════");
-            plugin.getLogger().info("§aTranslation System Initialized");
-            plugin.getLogger().info("§aDetected Languages: " + detectedLanguages.size());
+            // Calculate max width for the box
+            int maxWidth = 30; // minimum width
             for (String lang : detectedLanguages) {
                 LanguageMetadata meta = languageMetadata.get(lang.toLowerCase());
                 if (meta != null) {
-                    plugin.getLogger().info("§a  - " + lang + " (" + meta.getNativeName() + ") by " + meta.getAuthor());
+                    int lineWidth = lang.length() + meta.getNativeName().length() + meta.getAuthor().length() + 10;
+                    maxWidth = Math.max(maxWidth, lineWidth);
                 } else {
-                    plugin.getLogger().info("§a  - " + lang);
+                    maxWidth = Math.max(maxWidth, lang.length() + 5);
                 }
             }
-            plugin.getLogger().info("§a═══════════════════════════════════════");
+            maxWidth = Math.max(maxWidth, ("Detected Languages: " + detectedLanguages.size()).length() + 2);
+
+            String topBorder = "╔" + "═".repeat(maxWidth) + "╗";
+            String midBorder = "╠" + "═".repeat(maxWidth) + "╣";
+            String bottomBorder = "╚" + "═".repeat(maxWidth) + "╝";
+
+            plugin.getLogger().info(LoggerColor.BRIGHT_CYAN + topBorder + LoggerColor.RESET);
+
+            String title = "Translation System Initialized";
+            int titlePadding = (maxWidth - title.length()) / 2;
+            plugin.getLogger().info(LoggerColor.BRIGHT_CYAN + "║" +
+                    " ".repeat(titlePadding) +
+                    LoggerColor.BRIGHT_GREEN + title +
+                    " ".repeat(maxWidth - title.length() - titlePadding) +
+                    LoggerColor.BRIGHT_CYAN + "║" + LoggerColor.RESET);
+
+            plugin.getLogger().info(LoggerColor.BRIGHT_CYAN + midBorder + LoggerColor.RESET);
+
+            String langHeader = "Detected Languages: " + detectedLanguages.size();
+            plugin.getLogger().info(LoggerColor.BRIGHT_CYAN + "║ " +
+                    LoggerColor.YELLOW + langHeader +
+                    " ".repeat(maxWidth - langHeader.length() - 1) +
+                    LoggerColor.BRIGHT_CYAN + "║" + LoggerColor.RESET);
+
+            for (String lang : detectedLanguages) {
+                LanguageMetadata meta = languageMetadata.get(lang.toLowerCase());
+                if (meta != null) {
+                    String line = String.format("  ✓ %s (%s) by %s",
+                            lang,
+                            meta.getNativeName(),
+                            meta.getAuthor());
+                    int padding = maxWidth - line.length() - 1;
+                    plugin.getLogger().info(LoggerColor.BRIGHT_CYAN + "║ " +
+                            LoggerColor.GREEN + "  ✓ " +
+                            LoggerColor.WHITE + lang +
+                            LoggerColor.GRAY + " (" + meta.getNativeName() + ") " +
+                            LoggerColor.BLUE + "by " + meta.getAuthor() +
+                            " ".repeat(Math.max(0, padding)) +
+                            LoggerColor.BRIGHT_CYAN + "║" + LoggerColor.RESET);
+                } else {
+                    String line = "  • " + lang;
+                    int padding = maxWidth - line.length() - 1;
+                    plugin.getLogger().info(LoggerColor.BRIGHT_CYAN + "║ " +
+                            LoggerColor.YELLOW + "  • " +
+                            LoggerColor.WHITE + lang +
+                            " ".repeat(Math.max(0, padding)) +
+                            LoggerColor.BRIGHT_CYAN + "║" + LoggerColor.RESET);
+                }
+            }
+
+            plugin.getLogger().info(LoggerColor.BRIGHT_CYAN + bottomBorder + LoggerColor.RESET);
 
         } catch (IOException e) {
-            plugin.getLogger().severe("Failed to initialize translations: " + e.getMessage());
+            plugin.getLogger().severe(LoggerColor.BRIGHT_RED + "✗ Failed to initialize translations: " + LoggerColor.RED + e.getMessage() + LoggerColor.RESET);
             e.printStackTrace();
         }
     }
+
 
     /**
      * Scan translations folder for all available language files
@@ -221,7 +279,7 @@ public class TranslationWorker {
 
             // Menu
             translations.put("gui.title", "§6SecVers Dupe Konfiguration");
-            translations.put("gui.title.settings", "§6{0} Einstellungen");
+            translations.put("gui.title.settings", "{0} Einstellungen");
             translations.put("gui.enabled", "§aAktiviert");
             translations.put("gui.disabled", "§cDeaktiviert");
             translations.put("gui.probability", "Wahrscheinlichkeit");
@@ -256,7 +314,6 @@ public class TranslationWorker {
             translations.put("gui.increase_small", "Erhöhen um {0}");
             translations.put("gui.increase_large", "Stark erhöhen um {0}");
 
-
             // Dupe names and descriptions
             translations.put("dupe.itemframe.name", "Item Frame Dupe");
             translations.put("dupe.itemframe.desc", "Dupliziere Items mit Item Frames");
@@ -274,8 +331,8 @@ public class TranslationWorker {
             translations.put("dupe.death.desc", "Behalte Items beim Tod");
 
             // Messages
-            translations.put("msg.enabled", "wurde §aaktiviert");
-            translations.put("msg.disabled", "wurde §cdeaktiviert");
+            translations.put("msg.enabled", "{0} wurde §aaktiviert");
+            translations.put("msg.disabled", "{0} wurde §cdeaktiviert");
             translations.put("msg.probability_set", "Wahrscheinlichkeit gesetzt auf");
             translations.put("msg.multiplier_set", "Multiplikator gesetzt auf");
             translations.put("msg.mode_drop_only", "Modus: Nur Droppen");
@@ -315,7 +372,7 @@ public class TranslationWorker {
 
             // Menu
             translations.put("gui.title", "§6SecVers Dupe Configuration");
-            translations.put("gui.title.settings", "§6Settings");
+            translations.put("gui.title.settings", "{0} Settings");
             translations.put("gui.enabled", "§aEnabled");
             translations.put("gui.disabled", "§cDisabled");
             translations.put("gui.probability", "Probability");
@@ -350,8 +407,6 @@ public class TranslationWorker {
             translations.put("gui.increase_small", "Increase by {0}");
             translations.put("gui.increase_large", "Increase by {0} significantly");
 
-
-
             // Dupe names and descriptions
             translations.put("dupe.itemframe.name", "Item Frame Dupe");
             translations.put("dupe.itemframe.desc", "Duplicate items using item frames");
@@ -368,10 +423,9 @@ public class TranslationWorker {
             translations.put("dupe.death.name", "Death Dupe");
             translations.put("dupe.death.desc", "Keep items on death");
 
-
             // Messages
-            translations.put("msg.enabled", "has been §aenabled");
-            translations.put("msg.disabled", "has been §cdisabled");
+            translations.put("msg.enabled", "{0} has been §aenabled");
+            translations.put("msg.disabled", "{0} has been §cdisabled");
             translations.put("msg.probability_set", "Probability set to");
             translations.put("msg.multiplier_set", "Multiplier set to");
             translations.put("msg.mode_drop_only", "Mode: Drop Only");
@@ -400,6 +454,7 @@ public class TranslationWorker {
 
         return translations;
     }
+
 
     /**
      * Load all translation files into cache

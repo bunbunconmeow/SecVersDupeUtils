@@ -54,6 +54,9 @@ public class TranslationGUI implements Listener {
         // Info item in center top (Slot 4)
         gui.setItem(4, createInfoItem(player));
 
+        // Back Button (Slot 40)
+        gui.setItem(40, createBackButton(player));
+
         // Close Button (Slot 44)
         gui.setItem(44, createCloseButton(player));
 

@@ -6,7 +6,7 @@
 
     <groupId>org.secvers</groupId>
     <artifactId>DupeUtility</artifactId>
-    <version>3.0 ALPHA r1</version>
+    <version>3.0 ALPHA r2</version>
     <packaging>jar</packaging>
 
     <name>DupeUtility</name>

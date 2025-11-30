@@ -12,6 +12,7 @@ import org.secvers.DupeUtility.Config.ConfigVersionChecker;
 import org.secvers.DupeUtility.Dupes.Crafter.CrafterDupe;
 import org.secvers.DupeUtility.Dupes.Death.DeathDupe;
 import org.secvers.DupeUtility.Dupes.GrindStone.GrindStoneDupe;
+import org.secvers.DupeUtility.Helper.LoggerColor;
 import org.secvers.DupeUtility.Interface.Interface;
 import org.secvers.DupeUtility.Dupes.ItemFrame.ItemFrameDupe;
 import org.secvers.DupeUtility.Dupes.Donkey.DonkeyShulkerDupe;
@@ -52,9 +53,9 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
     public void onEnable() {
         long startTime = System.currentTimeMillis();
 
-        getLogger().info("╔═══════════════════════════════════════╗");
-        getLogger().info("║    SecVers DupeUtility Starting...    ║");
-        getLogger().info("╚═══════════════════════════════════════╝");
+        getLogger().info(LoggerColor.CYAN + "╔═══════════════════════════════════════╗" + LoggerColor.RESET);
+        getLogger().info(LoggerColor.CYAN + "║    " + LoggerColor.BRIGHT_YELLOW + "SecVers DupeUtility Starting..." + LoggerColor.CYAN + "    ║" + LoggerColor.RESET);
+        getLogger().info(LoggerColor.CYAN + "╚═══════════════════════════════════════╝" + LoggerColor.RESET);
 
         // Check config version
         ConfigVersionChecker versionChecker = new ConfigVersionChecker(this);
@@ -62,7 +63,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         saveDefaultConfig();
 
         // Initialize Dupe Prevention Modules
-        getLogger().info("→ Initializing dupe modules...");
+        getLogger().info(LoggerColor.YELLOW + "→ Initializing dupe modules..." + LoggerColor.RESET);
         frameDupe = new ItemFrameDupe(this);
         donkeyDupe = new DonkeyShulkerDupe(this);
         grindstoneDupe = new GrindStoneDupe(this);
@@ -70,14 +71,14 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         dropperDupe = new DropperDupe(this);
         deathDupe = new DeathDupe(this);
         translationWorker = new TranslationWorker(this);
-        getLogger().info("✓ Dupe modules loaded");
+        getLogger().info(LoggerColor.GREEN + "✓ Dupe modules loaded" + LoggerColor.RESET);
 
         // Initialize Interface
         dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe,
                 crafterDupe, dropperDupe, deathDupe, translationWorker);
 
         // Register Events
-        getLogger().info("→ Registering event listeners...");
+        getLogger().info(LoggerColor.YELLOW + "→ Registering event listeners..." + LoggerColor.RESET);
         getServer().getPluginManager().registerEvents(frameDupe.new FrameAll(), this);
         getServer().getPluginManager().registerEvents(frameDupe.new FrameSpecific(), this);
         getServer().getPluginManager().registerEvents(donkeyDupe, this);
@@ -86,27 +87,27 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(dropperDupe, this);
         getServer().getPluginManager().registerEvents(deathDupe, this);
         getServer().getPluginManager().registerEvents(dupeInterface, this);
-        getLogger().info("✓ Event listeners registered");
+        getLogger().info(LoggerColor.GREEN + "✓ Event listeners registered" + LoggerColor.RESET);
 
         // Initialize EconomyFix
         if (getConfig().getBoolean("EconomyFix.Enabled", true)) {
-            getLogger().info("→ Initializing EconomyFix module...");
+            getLogger().info(LoggerColor.YELLOW + "→ Initializing EconomyFix module..." + LoggerColor.RESET);
             try {
                 economyFixManager = new EconomyFixManager(this);
                 economyFixManager.startScanning();
-                getLogger().info("✓ EconomyFix loaded and scanning started");
+                getLogger().info(LoggerColor.GREEN + "✓ EconomyFix loaded and scanning started" + LoggerColor.RESET);
             } catch (Exception e) {
-                getLogger().severe("✗ Failed to initialize EconomyFix: " + e.getMessage());
+                getLogger().severe(LoggerColor.RED + "✗ Failed to initialize EconomyFix: " + e.getMessage() + LoggerColor.RESET);
                 e.printStackTrace();
             }
         } else {
-            getLogger().info("⊗ EconomyFix disabled in config");
+            getLogger().info(LoggerColor.YELLOW + "⊗ EconomyFix disabled in config" + LoggerColor.RESET);
         }
 
         // Update Checker
         updateChecker = new UpdateChecker(this);
         if (getConfig().getBoolean("checkUpdate", true)) {
-            getLogger().info("→ Checking for updates...");
+            getLogger().info(LoggerColor.YELLOW + "→ Checking for updates..." + LoggerColor.RESET);
             updateChecker.checkNowAsync();
         }
 
@@ -119,7 +120,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
             enableData.put("economy_fix_enabled", economyFixManager != null);
             telemetry.sendTelemetryAsync(enableData);
 
-            int interval = getConfig().getInt("telemetry.send_interval_seconds", 3600);
+            int interval = getConfig().getInt("telemetry.send_interval_seconds", 9000);
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -138,10 +139,13 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         }
 
         long loadTime = System.currentTimeMillis() - startTime;
-        getLogger().info("╔═══════════════════════════════════════╗");
-        getLogger().info("║ SecVers DupeUtility Enabled! (" + loadTime + "ms) ║");
-        getLogger().info("╚═══════════════════════════════════════╝");
+        getLogger().info(LoggerColor.BRIGHT_MAGENTA + "💬 We got a Discord Server! " + LoggerColor.BLUE + "https://discord.gg/Th95ea32EG" + LoggerColor.RESET);
+
+        getLogger().info(LoggerColor.GREEN + "╔═══════════════════════════════════════╗" + LoggerColor.RESET);
+        getLogger().info(LoggerColor.GREEN + "║ " + LoggerColor.BRIGHT_GREEN + "SecVers DupeUtility Enabled!" + LoggerColor.GREEN + " (" + LoggerColor.YELLOW + loadTime + "ms" + LoggerColor.GREEN + ") ║" + LoggerColor.RESET);
+        getLogger().info(LoggerColor.GREEN + "╚═══════════════════════════════════════╝" + LoggerColor.RESET);
     }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

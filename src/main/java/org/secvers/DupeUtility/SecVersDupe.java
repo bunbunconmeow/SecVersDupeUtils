@@ -53,7 +53,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         long startTime = System.currentTimeMillis();
 
         getLogger().info("╔═══════════════════════════════════════╗");
-        getLogger().info("║   SecVers DupeUtility Starting...    ║");
+        getLogger().info("║    SecVers DupeUtility Starting...    ║");
         getLogger().info("╚═══════════════════════════════════════╝");
 
         // Check config version
@@ -62,7 +62,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         saveDefaultConfig();
 
         // Initialize Dupe Prevention Modules
-        getLogger().info("→ Initializing dupe prevention modules...");
+        getLogger().info("→ Initializing dupe modules...");
         frameDupe = new ItemFrameDupe(this);
         donkeyDupe = new DonkeyShulkerDupe(this);
         grindstoneDupe = new GrindStoneDupe(this);
@@ -70,7 +70,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         dropperDupe = new DropperDupe(this);
         deathDupe = new DeathDupe(this);
         translationWorker = new TranslationWorker(this);
-        getLogger().info("✓ Dupe prevention modules loaded");
+        getLogger().info("✓ Dupe modules loaded");
 
         // Initialize Interface
         dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe,

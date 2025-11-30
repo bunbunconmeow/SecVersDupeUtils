@@ -276,20 +276,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.itemframe.name"));
 
         // Probability Settings (Slots 20-24)
-        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, getLang(player, "gui.decrease_large", "-10")));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, getLang(player, "gui.decrease_small", "-1")));
         gui.setItem(13, createValueDisplay(player, Material.PAPER, "gui.probability",
                 plugin.getConfig().getInt(basePath + ".Probability-percentage", 100) + "%"));
-        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, getLang(player, "gui.increase_small", "+1")));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, getLang(player, "gui.increase_large", "+10")));
 
         // Multiplier Settings (Slots 29-33)
-        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -10, getLang(player, "gui.decrease_large", "-10")));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, getLang(player, "gui.decrease_small", "-1")));
         gui.setItem(22, createValueDisplay(player, Material.PAPER, "gui.multiplier",
                 plugin.getConfig().getInt(basePath + ".Multiplier", 1) + "x"));
-        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +1, getLang(player, "gui.increase_small", "+1")));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +10, getLang(player, "gui.increase_large", "+10")));
 
         // Back Button (Slot 40)
         gui.setItem(40, createBackButton(player));
@@ -309,20 +309,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.glowframe.name"));
 
         // Probability Settings (Slots 20-24)
-        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, getLang(player, "gui.decrease_large", "-10")));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, getLang(player, "gui.decrease_small", "-1")));
         gui.setItem(13, createValueDisplay(player, Material.PAPER, "gui.probability",
                 plugin.getConfig().getInt(basePath + ".Probability-percentage", 100) + "%"));
-        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, getLang(player, "gui.increase_small", "+1")));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, getLang(player, "gui.increase_large", "+10")));
 
         // Multiplier Settings (Slots 29-33)
-        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -10, getLang(player, "gui.decrease_large", "-10")));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, getLang(player, "gui.decrease_small", "-1")));
         gui.setItem(22, createValueDisplay(player, Material.PAPER, "gui.multiplier",
                 plugin.getConfig().getInt(basePath + ".Multiplier", 1) + "x"));
-        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +1, getLang(player, "gui.increase_small", "+1")));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +10, getLang(player, "gui.increase_large", "+10")));
 
         // Back Button (Slot 40)
         gui.setItem(40, createBackButton(player));
@@ -342,20 +342,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.donkey.name"));
 
         // Min Timing Settings (Slots 19-23)
-        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, getLang(player, "gui.decrease_large", "-100")));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, getLang(player, "gui.decrease_small", "-10")));
         gui.setItem(13, createValueDisplay(player, Material.CLOCK, "gui.min_timing",
                 plugin.getConfig().getLong(basePath + ".MinTiming", 100L) + "ms"));
-        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, getLang(player, "gui.increase_small", "+10")));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, getLang(player, "gui.increase_large", "+100")));
 
         // Max Timing Settings (Slots 28-32)
-        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, getLang(player, "gui.decrease_large", "-100")));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, getLang(player, "gui.decrease_small", "-10")));
         gui.setItem(22, createValueDisplay(player, Material.CLOCK, "gui.max_timing",
                 plugin.getConfig().getLong(basePath + ".MaxTiming", 5000L) + "ms"));
-        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, getLang(player, "gui.increase_small", "+10")));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, getLang(player, "gui.increase_large", "+100")));
 
         // Back Button (Slot 40)
         gui.setItem(40, createBackButton(player));
@@ -374,20 +374,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.grindstone.name"));
 
         // Min Timing Settings (Slots 10-14)
-        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, getLang(player, "gui.decrease_large", "-100")));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, getLang(player, "gui.decrease_small", "-10")));
         gui.setItem(13, createValueDisplay(player, Material.CLOCK, "gui.min_timing",
                 plugin.getConfig().getLong(basePath + ".MinTiming", 1200L) + "ms"));
-        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, getLang(player, "gui.increase_small", "+10")));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, getLang(player, "gui.increase_large", "+100")));
 
         // Max Timing Settings (Slots 19-23)
-        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, getLang(player, "gui.decrease_large", "-100")));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, getLang(player, "gui.decrease_small", "-10")));
         gui.setItem(22, createValueDisplay(player, Material.CLOCK, "gui.max_timing",
                 plugin.getConfig().getLong(basePath + ".MaxTiming", 2200L) + "ms"));
-        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, getLang(player, "gui.increase_small", "+10")));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, getLang(player, "gui.increase_large", "+100")));
 
         // Drop Naturally Toggle (Slot 29)
         gui.setItem(29, createBooleanToggle(player, basePath + ".dropNaturally",
@@ -415,20 +415,20 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.crafter.name"));
 
         // Min Timing Settings (Slots 11-15)
-        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -100, getLang(player, "gui.decrease_large", "-100")));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, getLang(player, "gui.decrease_small", "-10")));
         gui.setItem(13, createValueDisplay(player, Material.CLOCK, "gui.min_timing",
                 plugin.getConfig().getLong(basePath + ".MinTiming", 100L) + "ms"));
-        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +10, getLang(player, "gui.increase_small", "+10")));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +100, getLang(player, "gui.increase_large", "+100")));
 
         // Max Timing Settings (Slots 20-24)
-        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, "gui.decrease_large"));
-        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, "gui.decrease_small"));
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, getLang(player, "gui.decrease_large", "-100")));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, getLang(player, "gui.decrease_small", "-10")));
         gui.setItem(22, createValueDisplay(player, Material.CLOCK, "gui.max_timing",
                 plugin.getConfig().getLong(basePath + ".MaxTiming", 1000L) + "ms"));
-        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, "gui.increase_small"));
-        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, "gui.increase_large"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, getLang(player, "gui.increase_small", "+10")));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, getLang(player, "gui.increase_large", "+100")));
 
         // Destroy Crafter Toggle (Slot 29)
         gui.setItem(29, createBooleanToggle(player, basePath + ".destroyCrafter",
@@ -456,12 +456,12 @@ public class Interface implements Listener {
         gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.dropper.name"));
 
         // Multiplier Settings (Slots 11-15)
-        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, "gui.decrease_small"));
-        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, "Decrease by -1"));
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, getLang(player, "gui.decrease_large", "-10")));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, getLang(player, "gui.decrease_small", "-1")));
         gui.setItem(13, createValueDisplay(player, Material.PAPER, "gui.multiplier",
                 plugin.getConfig().getInt(basePath + ".Multiplier", 2) + "x"));
-        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, "Increase by +1"));
-        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, "gui.increase_small"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, getLang(player, "gui.increase_small", "+1")));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, getLang(player, "gui.increase_large", "+10")));
 
         // Back Button (Slot 40)
         gui.setItem(40, createBackButton(player));

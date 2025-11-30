@@ -2,7 +2,7 @@
   "metadata": {
     "language": "Chinese",
     "nativeName": "中文",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "SecVers",
     "description": "Default Chinese translation",
     "countryCodes": [
@@ -46,6 +46,10 @@
     "gui.to_increase": "以增加",
     "gui.to_decrease": "以减少",
     "gui.to_open_settings": "以打开设置",
+    "gui.decrease_small": "减少 {0}",
+    "gui.decrease_large": "大幅减少 {0}",
+    "gui.increase_small": "增加 {0}",
+    "gui.increase_large": "大幅增加 {0}",
     "gui.reload": "重新加载配置",
     "gui.reload_desc": "重新加载所有复制配置",
     "gui.back": "返回主菜单",

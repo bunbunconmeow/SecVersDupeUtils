@@ -2,7 +2,7 @@
   "metadata": {
     "language": "Russian",
     "nativeName": "Русский",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "SecVers",
     "description": "Default Russian translation",
     "countryCodes": [
@@ -46,6 +46,10 @@
     "gui.to_increase": "для увеличения",
     "gui.to_decrease": "для уменьшения",
     "gui.to_open_settings": "чтобы открыть настройки",
+    "gui.decrease_small": "Уменьшить на {0}",
+    "gui.decrease_large": "Значительно уменьшить на {0}",
+    "gui.increase_small": "Увеличить на {0}",
+    "gui.increase_large": "Значительно увеличить на {0}",
     "gui.reload": "Перезагрузить конфигурацию",
     "gui.reload_desc": "Перезагружает все конфигурации дюпов",
     "gui.back": "Назад в главное меню",

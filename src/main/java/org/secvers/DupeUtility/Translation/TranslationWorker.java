@@ -251,6 +251,11 @@ public class TranslationWorker {
             translations.put("gui.back", "Zurück zum Hauptmenü");
             translations.put("gui.blacklist", "Blacklist");
             translations.put("gui.blacklist_desc", "Verwalte blockierte Items");
+            translations.put("gui.decrease_small", "Verringern um {0}");
+            translations.put("gui.decrease_large", "Stark verringern um {0}");
+            translations.put("gui.increase_small", "Erhöhen um {0}");
+            translations.put("gui.increase_large", "Stark erhöhen um {0}");
+
 
             // Dupe names and descriptions
             translations.put("dupe.itemframe.name", "Item Frame Dupe");
@@ -269,8 +274,8 @@ public class TranslationWorker {
             translations.put("dupe.death.desc", "Behalte Items beim Tod");
 
             // Messages
-            translations.put("msg.enabled", "{0} wurde §aaktiviert");
-            translations.put("msg.disabled", "{0} wurde §cdeaktiviert");
+            translations.put("msg.enabled", "wurde §aaktiviert");
+            translations.put("msg.disabled", "wurde §cdeaktiviert");
             translations.put("msg.probability_set", "Wahrscheinlichkeit gesetzt auf");
             translations.put("msg.multiplier_set", "Multiplikator gesetzt auf");
             translations.put("msg.mode_drop_only", "Modus: Nur Droppen");
@@ -310,7 +315,7 @@ public class TranslationWorker {
 
             // Menu
             translations.put("gui.title", "§6SecVers Dupe Configuration");
-            translations.put("gui.title.settings", "§6{0} Settings");
+            translations.put("gui.title.settings", "§6Settings");
             translations.put("gui.enabled", "§aEnabled");
             translations.put("gui.disabled", "§cDisabled");
             translations.put("gui.probability", "Probability");
@@ -340,6 +345,12 @@ public class TranslationWorker {
             translations.put("gui.back", "Back to Main Menu");
             translations.put("gui.blacklist", "Blacklist");
             translations.put("gui.blacklist_desc", "Manage blocked items");
+            translations.put("gui.decrease_small", "Decrease by {0}");
+            translations.put("gui.decrease_large", "Decrease by {0} significantly");
+            translations.put("gui.increase_small", "Increase by {0}");
+            translations.put("gui.increase_large", "Increase by {0} significantly");
+
+
 
             // Dupe names and descriptions
             translations.put("dupe.itemframe.name", "Item Frame Dupe");
@@ -357,9 +368,10 @@ public class TranslationWorker {
             translations.put("dupe.death.name", "Death Dupe");
             translations.put("dupe.death.desc", "Keep items on death");
 
+
             // Messages
-            translations.put("msg.enabled", "{0} has been §aenabled");
-            translations.put("msg.disabled", "{0} has been §cdisabled");
+            translations.put("msg.enabled", "has been §aenabled");
+            translations.put("msg.disabled", "has been §cdisabled");
             translations.put("msg.probability_set", "Probability set to");
             translations.put("msg.multiplier_set", "Multiplier set to");
             translations.put("msg.mode_drop_only", "Mode: Drop Only");

@@ -2,7 +2,7 @@
   "metadata": {
     "language": "Japanese",
     "nativeName": "日本語",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "SecVers",
     "description": "Default Japanese translation",
     "countryCodes": [
@@ -44,6 +44,10 @@
     "gui.to_increase": "増加させる",
     "gui.to_decrease": "減少させる",
     "gui.to_open_settings": "設定を開く",
+    "gui.decrease_small": "{0}減少",
+    "gui.decrease_large": "{0}大幅に減少",
+    "gui.increase_small": "{0}増加",
+    "gui.increase_large": "{0}大幅に増加",
     "gui.reload": "設定をリロード",
     "gui.reload_desc": "すべての増殖設定をリロードします",
     "gui.back": "メインメニューに戻る",

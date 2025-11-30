@@ -16,11 +16,12 @@ Version 3 Goals
   - [X] Event Keys better code quality
   - [ ] Death Dupe Rework
   - [ ] TNT Hopper Dupe
-- [X] Permissions based Dupes
+- [ ] Permissions based Dupes
     - [X] Item Frame Dupe
     - [X] Grind Stone Dupe
     - [X] Dropper Dupe
     - [X] Donkey Dupe
+    - [ ] Death Dupe
 - [X] Multi-Language Support
     - [X] English
     - [X] German
@@ -28,6 +29,13 @@ Version 3 Goals
     - [X] Chinese
     - [X] Korean
     - [X] Japanese
+    - [ ] French
+    - [ ] Economy Fix Support
+    - [ ] Portuguese
+    - [ ] Turkish
+    - [ ] Dutch 
+    - [ ] Czech
+    - [ ] Italian
 - [X] Anti-Illegal
     - [X] Whitelist Items
     - [X] MBT Removals
@@ -35,7 +43,12 @@ Version 3 Goals
     - [X] Crafter Dupe
     - [ ] Option for ItemFrame
     - [ ] Option for Grind Stone
-
+- [X] EconomyFix
+  - [X] Remove Admin Abuse Items
+  - [X] Stats
+  - [X] E-Chest Support
+- [ ] Plugin Name Spoof
+- [ ] Folia Port 
 
 Under Consideration:
 - [ ] Crafter Dupe Recipe System

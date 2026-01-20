@@ -135,6 +135,9 @@ public class Interface implements Listener {
             case DEATH_SETTINGS:
                 openDeathSettings(player);
                 break;
+            case PISTON_SETTINGS:
+                openPistonSettings(player);
+                break;
             case BLACKLIST_SETTINGS:
                 openBlacklistSettings(player);
                 break;
@@ -162,12 +165,13 @@ public class Interface implements Listener {
                 createMainMenuItem(player, Material.GRINDSTONE, "OtherDupes.GrindStone.Enabled", "dupe.grindstone.name"),
                 createMainMenuItem(player, Material.CRAFTER, "OtherDupes.CrafterDupe.Enabled", "dupe.crafter.name"),
                 createMainMenuItem(player, Material.DROPPER, "OtherDupes.DropperDupe.Enabled", "dupe.dropper.name"),
-                createMainMenuItem(player, Material.SKELETON_SPAWN_EGG, "OtherDupes.DeathDupe.Enabled", "dupe.death.name")
+                createMainMenuItem(player, Material.SKELETON_SPAWN_EGG, "OtherDupes.DeathDupe.Enabled", "dupe.death.name"),
+                createMainMenuItem(player, Material.PISTON, "OtherDupes.PistonShulkerDupe.Enabled", "dupe.piston.name")
         };
 
         // Add other items in default positions
-        int[] defaultSlots = {10, 12, 14, 16, 28, 30, 32};
-        for (int i = 0; i < 7; i++) {
+        int[] defaultSlots = {10, 12, 14, 16, 28, 30, 32, 34};
+        for (int i = 0; i < dupeItems.length; i++) {
             gui.setItem(defaultSlots[i], dupeItems[i]);
         }
 
@@ -514,6 +518,42 @@ public class Interface implements Listener {
 
     // ==================== HELPER METHODS ====================
 
+    private void openPistonSettings(Player player) {
+        String basePath = "OtherDupes.PistonShulkerDupe";
+        GuiHolder holder = new GuiHolder(GUIType.PISTON_SETTINGS);
+        Inventory gui = Bukkit.createInventory(holder, 45, getLang(player, "dupe.piston.name"));
+        holder.setInventory(gui);
+
+
+        fillWithGlass(gui);
+
+        // Enable/Disable Toggle (Slot 4)
+        gui.setItem(4, createToggleItem(player, basePath + ".Enabled", "dupe.piston.name"));
+
+        // Multiplier Settings (Slots 11-15)
+        gui.setItem(11, createAdjustButton(player, Material.RED_CONCRETE, -10, getLang(player, "gui.decrease_large", "-10")));
+        gui.setItem(12, createAdjustButton(player, Material.ORANGE_CONCRETE, -1, getLang(player, "gui.decrease_small", "-1")));
+        gui.setItem(13, createValueDisplay(player, Material.PAPER, "gui.multiplier",
+                plugin.getConfig().getInt(basePath + ".Multiplier", 1) + "x"));
+        gui.setItem(14, createAdjustButton(player, Material.LIME_CONCRETE, +1, getLang(player, "gui.increase_small", "+1")));
+        gui.setItem(15, createAdjustButton(player, Material.GREEN_CONCRETE, +10, getLang(player, "gui.increase_large", "+10")));
+
+        // Cooldown Settings (Slots 20-24)
+        gui.setItem(20, createAdjustButton(player, Material.RED_CONCRETE, -100, getLang(player, "gui.decrease_large", "-100")));
+        gui.setItem(21, createAdjustButton(player, Material.ORANGE_CONCRETE, -10, getLang(player, "gui.decrease_small", "-10")));
+        gui.setItem(22, createValueDisplay(player, Material.CLOCK, "gui.cooldown",
+                plugin.getConfig().getLong(basePath + ".CooldownMs", 1000L) + "ms"));
+        gui.setItem(23, createAdjustButton(player, Material.LIME_CONCRETE, +10, getLang(player, "gui.increase_small", "+10")));
+        gui.setItem(24, createAdjustButton(player, Material.GREEN_CONCRETE, +100, getLang(player, "gui.increase_large", "+100")));
+
+        // Back Button (Slot 40)
+        gui.setItem(40, createBackButton(player));
+
+        player.openInventory(gui);
+    }
+
+
+
     private void fillWithGlass(Inventory gui) {
         ItemStack glassPane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta glassMeta = glassPane.getItemMeta();
@@ -738,6 +778,18 @@ public class Interface implements Listener {
                 }
                 break;
 
+
+            case PISTON:
+                if (isLeftClick) {
+                    toggleEnabled(player, "OtherDupes.PistonShulkerDupe", "dupe.piston.name");
+                    pistonShulkerDupe.reload();
+                    openMainGUI(player);
+                } else {
+                    openGUI(player, GUIType.PISTON_SETTINGS);
+                }
+                break;
+
+
             case GRINDSTONE:
                 if (isLeftClick) {
                     toggleEnabled(player, "OtherDupes.GrindStone", "dupe.grindstone.name");
@@ -869,6 +921,8 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
             handleDropperSettingsClick(player, slot, clickedItem);
         } else if (type == GUIType.DEATH_SETTINGS) {
             handleDeathSettingsClick(player, slot, clickedItem);
+        } else if (type == GUIType.PISTON_SETTINGS) {
+            handlePistonSettingsClick(player, slot, clickedItem);
         }
     }
 
@@ -1038,6 +1092,31 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
             openDropperSettings(player);
         }
     }
+
+    private void handlePistonSettingsClick(Player player, int slot, ItemStack item) {
+        String basePath = "OtherDupes.PistonShulkerDupe";
+
+        if (slot == 4 && (item.getType() == Material.LIME_DYE || item.getType() == Material.GRAY_DYE)) {
+            toggleEnabled(player, basePath, "dupe.piston.name");
+            pistonShulkerDupe.reload();
+            openPistonSettings(player);
+        }
+        // Multiplier adjustments (slots 11-15)
+        else if (slot >= 11 && slot <= 15 && item.getType().name().contains("CONCRETE")) {
+            int adjustment = getAdjustmentValue(slot, 11);
+            adjustIntValue(player, basePath + ".Multiplier", adjustment, 1, 100);
+            pistonShulkerDupe.reload();
+            openPistonSettings(player);
+        }
+        // Cooldown adjustments (slots 20-24)
+        else if (slot >= 20 && slot <= 24 && item.getType().name().contains("CONCRETE")) {
+            long adjustment = getTimingAdjustment(slot, 20);
+            adjustLongValue(player, basePath + ".CooldownMs", adjustment, 0, Long.MAX_VALUE);
+            pistonShulkerDupe.reload();
+            openPistonSettings(player);
+        }
+    }
+
 
     // ==================== ADJUSTMENT HELPER METHODS ====================
 

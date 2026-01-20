@@ -18,6 +18,7 @@ import org.secvers.DupeUtility.Dupes.ItemFrame.ItemFrameDupe;
 import org.secvers.DupeUtility.Dupes.Donkey.DonkeyShulkerDupe;
 import org.secvers.DupeUtility.Dupes.Dropper.DropperDupe;
 import org.secvers.DupeUtility.EconomyFix.EconomyFixManager;
+import org.secvers.DupeUtility.Dupes.Piston.PistonShulkerDupe;
 import org.secvers.DupeUtility.EconomyFix.ItemScanner;
 import org.secvers.DupeUtility.EconomyFix.OfflinePlayerScanner;
 import org.secvers.DupeUtility.SecVersCom.Telemetry;
@@ -39,6 +40,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
     private CrafterDupe crafterDupe;
     private DropperDupe dropperDupe;
     private DeathDupe deathDupe;
+    private PistonShulkerDupe pistonShulkerDupe;
 
     // Interface & Utilities
     private Interface dupeInterface;
@@ -54,7 +56,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         long startTime = System.currentTimeMillis();
 
         getLogger().info(LoggerColor.CYAN + "╔═══════════════════════════════════════╗" + LoggerColor.RESET);
-        getLogger().info(LoggerColor.CYAN + "║    " + LoggerColor.BRIGHT_YELLOW + "SecVers DupeUtility Starting..." + LoggerColor.CYAN + "    ║" + LoggerColor.RESET);
+        getLogger().info(LoggerColor.CYAN + "║  " + LoggerColor.BRIGHT_YELLOW + "SecVers DupeUtility Starting..." + LoggerColor.CYAN + "    ║" + LoggerColor.RESET);
         getLogger().info(LoggerColor.CYAN + "╚═══════════════════════════════════════╝" + LoggerColor.RESET);
 
         // Check config version
@@ -70,12 +72,13 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         crafterDupe = new CrafterDupe(this);
         dropperDupe = new DropperDupe(this);
         deathDupe = new DeathDupe(this);
+        pistonShulkerDupe = new PistonShulkerDupe(this);
         translationWorker = new TranslationWorker(this);
         getLogger().info(LoggerColor.GREEN + "✓ Dupe modules loaded" + LoggerColor.RESET);
 
         // Initialize Interface
         dupeInterface = new Interface(this, frameDupe, donkeyDupe, grindstoneDupe,
-                crafterDupe, dropperDupe, deathDupe, translationWorker);
+                crafterDupe, dropperDupe, deathDupe, pistonShulkerDupe, translationWorker);
 
         // Register Events
         getLogger().info(LoggerColor.YELLOW + "→ Registering event listeners..." + LoggerColor.RESET);
@@ -86,6 +89,7 @@ public final class SecVersDupe extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(crafterDupe, this);
         getServer().getPluginManager().registerEvents(dropperDupe, this);
         getServer().getPluginManager().registerEvents(deathDupe, this);
+        getServer().getPluginManager().registerEvents(pistonShulkerDupe, this);
         getServer().getPluginManager().registerEvents(dupeInterface, this);
         getLogger().info(LoggerColor.GREEN + "✓ Event listeners registered" + LoggerColor.RESET);
 

@@ -139,6 +139,10 @@ OtherDupes:
         Probability-percentage: 100
   DeathDupe:
     Enabled: false
+  PistonShulkerDupe:
+    Enabled: false
+    Multiplier: 1
+    CooldownMs: 1000
 
 ItemBlacklist:
   - Namespace: "exampleplugin"

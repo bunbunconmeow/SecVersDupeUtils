@@ -18,6 +18,7 @@ import org.secvers.DupeUtility.Dupes.Death.DeathDupe;
 import org.secvers.DupeUtility.Dupes.Donkey.DonkeyShulkerDupe;
 import org.secvers.DupeUtility.Dupes.Dropper.DropperDupe;
 import org.secvers.DupeUtility.Dupes.GrindStone.GrindStoneDupe;
+import org.secvers.DupeUtility.Dupes.Piston.PistonShulkerDupe;
 import org.secvers.DupeUtility.Dupes.ItemFrame.ItemFrameDupe;
 import org.secvers.DupeUtility.Translation.TranslationWorker;
 
@@ -39,6 +40,7 @@ public class Interface implements Listener {
     private final DeathDupe deathDupe;
     private final TranslationGUI languageGUI;
     private final TranslationWorker translator;
+    private final PistonShulkerDupe pistonShulkerDupe;
 
     // Language strings - will be moved to language file later
     private final Map<String, String> lang = new HashMap<>();
@@ -53,6 +55,7 @@ public class Interface implements Listener {
         CRAFTER_SETTINGS,
         DROPPER_SETTINGS,
         DEATH_SETTINGS,
+        PISTON_SETTINGS,
         BLACKLIST_SETTINGS
     }
 
@@ -79,7 +82,7 @@ public class Interface implements Listener {
     }
 
     public Interface(Plugin plugin, ItemFrameDupe frameDupe, DonkeyShulkerDupe donkeyDupe,
-                     GrindStoneDupe grindstoneDupe, CrafterDupe crafterDupe, DropperDupe dropperDupe, DeathDupe deathDupe, TranslationWorker translator) {
+                     GrindStoneDupe grindstoneDupe, CrafterDupe crafterDupe, DropperDupe dropperDupe, DeathDupe deathDupe, PistonShulkerDupe pistonShulkerDupe, TranslationWorker translator) {
         this.plugin = plugin;
         this.frameDupe = frameDupe;
         this.donkeyDupe = donkeyDupe;
@@ -88,6 +91,7 @@ public class Interface implements Listener {
         this.dropperDupe = dropperDupe;
         this.deathDupe = deathDupe;
         this.translator = translator;
+        this.pistonShulkerDupe = pistonShulkerDupe;
         this.languageGUI = new TranslationGUI(plugin, translator);
 
         plugin.getServer().getPluginManager().registerEvents(languageGUI, plugin);

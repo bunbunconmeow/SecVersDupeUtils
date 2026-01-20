@@ -142,7 +142,9 @@ public class Interface implements Listener {
     }
 
     private void openMainGUI(Player player, int page) {
-        Inventory gui = Bukkit.createInventory(null, 45, getLang(player, "gui.title"));
+        GuiHolder holder = new GuiHolder(GUIType.MAIN);
+        Inventory gui = Bukkit.createInventory(holder, 45, getLang(player, "gui.title"));
+        holder.setInventory(gui);
 
         // Fill with glass panes
         fillWithGlass(gui);
@@ -636,7 +638,6 @@ public class Interface implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Inventory topInventory = event.getView().getTopInventory();
-        // Check if it's one of our GUIs
         if (!(topInventory.getHolder() instanceof GuiHolder)) {
             return;
         }

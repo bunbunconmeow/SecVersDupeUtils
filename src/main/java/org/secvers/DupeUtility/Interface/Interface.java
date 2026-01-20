@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 import org.secvers.DupeUtility.Dupes.Crafter.CrafterDupe;
 import org.secvers.DupeUtility.Dupes.Death.DeathDupe;
@@ -52,6 +53,28 @@ public class Interface implements Listener {
         DROPPER_SETTINGS,
         DEATH_SETTINGS,
         BLACKLIST_SETTINGS
+    }
+
+    private static class GuiHolder implements InventoryHolder {
+        private final GUIType type;
+        private Inventory inventory;
+
+        private GuiHolder(GUIType type) {
+            this.type = type;
+        }
+
+        public GUIType getType() {
+            return type;
+        }
+
+        public void setInventory(Inventory inventory) {
+            this.inventory = inventory;
+        }
+
+        @Override
+        public Inventory getInventory() {
+            return inventory;
+        }
     }
 
     public Interface(Plugin plugin, ItemFrameDupe frameDupe, DonkeyShulkerDupe donkeyDupe,
@@ -263,12 +286,14 @@ public class Interface implements Listener {
         return item;
     }
 
-
-    // ==================== ITEM FRAME SETTINGS ====================
+    
     private void openItemFrameSettings(Player player) {
         String basePath = "FrameDupe";
         String title = getLang(player, "dupe.itemframe.name");
-        Inventory gui = Bukkit.createInventory(null, 54, title);
+        GuiHolder holder = new GuiHolder(GUIType.ITEMFRAME_SETTINGS);
+        Inventory gui = Bukkit.createInventory(holder, 54, title);
+        holder.setInventory(gui);
+
 
         fillWithGlass(gui);
 
@@ -300,7 +325,11 @@ public class Interface implements Listener {
     // ==================== GLOW FRAME SETTINGS ====================
     private void openGlowFrameSettings(Player player) {
         String basePath = "GLOW_FrameDupe";
-        Inventory gui = Bukkit.createInventory(null, 45, getLang(player, "dupe.glowframe.name"));
+        GuiHolder holder = new GuiHolder(GUIType.GLOWFRAME_SETTINGS);
+        Inventory gui = Bukkit.createInventory(holder, 45, getLang(player, "dupe.glowframe.name"));
+        holder.setInventory(gui);
+
+
 
         fillWithGlass(gui);
 
@@ -332,7 +361,10 @@ public class Interface implements Listener {
     // ==================== DONKEY SETTINGS ====================
     private void openDonkeySettings(Player player) {
         String basePath = "OtherDupes.DonkeyDupe";
-        Inventory gui = Bukkit.createInventory(null, 45, getLang(player,"dupe.donkey.name"));
+        GuiHolder holder = new GuiHolder(GUIType.DONKEY_SETTINGS);
+        Inventory gui = Bukkit.createInventory(holder, 45, getLang(player,"dupe.donkey.name"));
+        holder.setInventory(gui);
+
 
         fillWithGlass(gui);
 
@@ -363,7 +395,10 @@ public class Interface implements Listener {
     // ==================== GRINDSTONE SETTINGS ====================
     private void openGrindstoneSettings(Player player) {
         String basePath = "OtherDupes.GrindStone";
-        Inventory gui = Bukkit.createInventory(null, 45, getLang(player, "dupe.grindstone.name"));
+        GuiHolder holder = new GuiHolder(GUIType.GRINDSTONE_SETTINGS);
+        Inventory gui = Bukkit.createInventory(holder, 45, getLang(player, "dupe.grindstone.name"));
+        holder.setInventory(gui);
+
 
         fillWithGlass(gui);
 
@@ -403,7 +438,10 @@ public class Interface implements Listener {
     // ==================== CRAFTER SETTINGS ====================
     private void openCrafterSettings(Player player) {
         String basePath = "OtherDupes.CrafterDupe";
-        Inventory gui = Bukkit.createInventory(null, 45,getLang(player, "dupe.crafter.name"));
+        GuiHolder holder = new GuiHolder(GUIType.CRAFTER_SETTINGS);
+        Inventory gui = Bukkit.createInventory(holder, 45,getLang(player, "dupe.crafter.name"));
+        holder.setInventory(gui);
+
 
         fillWithGlass(gui);
 
@@ -443,7 +481,10 @@ public class Interface implements Listener {
     // ==================== DROPPER SETTINGS ====================
     private void openDropperSettings(Player player) {
         String basePath = "OtherDupes.DropperDupe";
-        Inventory gui = Bukkit.createInventory(null, 45, getLang(player, "dupe.dropper.name"));
+        GuiHolder holder = new GuiHolder(GUIType.DROPPER_SETTINGS);
+        Inventory gui = Bukkit.createInventory(holder, 45, getLang(player, "dupe.dropper.name"));
+        holder.setInventory(gui);
+
 
         fillWithGlass(gui);
 
@@ -551,13 +592,18 @@ public class Interface implements Listener {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        String title = event.getView().getTitle();
-        plugin.getLogger().info("[DEBUG] InventoryDragEvent triggered. Title: '" + title + "', Slots: " + event.getInventorySlots() + ", Raw slots: " + event.getRawSlots());
+        Inventory topInventory = event.getView().getTopInventory();
+        plugin.getLogger().info("[DEBUG] InventoryDragEvent triggered. Slots: " + event.getInventorySlots() + ", Raw slots: " + event.getRawSlots());
 
-        if (!title.equals("Item Blacklist")) {
-            plugin.getLogger().info("[DEBUG] Title does not match 'Item Blacklist', ignoring drag event.");
+        if (!(topInventory.getHolder() instanceof GuiHolder)) {
             return;
         }
+        GuiHolder holder = (GuiHolder) topInventory.getHolder();
+        if (holder.getType() != GUIType.BLACKLIST_SETTINGS) {
+            plugin.getLogger().info("[DEBUG] Inventory is not blacklist GUI, ignoring drag event.");
+            return;
+        }
+
 
         // Check if dragging into slot 22
         if (event.getInventorySlots().contains(22)) {
@@ -588,25 +634,16 @@ public class Interface implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        String title = event.getView().getTitle();
         Player player = (Player) event.getWhoClicked();
+        Inventory topInventory = event.getView().getTopInventory();
         // Check if it's one of our GUIs
-        if (!title.equals(getLang(player, "gui.title")) &&
-                !title.equals("Item Blacklist") &&
-                !title.contains(getLang(player,"dupe.itemframe.name")) &&
-                !title.contains(getLang(player,"dupe.glowframe.name")) &&
-                !title.contains(getLang(player,"dupe.donkey.name")) &&
-                !title.contains(getLang(player,"dupe.grindstone.name")) &&
-                !title.contains(getLang(player,"dupe.crafter.name")) &&
-                !title.contains(getLang(player,"dupe.dropper.name")) &&
-                !title.contains(getLang(player, "dupe.death.name"))) {
+        if (!(topInventory.getHolder() instanceof GuiHolder)) {
             return;
         }
 
-        plugin.getLogger().info("[DEBUG] Creating GUI with title: '" + getLang(player, "dupe.death.name") + "'");
+        GuiHolder holder = (GuiHolder) topInventory.getHolder();
 
-        // For blacklist GUI, handle specially
-        if (title.equals("Item Blacklist")) {
+        if (holder.getType() == GUIType.BLACKLIST_SETTINGS) {
             event.setCancelled(true);
             int slot = event.getSlot();
             ItemStack clickedItem = event.getCurrentItem();
@@ -648,13 +685,13 @@ public class Interface implements Listener {
         }
 
         // Handle Main GUI
-        if (title.equals(getLang(player,"gui.title"))) {
+        if (holder.getType() == GUIType.MAIN) {
             handleMainGUIClick(player, clickedItem, event.getClick().isLeftClick());
             return;
         }
 
         // Handle Settings GUIs
-        handleSettingsGUIClick(player, clickedItem, title, event.getSlot());
+        handleSettingsGUIClick(player, clickedItem, holder.getType(), event.getSlot());
     }
 
     private void handleMainGUIClick(Player player, ItemStack clickedItem, boolean isLeftClick) {
@@ -745,8 +782,11 @@ public class Interface implements Listener {
 private void openDeathSettings(Player player) {
     String basePath = "OtherDupes.DeathDupe";
     String title = getLang(player,"dupe.death.name");
-    Inventory gui = Bukkit.createInventory(null, 45,
+    GuiHolder holder = new GuiHolder(GUIType.DEATH_SETTINGS);
+    Inventory gui = Bukkit.createInventory(holder, 45,
             getLang(player,"gui.title.settings", title));
+    holder.setInventory(gui);
+
 
     fillWithGlass(gui);
 
@@ -761,7 +801,10 @@ private void openDeathSettings(Player player) {
 
 // ==================== BLACKLIST SETTINGS ====================
 private void openBlacklistSettings(Player player) {
-    Inventory gui = Bukkit.createInventory(null, 45, "Item Blacklist");
+    GuiHolder holder = new GuiHolder(GUIType.BLACKLIST_SETTINGS);
+    Inventory gui = Bukkit.createInventory(holder, 45, "Item Blacklist");
+    holder.setInventory(gui);
+
 
     fillWithGlass(gui);
 
@@ -791,7 +834,7 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
 }
 
 
-    private void handleSettingsGUIClick(Player player, ItemStack clickedItem, String title, int slot) {
+    private void handleSettingsGUIClick(Player player, ItemStack clickedItem, GUIType type, int slot) {
         // Back button
         if (clickedItem.getType() == Material.ARROW) {
             openMainGUI(player);
@@ -799,19 +842,19 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         }
 
         // Determine which settings GUI we're in
-        if (title.contains(getLang(player,"dupe.itemframe.name"))) {
+        if (type == GUIType.ITEMFRAME_SETTINGS) {
             handleItemFrameSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang(player,"dupe.glowframe.name"))) {
+        } else if (type == GUIType.GLOWFRAME_SETTINGS) {
             handleGlowFrameSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang(player,"dupe.donkey.name"))) {
+        } else if (type == GUIType.DONKEY_SETTINGS) {
             handleDonkeySettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang(player,"dupe.grindstone.name"))) {
+        } else if (type == GUIType.GRINDSTONE_SETTINGS) {
             handleGrindstoneSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang(player,"dupe.crafter.name"))) {
+        } else if (type == GUIType.CRAFTER_SETTINGS) {
             handleCrafterSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang(player,"dupe.dropper.name"))) {
+        } else if (type == GUIType.DROPPER_SETTINGS) {
             handleDropperSettingsClick(player, slot, clickedItem);
-        } else if (title.contains(getLang(player,"dupe.death.name"))) {
+        } else if (type == GUIType.DEATH_SETTINGS) {
             handleDeathSettingsClick(player, slot, clickedItem);
         }
     }

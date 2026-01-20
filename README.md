@@ -48,7 +48,6 @@ Version 3 Goals
   - [X] Stats
   - [X] E-Chest Support
 - [ ] Plugin Name Spoof
-- [ ] Folia Port 
 
 Under Consideration:
 - [ ] Crafter Dupe Recipe System

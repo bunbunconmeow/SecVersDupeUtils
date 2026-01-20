@@ -1,3 +1,6 @@
+# Config Version
+version: 3.0
+
 # Telemetry
 # We will collect only the current Version, OS, Server Name.
 telemetry:
@@ -11,14 +14,66 @@ FrameDupe:
   Enabled: true
   Probability-percentage: 100
   Multiplier: 1
+  Ranks:
+    vip:
+      Permission: "dupeutils.framedupe.vip"
+      Multiplier: 2
+      Probability-percentage: 25
+    premium:
+      Permission: "dupeutils.framedupe.premium"
+      Multiplier: 3
+      Probability-percentage: 50
+    admin:
+      Permission: "dupeutils.framedupe.admin"
+      Multiplier: 5
+      Probability-percentage: 100
 
 GLOW_FrameDupe:
   Enabled: true
   Probability-percentage: 100
   Multiplier: 1
+  Ranks:
+    vip:
+      Permission: "dupeutils.framedupe.vip"
+      Multiplier: 2
+      Probability-percentage: 25
+    premium:
+      Permission: "dupeutils.framedupe.premium"
+      Multiplier: 3
+      Probability-percentage: 50
+    admin:
+      Permission: "dupeutils.framedupe.admin"
+      Multiplier: 5
+      Probability-percentage: 100
 
 Settings:
   EnableItemCheck: true
+  DisableIllegalItem: true
+  # Detailed illegal item detection settings
+  IllegalItemDetection:
+    # Check for items with Unbreakable tag
+    CheckUnbreakable: true
+    # Check for stacked items beyond normal stack size
+    CheckOverstacked: true
+    # Check for enchantments beyond vanilla limits
+    CheckIllegalEnchantments: true
+    # Check for items not obtainable in survival
+    CheckUnobtainableItems: true
+    # Allow custom names and lore (for plugins like EssentialsX, etc.)
+    AllowCustomNames: true
+    AllowCustomLore: true
+    # Action to take on illegal items
+    # Options: REMOVE, RESET, LOG_ONLY
+    Action: REMOVE
+    # Automatically fix enchantments instead of removing
+    AutoFixEnchantments: true
+    # Log illegal items to console
+    LogIllegalItems: true
+    # Whitelist for specific items that should bypass checks
+    Whitelist:
+      - "BARRIER"  # Example: Allow barriers even though not survival obtainable
+      - "COMMAND_BLOCK"
+
 
 OtherDupes:
   GrindStone:
@@ -27,10 +82,39 @@ OtherDupes:
     MaxTiming: 2200   # Maximum in ms
     dropNaturally: true
     addToInventory: false
+    Ranks:
+      vip:
+        Permission: "dupeutils.grindstonedupe.vip"
+        Multiplier: 2
+        Probability-percentage: 100
+      premium:
+        Permission: "dupeutils.grindstonedupe.premium"
+        Multiplier: 3
+        Probability-percentage: 100
+      admin:
+        Permission: "dupeutils.grindstonedupe.admin"
+        Multiplier: 5
+        Probability-percentage: 100
   DonkeyDupe:
     Enabled: false
     MinTiming: 100   # Minimum in ms
     MaxTiming: 5000   # Maximum in ms
+    Ranks:
+      vip:
+        Permission: "dupeutils.DonkeyDupe.vip"
+        Enabled: false
+        MinTiming: 100   # Minimum in ms
+        MaxTiming: 5000   # Maximum in ms
+      premium:
+        Permission: "dupeutils.DonkeyDupe.premium"
+        Enabled: false
+        MinTiming: 100   # Minimum in ms
+        MaxTiming: 5000   # Maximum in ms
+      admin:
+        Permission: "dupeutils.DonkeyDupe.admin"
+        Enabled: false
+        MinTiming: 100   # Minimum in ms
+        MaxTiming: 5000   # Maximum in ms
   CrafterDupe:
     Enabled: false
     MinTiming: 100     # Minimum in ms
@@ -40,9 +124,25 @@ OtherDupes:
   DropperDupe:
     Enabled: false
     Multiplier: 2
+    Ranks:
+      vip:
+        Permission: "dupeutils.dropperdupe.vip"
+        Multiplier: 3
+        Probability-percentage: 100
+      premium:
+        Permission: "dupeutils.dropperdupe.premium"
+        Multiplier: 5
+        Probability-percentage: 100
+      admin:
+        Permission: "dupeutils.dropperdupe.admin"
+        Multiplier: 10
+        Probability-percentage: 100
   DeathDupe:
     Enabled: false
-
+  PistonShulkerDupe:
+    Enabled: false
+    Multiplier: 1
+    CooldownMs: 1000
 
 ItemBlacklist:
   - Namespace: "exampleplugin"
@@ -50,3 +150,24 @@ ItemBlacklist:
     Names:
       - "test_item"
       - "extra_item"
+
+Translation:
+  # Enable translation system
+  enabled: true
+  # Default language (fallback)
+  default: "English"
+  # Available translations (auto-updated on server start)
+  translations:
+    - "English"
+    - "German"
+
+EconomyFix:
+  PlayerInventoryScan: false
+  EnderChestScan: false
+  WorldContainerScan: false
+  OfflinePlayerScan: false
+  OfflineEnderChestScan: false
+  ChunkLoadingEnabled: false
+  PlayerScanInterval: 30
+  LogFixedItems: false
+  VerboseLogging: false

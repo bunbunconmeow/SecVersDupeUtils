@@ -4,8 +4,25 @@ A comprehensive and configurable dupe management plugin for Minecraft servers
 
 Paper 1.21+ | [BSD-3 License](https://secvers.org/info/license) | Version 2.1
 
-================================================================================
+---
+## 🚀 v3.0.0 Release Highlights
 
+What's new in Version 3:
+- ✅ Permissions-based dupes across supported methods
+- ✅ Multi-language support (English, German, Russian, Chinese, Korean, Japanese)
+- ✅ Anti-Illegal system with whitelist items and MBT removals
+- ✅ EconomyFix integration (admin abuse items removal, stats, E-Chest support)
+- ✅ Crafter dupe support with particle/animation foundations
+- ✅ Clean shulker bundle support and event key improvements
+
+Coming Next:
+- ⏳ Death dupe rework
+- ⏳ TNT hopper dupe
+- ⏳ Particle effects options for Item Frame and Grindstone
+- ⏳ Additional translations (French, Portuguese, Turkish, Dutch, Czech, Italian)
+- ⏳ Plugin name spoof
+
+---
 🌟 FEATURES
 
 6+ Dupe Methods Available:
@@ -23,6 +40,7 @@ Advanced Configuration System:
 - ⏱️ Timing Controls - Adjust delay windows for dupes
 - 🔧 Per-Dupe Settings - Independent configuration for each method
 - 📊 Real-time Adjustments - Changes apply without server restart
+- Translations - Add you own Translations!
 
 Professional Features:
 ✅ Permission-Based UI Access - Fine-grained control over who can use what
@@ -33,8 +51,7 @@ Professional Features:
 
 🔔 Update Checker - Stay informed about new versions
 
-================================================================================
-
+---
 📥 DOWNLOAD & SUPPORT
 
 Official Download:
@@ -43,8 +60,10 @@ https://secvers.org/plugins/dupe-utility
 Support Development:
 https://secvers.org/info/donate
 
-================================================================================
+Dupe FAQ:
+https://secvers.org/plugins/dupe-utility
 
+---
 🎮 COMMANDS
 
 /dupe\
@@ -59,7 +78,7 @@ Permission: dupeutils.reload
 Description: Open configuration GUI\
 Permission: dupeutils.configdupes
 
-================================================================================
+---
 
 🔐 PERMISSIONS
 
@@ -67,7 +86,7 @@ Permission: dupeutils.configdupes
 - dupeutils.reload        - Permission to reload configs
 - dupeutils.configdupes   - Permission to open config GUI
 
-================================================================================
+---
 
 ⚙️ CONFIGURATION EXAMPLE
 
@@ -85,14 +104,66 @@ FrameDupe:
   Enabled: true
   Probability-percentage: 100
   Multiplier: 1
+  Ranks:
+    vip:
+      Permission: "dupeutils.framedupe.vip"
+      Multiplier: 2
+      Probability-percentage: 25
+    premium:
+      Permission: "dupeutils.framedupe.premium"
+      Multiplier: 3
+      Probability-percentage: 50
+    admin:
+      Permission: "dupeutils.framedupe.admin"
+      Multiplier: 5
+      Probability-percentage: 100
 
 GLOW_FrameDupe:
   Enabled: true
   Probability-percentage: 100
   Multiplier: 1
+  Ranks:
+    vip:
+      Permission: "dupeutils.framedupe.vip"
+      Multiplier: 2
+      Probability-percentage: 25
+    premium:
+      Permission: "dupeutils.framedupe.premium"
+      Multiplier: 3
+      Probability-percentage: 50
+    admin:
+      Permission: "dupeutils.framedupe.admin"
+      Multiplier: 5
+      Probability-percentage: 100
 
 Settings:
   EnableItemCheck: true
+  DisableIllegalItem: true
+  # Detailed illegal item detection settings
+  IllegalItemDetection:
+    # Check for items with Unbreakable tag
+    CheckUnbreakable: true
+    # Check for stacked items beyond normal stack size
+    CheckOverstacked: true
+    # Check for enchantments beyond vanilla limits
+    CheckIllegalEnchantments: true
+    # Check for items not obtainable in survival
+    CheckUnobtainableItems: true
+    # Allow custom names and lore (for plugins like EssentialsX, etc.)
+    AllowCustomNames: true
+    AllowCustomLore: true
+    # Action to take on illegal items
+    # Options: REMOVE, RESET, LOG_ONLY
+    Action: REMOVE
+    # Automatically fix enchantments instead of removing
+    AutoFixEnchantments: true
+    # Log illegal items to console
+    LogIllegalItems: true
+    # Whitelist for specific items that should bypass checks
+    Whitelist:
+      - "BARRIER"  # Example: Allow barriers even though not survival obtainable
+      - "COMMAND_BLOCK"
+
 
 OtherDupes:
   GrindStone:
@@ -117,17 +188,74 @@ OtherDupes:
   DeathDupe:
     Enabled: false
 
-
 ItemBlacklist:
+  - Namespace: "minecraft"
+    Key: "tnt"
+    Names: []
+  - Namespace: "minecraft"
+    Key: "stone"
+    Names: []
   - Namespace: "exampleplugin"
     Key: "specialtype"
     Names:
       - "test_item"
       - "extra_item"
 
-```
+Translation:
+  # Enable translation system
+  enabled: true
+  # Auto-detect language based on player IP
+  ipbased: false
+  # Default language (fallback)
+  default: "English"
+  # Available translations (auto-updated on server start)
+  translations:
+    - "English"
+    - "German"
 
-================================================================================
+```
+---
+# SecVerse Dupe Utils - Community Translations
+
+## How to Create a Translation
+
+1. Copy `english.json` as a template
+2. Rename it to your language (e.g., `french.json`, `spanish.json`)
+3. Edit the metadata section:
+    - `language`: English name of the language
+    - `nativeName`: Name in the native language (e.g., "Français", "Español")
+    - `version`: Start with "1.0.0"
+    - `author`: Your name or username
+    - `description`: Brief description
+    - `countryCodes`: List of ISO country codes (e.g., ["FR", "BE", "CH"])
+
+4. Translate all strings in the `translations` section
+5. Keep color codes (§a, §c, etc.) and placeholders ({0}, {1}, etc.) unchanged
+6. Test your translation in-game
+7. Share your translation file!
+
+## Supported Color Codes
+- §a = Green (success)
+- §c = Red (error)
+- §e = Yellow (info/value)
+- §7 = Gray (description)
+- §6 = Gold
+- §r = Reset
+
+## Placeholders
+- {0}, {1}, etc. = Dynamic values that will be replaced
+- Example: "Value set to {0}" → "Wert gesetzt auf {0}"
+
+## File Format
+- UTF-8 encoding
+- JSON format
+- File name: `languagename.json` (lowercase)
+
+## Contributing
+Share your translations on our Discord or GitHub!
+
+
+---
 
 🎮 GUI CONFIGURATION
 
@@ -138,7 +266,7 @@ Use /dupe config in-game for easy configuration:
 • Adjust Values - Click concrete blocks to increase/decrease
 • Live Updates - Changes apply immediately
 
-================================================================================
+---
 
 🤝 CREDITS & ACKNOWLEDGMENTS
 
@@ -152,7 +280,7 @@ Development:\
 SecVers Team - Plugin development and maintenance\
 Community - Bug reports and feature suggestions
 
-================================================================================
+---
 
 📊 STATISTICS
 
@@ -161,7 +289,7 @@ Community - Bug reports and feature suggestions
 • Active Development - Regular updates and new features\
 • In-Game GUI - No need to edit config files
 
-================================================================================
+---
 
 🐛 BUG REPORTS & FEATURE REQUESTS
 
@@ -176,31 +304,14 @@ Found a bug or have an idea?
 
 GitHub Issues: https://github.com/bunbunconmeow/SecVersDupeUtils/issues
 
-================================================================================
+---
 
 📜 LICENSE
 
 This project is licensed under the [BSD-3 License](https://secvers.org/info/license).
 
 
-================================================================================
-
-🔮 ROADMAP
-
-Coming Soon:
-PlaceholderAPI Integration
-- [ ] LuckyPerms and Vault based Cooldown & Limit System\
-- [ ] Economy Integration\
-- [ ] Up to 30+ More Dupe Methods
-- [ ] Multi-Language Support
-
-Under Consideration:
-- [ ] Dupe Recipe System
-- [ ] Particle Effects & Animations
-- [ ] Backup & Rollback System
-- [ ] Web Dashboard
-
-================================================================================
+---
 
 ⚠️ DISCLAIMER
 
@@ -208,8 +319,7 @@ This plugin is designed for anarchy, creative, or testing servers.\
 Use at your own discretion. The developers are not responsible for any
 damage to your server economy or gameplay balance.
 
-================================================================================
-
+---
 💬 SUPPORT
 
 Official Website: https://secvers.org <br/>
@@ -217,8 +327,7 @@ Plugin Page: https://secvers.org/plugins/dupe-utility <br/>
 Donate: https://secvers.org/info/donate <br/>
 Email: support@secvers.org
 
-================================================================================
-
+---
 ⭐ SHOW YOUR SUPPORT
 
 If you like this plugin, please consider:\
@@ -228,8 +337,7 @@ If you like this plugin, please consider:\
 📣 Sharing with others\
 ❤️ Donating to support development
 
-================================================================================
-
+---
 Made with ❤️ by SecVers
 
 Download: https://secvers.org/plugins/dupe-utility
@@ -237,4 +345,4 @@ Donate: https://secvers.org/info/donate
 
 Want to contribute? Check out our Contributing Guidelines!
 
-================================================================================
+---

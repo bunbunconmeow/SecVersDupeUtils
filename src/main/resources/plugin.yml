@@ -1,24 +1,37 @@
-name: SecVerseDupeUtils
-version: '2.1'
-main: org.secverse.SecVerseDupeUtils.SecVersDupe
+name: SecVersDupe
+version: '${project.version}'
+main: org.secvers.DupeUtility.SecVersDupe
 api-version: '1.21'
-load: STARTUP
-authors: [ Mia_conmeow ]
-description: Dupe Utility
+load: POSTWORLD
+authors: [ SecVers ]
+description: Advanced dupe and illegal item scanner
 
 commands:
   dupe:
-    description: Basecommand for Dupe Utils
-    usage: /dupe <reload|config>
+    description: DupeUtility management commands
+    usage: /<command> [reload|config|economyfix]
     permission: dupeutils.command
-    permission-message: You do not have permission to use this command.
-  reload:
-    description: Reloads Dupe Utils config
-    usage: /dupe reload
-    permission: dupeutils.reload
-    permission-message: You do not have permission to use this command.
-  config:
-    description: Opens GUI to configure dupes allowed
-    usage: /dupe config
-    permission: dupeutils.configdupes
-    permission-message: You do not have permission to use this command.
+    aliases: [dupeutil, du]
+
+  economyfix:
+    description: EconomyFix illegal items scanner
+    usage: /<command> [scan|stats|toggle] [args]
+    permission: economyfix.admin
+    aliases: [efix, ef, illegalitems]
+
+permissions:
+  dupeutils.command:
+    description: Base permission for dupe commands
+    default: op
+  dupeutils.reload:
+    description: Reload plugin configuration
+    default: op
+  DupeUtility.configdupes:
+    description: Access config GUI
+    default: op
+  economyfix.admin:
+    description: Full access to EconomyFix commands
+    default: op
+  economyfix.notify:
+    description: Receive notifications about illegal items
+    default: op

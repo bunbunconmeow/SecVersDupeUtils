@@ -5,57 +5,23 @@ A comprehensive and configurable dupe management plugin for Minecraft servers
 Paper 1.21+ | [BSD-3 License](https://secvers.org/info/license) | Version 2.1
 
 ---
-## 🔮 v3.0.0 Roadmap
+## 🚀 v3.0.0 Release Highlights
 
+What's new in Version 3:
+- ✅ Permissions-based dupes across supported methods
+- ✅ Multi-language support (English, German, Russian, Chinese, Korean, Japanese)
+- ✅ Anti-Illegal system with whitelist items and MBT removals
+- ✅ EconomyFix integration (admin abuse items removal, stats, E-Chest support)
+- ✅ Crafter dupe support with particle/animation foundations
+- ✅ Clean shulker bundle support and event key improvements
 
-Coming Soon:
-Version 3 Goals
-- [ ] v2.1.0 Bug Fixes & New Functions
-  - [ ] Code-Refactoring
-  - [X] Clean Shulker Bundle Support
-  - [X] Event Keys better code quality
-  - [ ] Death Dupe Rework
-  - [ ] TNT Hopper Dupe
-- [ ] Permissions based Dupes
-    - [X] Item Frame Dupe
-    - [X] Grind Stone Dupe
-    - [X] Dropper Dupe
-    - [X] Donkey Dupe
-    - [ ] Death Dupe
-- [X] Multi-Language Support
-    - [X] English
-    - [X] German
-    - [X] Russian
-    - [X] Chinese
-    - [X] Korean
-    - [X] Japanese
-    - [ ] French
-    - [ ] Economy Fix Support
-    - [ ] Portuguese
-    - [ ] Turkish
-    - [ ] Dutch 
-    - [ ] Czech
-    - [ ] Italian
-- [X] Anti-Illegal
-    - [X] Whitelist Items
-    - [X] MBT Removals
-- [ ] Particle Effects & Animations
-    - [X] Crafter Dupe
-    - [ ] Option for ItemFrame
-    - [ ] Option for Grind Stone
-- [X] EconomyFix
-  - [X] Remove Admin Abuse Items
-  - [X] Stats
-  - [X] E-Chest Support
-- [ ] Plugin Name Spoof
+Coming Next:
+- ⏳ Death dupe rework
+- ⏳ TNT hopper dupe
+- ⏳ Particle effects options for Item Frame and Grindstone
+- ⏳ Additional translations (French, Portuguese, Turkish, Dutch, Czech, Italian)
+- ⏳ Plugin name spoof
 
-Under Consideration:
-- [ ] Crafter Dupe Recipe System
-- [ ] Particle Effects & Animations
-- [ ] Backup & Rollback System
-- [ ] Web Dashboard
-- [ ] Custom Anti-Illegal Replacements
-- [ ] Folia Port
 ---
 🌟 FEATURES
 

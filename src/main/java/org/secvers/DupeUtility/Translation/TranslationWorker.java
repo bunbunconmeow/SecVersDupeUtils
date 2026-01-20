@@ -286,6 +286,7 @@ public class TranslationWorker {
             translations.put("gui.multiplier", "Multiplikator");
             translations.put("gui.min_timing", "Minimale Zeit");
             translations.put("gui.max_timing", "Maximale Zeit");
+            translations.put("gui.cooldown", "Abkühlzeit");
             translations.put("gui.drop_naturally", "Natürlich fallen lassen");
             translations.put("gui.add_to_inventory", "Zum Inventar hinzufügen");
             translations.put("gui.destroy_crafter", "Crafter zerstören");
@@ -329,7 +330,8 @@ public class TranslationWorker {
             translations.put("dupe.dropper.desc", "Dupliziere Items mit Dropper");
             translations.put("dupe.death.name", "Death Dupe");
             translations.put("dupe.death.desc", "Behalte Items beim Tod");
-
+            translations.put("dupe.piston.name", "Piston Dupe");
+            translations.put("dupe.piston.desc", "Dupliziere Shulkers mit Pistons");
             // Messages
             translations.put("msg.enabled", "{0} wurde §aaktiviert");
             translations.put("msg.disabled", "{0} wurde §cdeaktiviert");
@@ -379,6 +381,7 @@ public class TranslationWorker {
             translations.put("gui.multiplier", "Multiplier");
             translations.put("gui.min_timing", "Minimum Timing");
             translations.put("gui.max_timing", "Maximum Timing");
+            translations.put("gui.cooldown", "Cooldown");
             translations.put("gui.drop_naturally", "Drop Naturally");
             translations.put("gui.add_to_inventory", "Add to Inventory");
             translations.put("gui.destroy_crafter", "Destroy Crafter");
@@ -422,6 +425,8 @@ public class TranslationWorker {
             translations.put("dupe.dropper.desc", "Duplicate items using droppers");
             translations.put("dupe.death.name", "Death Dupe");
             translations.put("dupe.death.desc", "Keep items on death");
+            translations.put("dupe.piston.name", "Piston Dupe");
+            translations.put("dupe.piston.desc", "Dupes Piston Shulkers");
 
             // Messages
             translations.put("msg.enabled", "{0} has been §aenabled");

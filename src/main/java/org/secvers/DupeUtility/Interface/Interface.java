@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.InventoryHolder;
@@ -623,6 +624,7 @@ public class Interface implements Listener {
                 if (item != null && item.getType() != Material.AIR) {
                     plugin.getLogger().info("[DEBUG] Adding item to blacklist: " + item.getType().name());
                     addItemToBlacklist(item);
+                    player.getInventory().addItem(item.clone());
                     gui.setItem(22, null); // Reset slot to empty
                     player.sendMessage(getLang(player, "color.success") + item.getType().name() + " added to blacklist!");
                 } else {
@@ -651,10 +653,9 @@ public class Interface implements Listener {
 
             // Only cancel clicks in the GUI inventory, allow player inventory for picking up items
             if (event.getClickedInventory() != null && event.getClickedInventory().equals(event.getView().getTopInventory())) {
+                event.setCancelled(true);
                 if (slot == 40 && clickedItem != null && clickedItem.getType() == Material.ARROW) {
-                    // Back button
                     openMainGUI(player);
-                    event.setCancelled(true);
                     return;
                 }
                 if (slot == 22) {
@@ -667,12 +668,18 @@ public class Interface implements Listener {
                         player.getInventory().addItem(cursor.clone());
                         event.getView().setCursor(null);
                         player.sendMessage(getLang(player,"color.success") + cursor.getType().name() + " added to blacklist!");
-                        event.setCancelled(true);
                         return;
                     }
                 }
-                // Cancel the event to prevent picking up items from GUI
                 event.setCancelled(true);
+                return;
+            }
+
+            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null && clickedItem.getType() != Material.AIR) {
+                addItemToBlacklist(clickedItem.clone());
+                player.sendMessage(getLang(player,"color.success") + clickedItem.getType().name() + " added to blacklist!");
+                event.setCancelled(true);
+                return;
             }
             return;
         }
@@ -809,13 +816,14 @@ private void openBlacklistSettings(Player player) {
 
     fillWithGlass(gui);
 
-    // Center slot for adding items (Slot 22) - hopper as visual indicator
+    // Info item (Slot 13)
     ItemStack hopper = new ItemStack(Material.HOPPER);
     ItemMeta hopperMeta = hopper.getItemMeta();
     hopperMeta.setDisplayName(getLang(player,"color.info") + "Drop items here to blacklist");
     hopperMeta.setLore(Arrays.asList(getLang(player,"color.description") + "Click here with an item to add it to the blacklist"));
     hopper.setItemMeta(hopperMeta);
-    gui.setItem(22, hopper);
+    gui.setItem(13, hopper);
+    gui.setItem(22, null);
     plugin.getLogger().info("[DEBUG] Blacklist GUI opened. Slot 22 item: " + (gui.getItem(22) != null ? gui.getItem(22).getType().name() : "null"));
 
     // Back Button (Slot 40)

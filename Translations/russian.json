@@ -2,7 +2,7 @@
   "metadata": {
     "language": "Russian",
     "nativeName": "Русский",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "author": "SecVers",
     "description": "Default Russian translation",
     "countryCodes": [
@@ -28,6 +28,7 @@
     "gui.multiplier": "Множитель",
     "gui.min_timing": "Минимальное время",
     "gui.max_timing": "Максимальное время",
+    "gui.cooldown": "Перезарядка",
     "gui.drop_naturally": "Выпадать естественно",
     "gui.add_to_inventory": "Добавить в инвентарь",
     "gui.destroy_crafter": "Уничтожить крафтер",
@@ -69,6 +70,8 @@
     "dupe.dropper.desc": "Дублировать предметы с помощью выбрасывателей",
     "dupe.death.name": "Дюп смерти",
     "dupe.death.desc": "Сохранять предметы при смерти",
+    "dupe.piston.name": "Дюп поршня-шалкера",
+    "dupe.piston.desc": "Дублировать шалкеры с помощью поршней",
     "msg.enabled": "{0} §aвключено",
     "msg.disabled": "{0} §cотключено",
     "msg.probability_set": "Вероятность установлена на",

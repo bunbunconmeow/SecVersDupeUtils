@@ -1149,9 +1149,15 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         plugin.getConfig().set("ItemBlacklist", blacklist);
         plugin.saveConfig();
         plugin.reloadConfig();
+        reloadDupes();
     }
 
     private void reloadAllConfigs(Player player) {
+        plugin.reloadConfig();
+        reloadDupes();
+        player.sendMessage(getLang(player, "color.success") + getLang(player, "msg.config_reloaded"));
+    }
+    private void reloadDupes() {
         plugin.reloadConfig();
         frameDupe.reload();
         donkeyDupe.reload();
@@ -1159,9 +1165,5 @@ private void handleDeathSettingsClick(Player player, int slot, ItemStack item) {
         crafterDupe.reload();
         dropperDupe.reload();
         deathDupe.reload();
-
-        player.sendMessage(getLang(player,"color.success") + getLang(player,"msg.config_reloaded"));
     }
-
-
 }

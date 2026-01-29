@@ -1,5 +1,5 @@
 name: SecVersDupe
-version: '${project.version}'
+version: '3.0'
 main: org.secvers.DupeUtility.SecVersDupe
 api-version: '1.21'
 load: POSTWORLD
